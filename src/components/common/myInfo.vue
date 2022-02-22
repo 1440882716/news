@@ -25,7 +25,10 @@
               src="https://bic.11185.cn/zxpt-sc-mbc/user/icon/87/503_1586417749347_995_USER_046.jpg"
               alt=""
             />
-            <div></div>
+            <div>
+              <span>用户名：</span>
+              <span>昵称：</span>
+            </div>
           </div>
         </div>
       </div>
@@ -93,7 +96,9 @@ router-link {
   padding: 20px;
 }
 .my-head-img {
+  width: 100%;
   padding: 10px;
+  background-color: #f2f2f2;
 }
 .head-img {
   width: 75px;
