@@ -1,0 +1,205 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoraction: none !important;
+  color: #8e8e92;
+}
+router-link {
+  text-decoraction: none;
+}
+.pointer {
+  cursor: pointer;
+}
+.router-link-active {
+  text-decoration: none;
+  color: #8e8e92;
+}
+.full-container {
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+.content {
+  width: 1200px;
+  height: auto;
+  margin: 0 auto;
+  /* background-color: aquamarine; */
+}
+.content980 {
+  width: 980px;
+  margin: 0 auto;
+}
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+button {
+  border: none;
+}
+input {
+  background: none;
+  outline: none;
+  /* border: ; */
+}
+/* input:focus {
+  border: none;
+} */
+/* ================================字体颜色 */
+.main-color {
+  color: #333;
+}
+.tips-color {
+  color: #8e8e92;
+}
+.gray-font-color {
+  color: #2c3e50;
+}
+.fff-font {
+  color: #fff;
+}
+.price-color {
+  color: #ff8400;
+}
+.price-main {
+  color: #ff5446;
+}
+.primary-color {
+  color: #409eff;
+}
+/* =================================背景颜色 */
+.gray-bgc {
+  /* background-color: #f4f5f6; */
+}
+/* ================================公共字体 */
+.font11 {
+  font-size: 11px;
+}
+.font12 {
+  font-size: 12px;
+}
+.font13 {
+  font-size: 13px;
+}
+.font14 {
+  font-size: 14px;
+}
+.font15 {
+  font-size: 15px;
+}
+.font16 {
+  font-size: 16px;
+}
+.font17 {
+  font-size: 17px;
+}
+.font18 {
+  font-size: 18px;
+}
+.font20 {
+  font-size: 20px;
+}
+.font24 {
+  font-size: 24px;
+}
+.font28 {
+  font-size: 28px;
+}
+.bold-font {
+  font-weight: bold;
+}
+.bold600 {
+  font-weight: 600;
+}
+/* ==================================布局 */
+.flex {
+  display: flex;
+}
+.flex-r {
+  display: flex;
+  flex-direction: row;
+}
+.flex-c {
+  display: flex;
+  flex-direction: column;
+}
+.flex-a {
+  display: flex;
+  justify-content: space-around;
+}
+.flex-b {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-s {
+  justify-content: flex-start;
+}
+.flex-e {
+  justify-content: flex-end;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+/* ===================================间距 */
+.m-l-10 {
+  margin-left: 10px;
+}
+.m-l-20 {
+  margin-left: 20px;
+}
+.m-l-30 {
+  margin-left: 30px;
+}
+.m-l-129 {
+  margin-left: 129px;
+}
+.m-r-5 {
+  margin-right: 5px;
+}
+.m-r-10 {
+  margin-right: 10px;
+}
+.m-r-20 {
+  margin-right: 20px;
+}
+.m-t-5 {
+  margin-top: 5px;
+}
+.m-t-10 {
+  margin-top: 10px;
+}
+.m-t-20 {
+  margin-top: 20px;
+}
+.m-t-30 {
+  margin-top: 30px;
+}
+.m-t-40 {
+  margin-top: 40px;
+}
+.m-b-10 {
+  margin-bottom: 10px;
+}
+.m-b-20 {
+  margin-bottom: 20px;
+}
+.m-b-80 {
+  margin-bottom: 80px;
+}
+.p-t-10 {
+  padding-top: 10px;
+}
+.p-t-20 {
+  padding-top: 20px;
+}
+.p-t-30 {
+  padding-top: 30px;
+}
+.p-b-80 {
+  padding-bottom: 80px;
+}

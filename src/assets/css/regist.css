@@ -1,0 +1,88 @@
+.content-regist {
+  width: 980px;
+  height: auto;
+  margin: 0 auto;
+  margin-bottom: 80px;
+  margin-top: 30px;
+}
+.regist-head {
+  width: 70%;
+  height: 50px;
+  line-height: 50px;
+  margin: 0 auto;
+}
+.active-head {
+  border-bottom: 4px solid #409eff;
+}
+.not-active {
+  border: none;
+  color: #8e8e92;
+}
+.regist-content {
+  width: 980px;
+  height: auto;
+  padding-top: 30px;
+  border-top: 1px solid #ececf0;
+}
+.regist-step {
+  width: 500px;
+  /* height: 200px; */
+  margin: 0 auto;
+}
+.el-form-item {
+  margin-bottom: 30px;
+}
+/* =========================验证手机号 */
+.re-step-item {
+  /* margin-bottom: 20px; */
+}
+.re-step-left {
+  width: 109px;
+  height: 34px;
+  line-height: 34px;
+  text-align: right;
+  /* background-color: bisque; */
+}
+.re-step-right {
+  width: calc(100% - 129px);
+  height: 32px;
+  padding-left: 10px;
+  border: 1px solid #ececf0;
+}
+.re-step-code {
+  width: 242px;
+  height: 32px;
+  padding-left: 10px;
+  border: 1px solid #ececf0;
+}
+.get-code {
+  width: 94px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  margin-left: 22px;
+  color: #409eff;
+  background-color: #f5f5f5;
+}
+.next-step {
+  background: #409eff;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  width: 168px;
+  height: 32px;
+  margin: 0 auto;
+  margin-top: 40px;
+  text-align: center;
+  line-height: 32px;
+}
+.agree-img {
+  width: 20px;
+  height: 20px;
+}
+.regist-over-img {
+  width: 40px;
+  height: 40px;
+}

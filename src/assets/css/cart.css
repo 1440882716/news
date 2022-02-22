@@ -1,0 +1,133 @@
+.cart-box {
+  width: 980px;
+  margin: 0 auto;
+}
+.cart-head {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+}
+.count-btn {
+  width: 54px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  border-radius: 2px;
+  margin-top: 12px;
+  margin-left: 10px;
+  background-color: #ff8400;
+}
+.goods-list {
+  width: 100%;
+  /* height: 50px; */
+}
+.goods-list-head {
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background-color: #f2f2f2;
+}
+.headline1 {
+  width: 15%;
+  /* background-color: cadetblue; */
+}
+.headline2 {
+  width: 40%;
+  /* background-color: cadetblue; */
+}
+.headline3 {
+  width: 10%;
+}
+.headline4 {
+  width: 15%;
+  justify-content: center;
+  /* background-color: cadetblue; */
+}
+.headline5 {
+  width: 10%;
+}
+.headline6 {
+  width: 10%;
+}
+/* ========================list */
+.cart-list {
+  /* min-height: 116px; */
+  padding: 30px 0;
+  background: #fcfcfc;
+  border: 1px solid #f2f2f2;
+  /* border-top: none; */
+}
+.choose-cart-icon {
+  width: 20px;
+  height: 20px;
+}
+.cart-goods-img {
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+}
+.cart-goods-img img {
+  width: 60px;
+  height: 80px;
+}
+.goods-name {
+  width: 45%;
+}
+.goods-info {
+  width: 50%;
+}
+.justify {
+  display: inline-block;
+  width: 60px;
+  text-align: right;
+}
+.change-num {
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  border: 1px solid #bcbcbc;
+}
+.cart-goods-num {
+  width: 60px;
+  border: none;
+  text-align: center;
+}
+.num-btn {
+  width: 20px;
+}
+.num-reduse {
+  border-right: 1px solid #bcbcbc;
+}
+.num-add {
+  border-left: 1px solid #bcbcbc;
+}
+.count-box {
+  width: 979px;
+  height: 60px;
+  line-height: 60px;
+  background-color: #fff;
+  border: 1px solid #f2f2f2;
+  /* border-top: none; */
+}
+.count-left,
+.count-right {
+  width: 50%;
+  height: 100%;
+}
+.list-count {
+  width: 100px;
+  height: 60px;
+  background-color: #ff8400;
+}
+/* ===================空页面 */
+.go-home {
+  width: 84px;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  border-radius: 4px;
+  background-image: linear-gradient(-194deg, #13b29a, #087b61);
+  color: #fff;
+}
