@@ -13,6 +13,7 @@
             <li
               v-for="(item, index) in navList"
               :key="index"
+              :class="[navNum == index ? 'myActiveColor' : '']"
               @click="chooseNav(index)"
             >
               {{ item }}
@@ -41,6 +42,7 @@ export default {
   },
   data() {
     return {
+      navNum: 0,
       navList: [
         "个人资料",
         "账户安全",
@@ -55,8 +57,10 @@ export default {
   },
   methods: {
     chooseNav(ind) {
-      console.log(index);
-      debugger;
+      // window.alert("111");
+      // console.log(ind);
+      this.navNum = ind;
+      // debugger;
     }
   }
 };

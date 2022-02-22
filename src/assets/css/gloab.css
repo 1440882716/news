@@ -69,6 +69,9 @@ input {
 .primary-color {
   color: #409eff;
 }
+.myActiveColor {
+  color: #ff8400;
+}
 /* =============================按钮 */
 .primary-btn {
   padding: 12px 20px;
