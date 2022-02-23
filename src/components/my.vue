@@ -21,7 +21,10 @@
           </ul>
         </div>
         <div class="my-nav-right">
+          <!-- 个人资料 -->
           <myInfo v-show="navNum == 0"></myInfo>
+          <!-- 账户安全 -->
+          <Account v-show="navNum == 1"></Account>
         </div>
       </div>
     </div>
@@ -31,6 +34,7 @@
 <script>
 import myHeader from "./common/myHeader.vue";
 import myInfo from "./common/myInfo.vue";
+import Account from "./common/account.vue";
 import Footer from "./common/footer.vue";
 export default {
   name: "my",
@@ -38,7 +42,8 @@ export default {
     // 注册
     myHeader,
     Footer,
-    myInfo
+    myInfo,
+    Account
   },
   data() {
     return {

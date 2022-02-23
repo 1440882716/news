@@ -110,7 +110,6 @@
                     label: 'ext_name',
                     children: 'childs'
                   }"
-                  @change="handleChange"
                 ></el-cascader>
               </el-form-item>
               <el-form-item label="">

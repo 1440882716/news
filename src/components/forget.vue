@@ -30,12 +30,6 @@
                 placeholder="请输入账户绑定的手机号码"
               />
             </div>
-            <!-- <div class="flex-r m-t-10 m-b-20 m-l-129">
-              <i></i>
-              <span class="font11 tips-color"
-                >验证手机后，可用于登录和密码找回</span
-              >
-            </div> -->
           </div>
           <div class="re-step-item flex-r">
             <div class="re-step-left m-r-20">

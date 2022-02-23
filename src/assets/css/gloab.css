@@ -72,6 +72,15 @@ input {
 .myActiveColor {
   color: #ff8400;
 }
+.yellow-color {
+  color: #ffc17f;
+}
+.f666 {
+  color: #666;
+}
+.f999 {
+  color: #999;
+}
 /* =============================按钮 */
 .primary-btn {
   padding: 12px 20px;
