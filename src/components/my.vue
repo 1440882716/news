@@ -21,7 +21,7 @@
           </ul>
         </div>
         <div class="my-nav-right">
-          <myInfo></myInfo>
+          <myInfo v-show="navNum == 0"></myInfo>
         </div>
       </div>
     </div>

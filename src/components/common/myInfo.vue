@@ -11,19 +11,37 @@
     </el-dialog>
     <div class="info-content text-left">
       <div class="title-box">
-        <div class="my-info-title">个人资料</div>
+        <div class="my-info-title" @click="dialogVisible = true">个人资料</div>
       </div>
       <div class="my-info-box">
         <div class="info-nav-box flex-r font14 main-color">
-          <div class="info-nav-item">基本信息</div>
-          <div class="info-nav-item">头像照片</div>
+          <div
+            :class="[
+              'info-nav-item',
+              'pointer',
+              navTitle == 1 ? 'myActiveColor' : 'main-color'
+            ]"
+            @click="selectNav(1)"
+          >
+            基本信息
+          </div>
+          <div
+            :class="[
+              'info-nav-item',
+              'pointer',
+              navTitle == 2 ? 'myActiveColor' : 'main-color'
+            ]"
+            @click="selectNav(2)"
+          >
+            头像照片
+          </div>
         </div>
-        <div class="info-container">
+        <div class="info-container" v-show="navTitle == 1">
           <div class="my-head-img flex-r">
             <img
               class="head-img m-r-10"
               src="../../assets/img/head.png"
-              @click="dialogVisible = true"
+              @click="selectNav(2)"
               alt=""
             />
             <div class="tips-color font14 m-t-10">
@@ -39,10 +57,10 @@
               label-width="100px"
               class="demo-ruleForm"
             >
-              <el-form-item label="昵称" prop="name">
+              <el-form-item label="昵称" prop="nickname">
                 <el-input
                   class=""
-                  v-model="ruleForm.name"
+                  v-model="ruleForm.nickname"
                   placeholder="请输入昵称"
                   width="100px"
                 ></el-input>
@@ -58,7 +76,7 @@
                 >
               </el-form-item>
               <el-form-item label="性别">
-                <el-radio-group v-model="ruleForm.resource">
+                <el-radio-group v-model="ruleForm.sex">
                   <el-radio label="男"></el-radio>
                   <el-radio label="女"></el-radio>
                 </el-radio-group>
@@ -66,24 +84,38 @@
 
               <el-form-item label="证件类型">
                 <el-input
-                  v-model="ruleForm.delivery"
+                  v-model="ruleForm.cardType"
                   :disabled="true"
                   placeholder="请选择证件类型"
                 ></el-input>
               </el-form-item>
 
               <el-form-item label="证件号码">
-                <el-input v-model="ruleForm.desc" :disabled="true"></el-input>
+                <el-input
+                  v-model="ruleForm.cardNum"
+                  :disabled="true"
+                ></el-input>
               </el-form-item>
               <el-form-item label="手机号码">
-                <el-input v-model="ruleForm.desc" :disabled="true"></el-input>
+                <el-input v-model="ruleForm.phone" :disabled="true"></el-input>
               </el-form-item>
               <el-form-item label="所在地区">
-                <el-input v-model="ruleForm.desc"></el-input>
+                <!-- <el-input v-model="ruleForm.desc"></el-input> -->
+                <el-cascader
+                  v-model="ruleForm.region"
+                  :options="regionData"
+                  :props="{
+                    expandTrigger: 'hover',
+                    value: 'id',
+                    label: 'ext_name',
+                    children: 'childs'
+                  }"
+                  @change="handleChange"
+                ></el-cascader>
               </el-form-item>
               <el-form-item label="">
                 <el-input
-                  v-model="ruleForm.desc"
+                  v-model="ruleForm.address"
                   placeholder="请输入详细街道地址"
                 ></el-input>
               </el-form-item>
@@ -101,29 +133,57 @@
             </el-form>
           </div>
         </div>
+        <div class="info-container" v-show="navTitle == 2">
+          <el-upload
+            class="avatar-uploader"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+            <!-- <i v-else class="el-icon-plus avatar-uploader-icon"></i> -->
+            <img
+              v-else
+              class="tips-img avatar-uploader-icon"
+              src="../../assets/img/people3.png"
+              alt=""
+            />
+          </el-upload>
+          <div class="font12 tips-color m-b-20">
+            仅支持JPG、PNG格式，文件小于2M
+          </div>
+          <el-button class="primary-btn" type="primary" @click="keepHead"
+            >保存</el-button
+          >
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import region from "../../assets/data/area_format_user.json";
 export default {
   name: "index",
   data() {
     return {
+      navTitle: 1,
       dialogVisible: false,
+      regionData: region,
+      imageUrl: "",
       ruleForm: {
+        nickname: "",
         name: "",
+        sex: "",
+        cardType: "",
+        cardNum: "",
+        phone: "",
         region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
+        address: ""
       },
       rules: {
-        name: [
+        nickname: [
           { required: true, message: "请输入昵称", trigger: "blur" },
           {
             min: 3,
@@ -138,19 +198,41 @@ export default {
 
   mounted() {},
   methods: {
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    selectNav(num) {
+      this.navTitle = num;
+      console.log(num);
+    },
+    // 保存信息
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          // 提交要修改的信息
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           return false;
         }
       });
     },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    }
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg" || "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG、png 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
+    // 保存上传的头像
+    keepHead() {}
   }
 };
 </script>
@@ -216,5 +298,37 @@ router-link {
 }
 .el-input {
   width: 45%;
+}
+.el-cascader {
+  width: 333px;
+}
+/* 上传头像 */
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+  border: 1px solid #e4e7ed;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+.tips-img {
+  width: 100px;
+  height: 100px;
 }
 </style>
