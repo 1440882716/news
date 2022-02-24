@@ -50,12 +50,9 @@
             <div>
               <span class="font14 f666 m-r-5">注销账户</span
               ><span class="tips-color">|</span>
-              <!-- <span class="font12 yellow-color"
-                >若您绑定的手机 已丢失或已停用，请立即修改。</span
-              > -->
             </div>
             <span class="font14 myActiveColor pointer" @click="changeItem(3)"
-              >修改</span
+              >申请注销</span
             >
           </div>
           <!-- 提示 -->
