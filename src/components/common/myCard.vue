@@ -1,6 +1,11 @@
 <template>
   <div class="my-info">
-    <el-dialog title="新增账户" :visible.sync="dialogVisible" width="50%">
+    <el-dialog
+      title="新增账户"
+      :visible.sync="dialogVisible"
+      @close="closeDialog"
+      width="50%"
+    >
       <div class="font14 dialog-content">
         <el-form
           label-width="120px"
@@ -10,8 +15,12 @@
         >
           <el-form-item label="请选择账户类型" prop="type">
             <el-radio-group v-model="accountForm.type">
-              <el-radio label="1" @change="chooseLabel">支付宝</el-radio>
-              <el-radio label="2" @change="chooseLabel">银行卡</el-radio>
+              <el-radio label="1" disabled="zfbType" @change="chooseLabel"
+                >支付宝</el-radio
+              >
+              <el-radio label="2" disabled="yhkType" @change="chooseLabel"
+                >银行卡</el-radio
+              >
             </el-radio-group>
           </el-form-item>
 
@@ -19,13 +28,13 @@
             <el-input
               v-model="accountForm.name"
               placeholder="请输入开户人姓名"
-              type="password"
+              type="text"
             ></el-input>
           </el-form-item>
           <el-form-item label="支付宝账号" prop="zfbCard" v-show="isZfb">
             <el-input
               v-model="accountForm.zfbCard"
-              type="password"
+              type="text"
               placeholder="请输入支付宝账号"
             ></el-input>
           </el-form-item>
@@ -33,14 +42,14 @@
           <el-form-item label="银行卡号" prop="bankCard" v-show="!isZfb">
             <el-input
               v-model="accountForm.bankCard"
-              type="password"
+              type="text"
               placeholder="请输入银行卡号"
             ></el-input>
           </el-form-item>
           <el-form-item label="开户银行" prop="bankName" v-show="!isZfb">
             <el-input
               v-model="accountForm.bankName"
-              type="password"
+              type="text"
               placeholder="请输入银行卡号"
             ></el-input>
           </el-form-item>
@@ -61,7 +70,7 @@
             <el-input
               v-model="accountForm.bankItem"
               placeholder="请输入开户支行"
-              type="password"
+              type="text"
             ></el-input>
           </el-form-item>
         </el-form>
@@ -120,7 +129,10 @@
               <span>{{ item.name }}</span>
             </div>
             <div class="flex-r text-center">
-              <div class="tips-color card-name-box">支付宝账号：</div>
+              <div class="tips-color card-name-box" v-if="item.type == 1">
+                支付宝账号：
+              </div>
+              <div class="tips-color card-name-box" v-else>银行卡号：</div>
               <span>{{ item.account }}</span>
             </div>
             <div class="flex-r text-center" v-if="item.type == 2">
@@ -129,14 +141,14 @@
             </div>
           </div>
           <div class="handle-box flex-r flex-e">
-            <div class="handle-icon-box1">
+            <div class="handle-icon-box1" @click="changeAccount(item)">
               <img
                 class="handle-icon1"
                 src="../../assets/img/pencil.png"
                 alt=""
               />
             </div>
-            <div class="handle-icon-box2">
+            <div class="handle-icon-box2" @click="delAccount(item)">
               <img
                 class="handle-icon2"
                 src="../../assets/img/trash.png"
@@ -158,9 +170,19 @@ export default {
       dialogVisible: false,
       cityData: city,
       isZfb: true,
+      zfbType: false,
+      yhkType: false,
       cardList: [
-        { name: "徐然", account: "1341235351245", type: 1 },
-        { name: "官官", account: "1341235351245", type: 2, bank: "建设银行" }
+        { id: 1, name: "徐然", account: "1341235351245", type: 1 },
+        {
+          id: 2,
+          type: 2,
+          name: "官官",
+          account: "621700575509687565645674",
+          bank: "建设银行",
+          bankRegion: "",
+          bankItem: "冠城广场支行"
+        }
       ],
       accountForm: {
         type: 1,
@@ -207,6 +229,12 @@ export default {
     };
   },
   methods: {
+    //   关闭弹窗后清除表单内容
+    closeDialog() {
+      this.$nextTick(() => {
+        this.$refs.accountForm.clearValidate();
+      });
+    },
     chooseLabel(value) {
       console.log(value);
       if (value == 1) {
@@ -214,6 +242,29 @@ export default {
       } else {
         this.isZfb = false;
       }
+    },
+    // 修改支付宝/银行卡信息
+    changeAccount(info) {
+      if (info.type == 1) {
+        this.isZfb = true;
+        this.yhkType = true;
+        this.accountForm.type = 1;
+        this.accountForm.name = info.name;
+        this.accountForm.zfbCard = info.account;
+      } else {
+        this.isZfb = false;
+        this.zfbType = true;
+        this.accountForm.type = 1;
+        this.accountForm.name = info.name;
+        this.accountForm.bankCard = info.account;
+        this.accountForm.bankRegion = info.bankRegion;
+        this.accountForm.bankItem = info.bankItem;
+      }
+      this.dialogVisible = true;
+    },
+    // 删除支付宝/银行卡
+    delAccount(info) {
+      console.log(info);
     }
   }
 };
