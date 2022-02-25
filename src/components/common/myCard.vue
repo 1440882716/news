@@ -84,12 +84,15 @@
       </span> -->
     </el-dialog>
     <div class="info-content text-left">
-      <div class="title-box">
+      <div class="title-box flex-r flex-b">
         <div class="my-info-title">
           我的银行卡/支付宝
         </div>
+        <div class="top-add-box font14 pointer" @click="dialogVisible = true">
+          新增
+        </div>
       </div>
-      <div class="my-info-box">
+      <div class="my-info-box" v-if="cardList.length == 0">
         <div class="font18 tips-color no-card-text">
           很抱歉，暂时没有您的账户信息!
         </div>
@@ -98,6 +101,49 @@
             <img class="add-icon" src="../../assets/img/add.png" alt="" />
           </div>
           <span>添加银行卡/支付宝</span>
+        </div>
+      </div>
+      <div class="my-card-box" v-else>
+        <div class="card-item-box flex-r" v-for="item in cardList">
+          <div class="type-img-box" v-if="item.type == 1">
+            <img class="type-img" src="../../assets/img/zfb.png" alt="" />
+            <div class="tips-color">支付宝</div>
+          </div>
+          <div class="type-img-box" v-else>
+            <img class="type-img" src="../../assets/img/bank.png" alt="" />
+            <div class="tips-color">银行卡</div>
+          </div>
+
+          <div class="card-info font12">
+            <div class="flex-r text-center m-t-20">
+              <div class="tips-color card-name-box">姓名：</div>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="flex-r text-center">
+              <div class="tips-color card-name-box">支付宝账号：</div>
+              <span>{{ item.account }}</span>
+            </div>
+            <div class="flex-r text-center" v-if="item.type == 2">
+              <div class="tips-color card-name-box">银行：</div>
+              <span>{{ item.bank }}</span>
+            </div>
+          </div>
+          <div class="handle-box flex-r flex-e">
+            <div class="handle-icon-box1">
+              <img
+                class="handle-icon1"
+                src="../../assets/img/pencil.png"
+                alt=""
+              />
+            </div>
+            <div class="handle-icon-box2">
+              <img
+                class="handle-icon2"
+                src="../../assets/img/trash.png"
+                alt=""
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -112,6 +158,10 @@ export default {
       dialogVisible: false,
       cityData: city,
       isZfb: true,
+      cardList: [
+        { name: "徐然", account: "1341235351245", type: 1 },
+        { name: "官官", account: "1341235351245", type: 2, bank: "建设银行" }
+      ],
       accountForm: {
         type: 1,
         name: "",
@@ -246,5 +296,75 @@ export default {
 }
 .el-input__inner {
   /* height: 40px; */
+}
+.my-card-box {
+  /* border: 1px solid #e5e5e5; */
+}
+.card-item-box {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #e5e5e5;
+  margin-top: 20px;
+}
+.type-img-box {
+  width: 200px;
+  height: 100%;
+  /* line-height: 120px; */
+  text-align: center;
+  background-color: #edffff;
+}
+.type-img {
+  width: 54px;
+  height: 50px;
+  margin-top: 35px;
+}
+.card-info {
+  width: calc(100% - 300px);
+  height: 100%;
+  text-align: center;
+  /* background-color: darkgoldenrod; */
+}
+.handle-box {
+  width: 150px;
+  height: 100%;
+  /* background-color: salmon; */
+}
+.card-name-box {
+  width: 120px;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.handle-icon-box1 {
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  line-height: 26px;
+  margin-top: 47px;
+  margin-right: 20px;
+  background-color: #5fbaae;
+}
+.handle-icon-box2 {
+  width: 26px;
+  height: 26px;
+  text-align: center;
+  line-height: 26px;
+  margin-top: 47px;
+  margin-right: 20px;
+  background-color: #de6860;
+}
+.handle-icon1 {
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+}
+.handle-icon2 {
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+}
+.top-add-box {
+  padding: 5px 20px;
+  color: #fff;
+  background-color: #2970c1;
 }
 </style>
