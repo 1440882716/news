@@ -6,87 +6,74 @@
       @close="closeDialog"
       width="70%"
     >
-      <div class="font14 dialog-content">
-        <el-form
-          label-width="120px"
-          :model="accountForm"
-          :rules="accountRules"
-          ref="accountForm"
-        >
-          <!-- <el-form-item label="请选择账户类型" prop="type">
-            <el-radio-group v-model="accountForm.type">
-              <el-radio label="1" disabled="zfbType" @change="chooseLabel"
-                >支付宝</el-radio
-              >
-              <el-radio label="2" disabled="yhkType" @change="chooseLabel"
-                >银行卡</el-radio
-              >
-            </el-radio-group>
-          </el-form-item> -->
+      <div class="font14 dialog-content flex-r flex-b">
+        <div style="width: 337px;">
+          <el-form
+            label-width="120px"
+            :model="accountForm"
+            :rules="accountRules"
+            ref="accountForm"
+          >
+            <el-form-item label="收货人" prop="name">
+              <el-input
+                v-model="accountForm.name"
+                placeholder="请输入开户人姓名"
+                type="text"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="手机号码" prop="zfbCard">
+              <el-input
+                v-model="accountForm.zfbCard"
+                type="text"
+                placeholder="请输入支付宝账号"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="所在地区" prop="bankRegion">
+              <el-cascader
+                v-model="accountForm.bankRegion"
+                :options="cityData"
+                :props="{
+                  // checkStrictly: true,
+                  expandTrigger: 'hover',
+                  value: 'id',
+                  label: 'ext_name',
+                  children: 'childs'
+                }"
+              ></el-cascader>
+            </el-form-item>
+            <el-form-item label="详细地址" prop="bankCard">
+              <el-input
+                v-model="accountForm.bankCard"
+                type="text"
+                placeholder="请输入银行卡号"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="邮编" prop="bankName">
+              <el-input
+                v-model="accountForm.bankName"
+                type="text"
+                placeholder="请输入银行卡号"
+              ></el-input>
+            </el-form-item>
 
-          <el-form-item label="收货人" prop="name">
-            <el-input
-              v-model="accountForm.name"
-              placeholder="请输入开户人姓名"
-              type="text"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="手机号码" prop="zfbCard">
-            <el-input
-              v-model="accountForm.zfbCard"
-              type="text"
-              placeholder="请输入支付宝账号"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="所在地区" prop="bankRegion">
-            <el-cascader
-              v-model="accountForm.bankRegion"
-              :options="cityData"
-              :props="{
-                // checkStrictly: true,
-                expandTrigger: 'hover',
-                value: 'id',
-                label: 'ext_name',
-                children: 'childs'
-              }"
-            ></el-cascader>
-          </el-form-item>
-          <el-form-item label="详细地址" prop="bankCard">
-            <el-input
-              v-model="accountForm.bankCard"
-              type="text"
-              placeholder="请输入银行卡号"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="邮编" prop="bankName">
-            <el-input
-              v-model="accountForm.bankName"
-              type="text"
-              placeholder="请输入银行卡号"
-            ></el-input>
-          </el-form-item>
+            <el-form-item label="固定电话" prop="bankItem">
+              <el-input
+                v-model="accountForm.bankItem"
+                placeholder="请输入开户支行"
+                type="text"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="标签" prop="bankItem">
+              <el-input
+                v-model="accountForm.bankItem"
+                placeholder="请输入开户支行"
+                type="text"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
 
-          <el-form-item label="固定电话" prop="bankItem">
-            <el-input
-              v-model="accountForm.bankItem"
-              placeholder="请输入开户支行"
-              type="text"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="标签" prop="bankItem">
-            <el-input
-              v-model="accountForm.bankItem"
-              placeholder="请输入开户支行"
-              type="text"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-        <!-- <div class="text-left tips-box">
-          <span>温馨提示</span>
-          <p>
-            针对无法原路返回及无法正常退款的金额，我们会通过银行转账的形式为您完成退款，此处建议您确认并输入正确的银行账号信息及真实姓名，以便顺利完成退款。
-          </p>
-        </div> -->
+        <Map></Map>
       </div>
       <div class="add-card-btn fff-font pointer" @click="dialogVisible = true">
         <span>完成</span>
@@ -170,8 +157,12 @@
 </template>
 <script>
 import city from "../../assets/data/area_format_city.json";
+import Map from "./map.vue";
 export default {
   name: "mycard",
+  components: {
+    Map
+  },
   data() {
     return {
       dialogVisible: false,

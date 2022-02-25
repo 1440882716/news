@@ -21,6 +21,7 @@
     "swiper": "^8.0.6",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^4.1.1",
+    "vue-baidu-map": "^0.21.22",
     "vue-concise-slider": "^4.2.3",
     "vue-router": "^3.0.1"
   },
