@@ -1,10 +1,10 @@
 <template>
   <div class="my-info">
     <el-dialog
-      title="新增账户"
+      title="新增地址"
       :visible.sync="dialogVisible"
       @close="closeDialog"
-      width="50%"
+      width="70%"
     >
       <div class="font14 dialog-content">
         <el-form
@@ -13,7 +13,7 @@
           :rules="accountRules"
           ref="accountForm"
         >
-          <el-form-item label="请选择账户类型" prop="type">
+          <!-- <el-form-item label="请选择账户类型" prop="type">
             <el-radio-group v-model="accountForm.type">
               <el-radio label="1" disabled="zfbType" @change="chooseLabel"
                 >支付宝</el-radio
@@ -22,38 +22,23 @@
                 >银行卡</el-radio
               >
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
 
-          <el-form-item label="用户姓名" prop="name">
+          <el-form-item label="收货人" prop="name">
             <el-input
               v-model="accountForm.name"
               placeholder="请输入开户人姓名"
               type="text"
             ></el-input>
           </el-form-item>
-          <el-form-item label="支付宝账号" prop="zfbCard" v-show="isZfb">
+          <el-form-item label="手机号码" prop="zfbCard">
             <el-input
               v-model="accountForm.zfbCard"
               type="text"
               placeholder="请输入支付宝账号"
             ></el-input>
           </el-form-item>
-
-          <el-form-item label="银行卡号" prop="bankCard" v-show="!isZfb">
-            <el-input
-              v-model="accountForm.bankCard"
-              type="text"
-              placeholder="请输入银行卡号"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="开户银行" prop="bankName" v-show="!isZfb">
-            <el-input
-              v-model="accountForm.bankName"
-              type="text"
-              placeholder="请输入银行卡号"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="开户地" prop="bankRegion" v-show="!isZfb">
+          <el-form-item label="所在地区" prop="bankRegion">
             <el-cascader
               v-model="accountForm.bankRegion"
               :options="cityData"
@@ -66,7 +51,29 @@
               }"
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="开户支行" prop="bankItem" v-show="!isZfb">
+          <el-form-item label="详细地址" prop="bankCard">
+            <el-input
+              v-model="accountForm.bankCard"
+              type="text"
+              placeholder="请输入银行卡号"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="邮编" prop="bankName">
+            <el-input
+              v-model="accountForm.bankName"
+              type="text"
+              placeholder="请输入银行卡号"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="固定电话" prop="bankItem">
+            <el-input
+              v-model="accountForm.bankItem"
+              placeholder="请输入开户支行"
+              type="text"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="标签" prop="bankItem">
             <el-input
               v-model="accountForm.bankItem"
               placeholder="请输入开户支行"
@@ -74,12 +81,12 @@
             ></el-input>
           </el-form-item>
         </el-form>
-        <div class="text-left tips-box">
+        <!-- <div class="text-left tips-box">
           <span>温馨提示</span>
           <p>
             针对无法原路返回及无法正常退款的金额，我们会通过银行转账的形式为您完成退款，此处建议您确认并输入正确的银行账号信息及真实姓名，以便顺利完成退款。
           </p>
-        </div>
+        </div> -->
       </div>
       <div class="add-card-btn fff-font pointer" @click="dialogVisible = true">
         <span>完成</span>
@@ -103,14 +110,14 @@
       </div>
       <div class="my-info-box" v-if="cardList.length == 0">
         <div class="font18 tips-color no-card-text">
-          很抱歉，暂时没有您的账户信息!
+          很抱歉，暂时没有您的地址信息!
         </div>
-        <div class="add-btn-box flex-r pointer" @click="dialogVisible = true">
+        <!-- <div class="add-btn-box flex-r pointer" @click="dialogVisible = true">
           <div>
             <img class="add-icon" src="../../assets/img/add.png" alt="" />
           </div>
           <span>添加银行卡/支付宝</span>
-        </div>
+        </div> -->
       </div>
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in cardList">
@@ -284,7 +291,7 @@ export default {
   width: 100%;
   min-height: 300px;
   margin-top: 10px;
-  background: url("../../assets/img/empty.png") center center no-repeat;
+  background: url("../../assets/img/emptyAddress.png") center center no-repeat;
   background-size: 300px 300px;
   text-align: center;
   /* padding-top: 500px; */
