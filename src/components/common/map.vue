@@ -4,7 +4,7 @@
       :center="center"
       :zoom="zoom"
       :scroll-wheel-zoom="true"
-      style="height:490px;width: 700px;margin-left: 40px;"
+      style="height:490px;width: 600px;margin-left: 40px;"
       @ready="handler"
       @click="getClickInfo"
     >
@@ -71,12 +71,13 @@ export default {
       //   this.center.lat = e.point.lat;
       this.markerPo.lng = e.point.lng;
       this.markerPo.lat = e.point.lat;
-      //   let geocoder = new BMap.Geocoder();
-      //   geocoder.getLocation(this.markerPo, rs => {
-      //     console.log(rs.address);
-      //     debugger;
-      //     this.address = rs.address;
-      //   });
+      let geocoder = new BMap.Geocoder();
+
+      geocoder.getLocation(this.markerPo, rs => {
+        console.log(rs);
+        debugger;
+        //   this.address = rs.address;
+      });
     },
     dragend(val) {
       //标注拖拽完成获取坐标信息

@@ -7,7 +7,7 @@
       width="70%"
     >
       <div class="font14 dialog-content flex-r flex-b">
-        <div style="width: 337px;">
+        <div style="width: 600px;">
           <el-form
             label-width="120px"
             :model="accountForm"
@@ -17,7 +17,7 @@
             <el-form-item label="收货人" prop="name">
               <el-input
                 v-model="accountForm.name"
-                placeholder="请输入开户人姓名"
+                placeholder="请输入姓名"
                 type="text"
               ></el-input>
             </el-form-item>
@@ -25,11 +25,12 @@
               <el-input
                 v-model="accountForm.zfbCard"
                 type="text"
-                placeholder="请输入支付宝账号"
+                placeholder="请输入手机号"
               ></el-input>
             </el-form-item>
             <el-form-item label="所在地区" prop="bankRegion">
               <el-cascader
+                style="width: 100%;"
                 v-model="accountForm.bankRegion"
                 :options="cityData"
                 :props="{
@@ -45,28 +46,28 @@
               <el-input
                 v-model="accountForm.bankCard"
                 type="text"
-                placeholder="请输入银行卡号"
+                placeholder="请输入详细地址"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="固定电话" prop="bankItem">
+              <el-input
+                v-model="accountForm.bankItem"
+                placeholder="请输入固定电话（格式：010-63700000）"
+                type="text"
               ></el-input>
             </el-form-item>
             <el-form-item label="邮编" prop="bankName">
               <el-input
                 v-model="accountForm.bankName"
                 type="text"
-                placeholder="请输入银行卡号"
+                placeholder="请输入邮政编码"
               ></el-input>
             </el-form-item>
 
-            <el-form-item label="固定电话" prop="bankItem">
-              <el-input
-                v-model="accountForm.bankItem"
-                placeholder="请输入开户支行"
-                type="text"
-              ></el-input>
-            </el-form-item>
             <el-form-item label="标签" prop="bankItem">
               <el-input
                 v-model="accountForm.bankItem"
-                placeholder="请输入开户支行"
+                placeholder="请输入标签（如：家里、公司）"
                 type="text"
               ></el-input>
             </el-form-item>
@@ -156,7 +157,7 @@
   </div>
 </template>
 <script>
-import city from "../../assets/data/area_format_city.json";
+import city from "../../assets/data/area_format_user.json";
 import Map from "./map.vue";
 export default {
   name: "mycard",
@@ -193,9 +194,7 @@ export default {
       },
       accountRules: {
         type: [{ required: true, message: "  ", trigger: "blur" }],
-        name: [
-          { required: true, message: "开户人姓名不能为空", trigger: "blur" }
-        ],
+        name: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
         zfbCard: [
           { required: true, message: "账号不能为空", trigger: "blur" },
           {
@@ -311,7 +310,7 @@ export default {
   margin-right: 5px;
 }
 .dialog-content {
-  padding: 0px 70px;
+  padding: 0px 30px;
 }
 .tips-box {
   background: rgb(255, 250, 233);

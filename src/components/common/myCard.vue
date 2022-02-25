@@ -14,13 +14,9 @@
           ref="accountForm"
         >
           <el-form-item label="请选择账户类型" prop="type">
-            <el-radio-group v-model="accountForm.type">
-              <el-radio label="1" disabled="zfbType" @change="chooseLabel"
-                >支付宝</el-radio
-              >
-              <el-radio label="2" disabled="yhkType" @change="chooseLabel"
-                >银行卡</el-radio
-              >
+            <el-radio-group v-model="accountForm.type" style="width: 100%;">
+              <el-radio label="1" @change="chooseLabel">支付宝</el-radio>
+              <el-radio label="2" @change="chooseLabel">银行卡</el-radio>
             </el-radio-group>
           </el-form-item>
 
@@ -55,6 +51,7 @@
           </el-form-item>
           <el-form-item label="开户地" prop="bankRegion" v-show="!isZfb">
             <el-cascader
+              style="width: 100%;"
               v-model="accountForm.bankRegion"
               :options="cityData"
               :props="{
