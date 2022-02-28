@@ -180,6 +180,7 @@
 <script>
 import city from "../../assets/data/area_format_user.json";
 import Map from "./map.vue";
+import { address } from "@/api/address";
 export default {
   name: "mycard",
   components: {
@@ -237,7 +238,15 @@ export default {
       }
     };
   },
+  created() {
+    this.getAddress();
+  },
   methods: {
+    getAddress() {
+      address().then(res => {
+        console.log(res);
+      });
+    },
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {

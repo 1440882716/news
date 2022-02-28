@@ -98,6 +98,7 @@
 import loginHead from "./common/loginHead.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "../components/common/msg.vue";
+import { goodsInfo } from "@/api/classfy";
 export default {
   name: "regist",
   components: {
@@ -137,9 +138,19 @@ export default {
       }
     };
   },
-
+  created() {
+    this.test();
+  },
   mounted() {},
   methods: {
+    test() {
+      goodsInfo().then(res => {
+        // console.log("测试");
+        console.log(res);
+
+        debugger;
+      });
+    },
     getCode() {
       const TIME_COUNT = 60;
       if (!this.timer) {

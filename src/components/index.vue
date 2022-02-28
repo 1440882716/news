@@ -88,7 +88,6 @@
         </div>
       </div> -->
     </div>
-    <!-- <i class="el-icon-delete"></i> -->
     <Footer></Footer>
   </div>
 </template>
@@ -97,6 +96,7 @@
 import Header from "./common/header.vue";
 import bannar from "./common/bannar.vue";
 import Footer from "./common/footer.vue";
+// import { goodsInfo } from "@/api/classfy";
 export default {
   components: {
     Header,

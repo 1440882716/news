@@ -131,3 +131,8 @@
   background-image: linear-gradient(-194deg, #13b29a, #087b61);
   color: #fff;
 }
+.change-buy-info {
+  border: 1px dashed transparent;
+  border-color: #f60;
+  position: relative;
+}
