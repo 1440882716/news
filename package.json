@@ -11,11 +11,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "element-ui": "^2.15.6",
+    "element-ui": "^2.15.7",
     "jquery": "^3.6.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
-    "node-sass": "^7.0.1",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "swiper": "^8.0.6",
