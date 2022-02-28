@@ -43,7 +43,7 @@
       <!-- 两大分类 -->
       <div class="content flex-r flex-b m-t-20">
         <!-- 人民权利报 -->
-        <div class="two-class flex-r" @click="toList">
+        <div class="two-class flex-r pointer" @click="toList">
           <img class="class-img" src="../assets/img/class-img.png" alt="" />
           <div class="news-des">
             <span class="font18 bold-font">人民权利报</span>
@@ -53,7 +53,7 @@
           </div>
         </div>
         <!-- 民主法制建设 -->
-        <div class="two-class flex-r">
+        <div class="two-class flex-r pointer">
           <img class="class-img" src="../assets/img/mzfz.png" alt="" />
           <div class="news-des">
             <span class="font18 bold-font">民主法制建设</span>

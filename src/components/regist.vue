@@ -37,6 +37,15 @@
               >
             </div>
           </div>
+          <!-- 滑块组件 -->
+          <div class="re-step-item flex-r">
+            <div class="re-step-left m-r-20">
+              <span class="price-main">*</span>
+              <span>验证</span>
+            </div>
+            <Slider status="status"></Slider>
+          </div>
+
           <div class="re-step-item flex-r">
             <div class="re-step-left m-r-20">
               <span class="price-main">*</span>
@@ -125,12 +134,14 @@
 import loginHead from "./common/loginHead.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "../components/common/msg.vue";
+import Slider from "../components/common/slider.vue";
 export default {
   name: "regist",
   components: {
     loginHead,
     Footer,
-    msgBox
+    msgBox,
+    Slider
   },
   data() {
     const username = (rule, value, callback) => {
@@ -156,6 +167,7 @@ export default {
       }
     };
     return {
+      status: false,
       stepNum: 1,
       count: "获取验证码",
       rePhone: "",
@@ -177,20 +189,27 @@ export default {
   mounted() {},
   methods: {
     getCode() {
-      const TIME_COUNT = 60;
-      if (!this.timer) {
-        this.count = TIME_COUNT;
-        this.timeFlag = false;
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--;
-          } else {
-            this.timeFlag = true;
-            clearInterval(this.timer);
-            this.timer = null;
-            this.count = "获取验证码";
-          }
-        }, 1000);
+      console.log(this.status);
+      // debugger;
+      // return;
+      if (this.status) {
+        const TIME_COUNT = 60;
+        if (!this.timer) {
+          this.count = TIME_COUNT;
+          this.timeFlag = false;
+          this.timer = setInterval(() => {
+            if (this.count > 0 && this.count <= TIME_COUNT) {
+              this.count--;
+            } else {
+              this.timeFlag = true;
+              clearInterval(this.timer);
+              this.timer = null;
+              this.count = "获取验证码";
+            }
+          }, 1000);
+        }
+      } else {
+        this.$refs.tips.toast("请拖动滑块");
       }
     },
     registStep(num) {

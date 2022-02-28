@@ -43,11 +43,18 @@
               ></el-cascader>
             </el-form-item>
             <el-form-item label="详细地址" prop="bankCard">
-              <el-input
+              <textarea
+                class="textarea-box"
+                v-model="accountForm.bankCard"
+                placeholder="请输入详细地址"
+                cols="10"
+                rows="10"
+              ></textarea>
+              <!-- <el-input
                 v-model="accountForm.bankCard"
                 type="text"
                 placeholder="请输入详细地址"
-              ></el-input>
+              ></el-input> -->
             </el-form-item>
             <el-form-item label="固定电话" prop="bankItem">
               <el-input
@@ -414,5 +421,12 @@ export default {
   padding: 5px 20px;
   color: #fff;
   background-color: #2970c1;
+}
+.textarea-box {
+  width: 95%;
+  border: 1px solid #dcdfe6;
+  padding: 10px;
+  border-radius: 4px;
+  resize: none;
 }
 </style>
