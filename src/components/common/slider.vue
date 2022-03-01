@@ -104,14 +104,15 @@ export default {
   position: relative;
   transition: 1s all;
   user-select: none;
-  color: #333;
+  color: #757575;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 34px; /*no*/
   /* border: 1px solid #bbb; */
   margin-bottom: 20px;
-  width: 254px;
+  width: 255px;
+  font-size: 14px;
 }
 .jc-range i {
   position: absolute;

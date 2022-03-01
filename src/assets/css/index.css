@@ -133,3 +133,87 @@
   margin-left: 41px;
   margin-bottom: 10px;
 }
+
+/* ====================================第一版改版 */
+.title-box {
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #8e8e92;
+  /* background-color: bisque; */
+  margin-top: 10px;
+}
+.content-goods {
+  width: 100%;
+  background-color: #f6f6fa;
+}
+.good-item {
+  width: 1200px;
+  height: 485px;
+  margin: 0 auto;
+  background-color: #f6f6fa;
+  position: relative;
+}
+.class-img {
+  width: 60%;
+  margin: 0 auto;
+}
+.news-des0 {
+  position: absolute;
+  width: 400px;
+  padding: 10px;
+  background-color: rgba(153, 153, 153, 0.8);
+  border-radius: 10px;
+  left: 40px;
+}
+.news-des1 {
+  top: 20px;
+}
+.news-des2 {
+  /* width: 400px; */
+  top: 210px;
+  /* left: 20px; */
+}
+
+.buy-btn {
+  position: absolute;
+  width: 250px;
+  height: 45px;
+  right: 60px;
+  bottom: 60px;
+  text-align: center;
+  line-height: 45px;
+  border-radius: 10px;
+  background-color: #ffdfbd;
+  background-color: rgba(204, 102, 0, 0.5);
+  /* color: #ff8304; */
+}
+/* =============民主法制建设 */
+.book-des0 {
+  position: absolute;
+  width: 400px;
+  padding: 10px;
+  background-color: rgba(153, 153, 153, 0.9);
+  border-radius: 10px;
+  right: 40px;
+}
+.book-des1 {
+  top: 20px;
+}
+.book-des2 {
+  /* width: 400px; */
+  top: 150px;
+  /* left: 20px; */
+}
+.buy-btn-book {
+  position: absolute;
+  width: 250px;
+  height: 45px;
+  left: 60px;
+  bottom: 60px;
+  text-align: center;
+  line-height: 45px;
+  border-radius: 10px;
+  background-color: #ffdfbd;
+  background-color: rgba(204, 102, 0, 0.5);
+  /* color: #ff8304; */
+}

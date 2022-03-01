@@ -19,6 +19,7 @@
 import loginHead from "./common/loginHead.vue";
 import Footer from "./common/footer.vue";
 import loginBox from "./common/loginBox.vue";
+// import { goodsInfo } from "@/api/classfy";
 export default {
   name: "login",
   components: {

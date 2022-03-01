@@ -37,7 +37,7 @@
       </div>
     </div>
     <div v-show="logintype == 2">
-      <div class="flex-r m-t-20">
+      <div class="flex-r m-t-20 m-b-20">
         <img src="../../assets/img/phone.png" alt="" />
         <input
           v-model="phone"
@@ -46,6 +46,7 @@
           placeholder="手机号码"
         />
       </div>
+      <Slider status="status"></Slider>
       <div class="flex-r m-t-20 m-b-20">
         <img src="../../assets/img/lock.png" alt="" />
         <input
@@ -54,7 +55,8 @@
           type="password"
           placeholder="短信验证码"
         />
-        <div class="code-btn font12">获取手机短信</div>
+        <div class="code-btn font12" @click="getCode">{{ count }}</div>
+        <!-- <div>{{ count }}</div> -->
       </div>
       <div class="font12 text-left">
         手机首次登录即完成注册，代表同意
@@ -62,7 +64,9 @@
       </div>
     </div>
 
-    <div class="fff-font font12 login-btn m-t-30" @click="login">立即登录</div>
+    <div class="fff-font font12 login-btn m-t-30" @click="loginFun">
+      立即登录
+    </div>
     <div class="font12 tips-color other-page flex-r flex-e p-t-30">
       <router-link to="../forget" class="m-l-10" style="text-decoration: none;"
         >忘记密码</router-link
@@ -76,14 +80,19 @@
 
 <script>
 import msgBox from "./msg.vue";
+import Slider from "./slider.vue";
+import { goodsInfo } from "@/api/login";
 export default {
   name: "loginHead",
   components: {
-    msgBox
+    msgBox,
+    Slider
   },
   data() {
     return {
+      status: false,
       logintype: 1,
+      count: "获取验证码",
       account: "",
       pwd: "",
       phone: "",
@@ -96,7 +105,7 @@ export default {
     loginType(num) {
       this.logintype = num;
     },
-    login() {
+    loginFun() {
       console.log(this.account);
       if (this.logintype == 1) {
         // debugger;
@@ -106,14 +115,6 @@ export default {
           this.$refs.tips.toast("请输入密码");
         } else {
           // 提交数据登录
-          this.rq
-            .get("/goods/app/index/banner", {
-              params: { name: this.account, pwd: this.pwd }
-            })
-            .then(res => {
-              console.log(res);
-              debugger;
-            });
         }
       } else {
         if (this.phone == "") {
@@ -125,6 +126,29 @@ export default {
         }
       }
       //   debugger;
+    },
+    getCode() {
+      console.log(this.status);
+
+      if (this.status) {
+        const TIME_COUNT = 60;
+        if (!this.timer) {
+          this.count = TIME_COUNT;
+          this.timeFlag = false;
+          this.timer = setInterval(() => {
+            if (this.count > 0 && this.count <= TIME_COUNT) {
+              this.count--;
+            } else {
+              this.timeFlag = true;
+              clearInterval(this.timer);
+              this.timer = null;
+              this.count = "获取验证码";
+            }
+          }, 1000);
+        }
+      } else {
+        this.$refs.tips.toast("请拖动滑块");
+      }
     }
   }
 };

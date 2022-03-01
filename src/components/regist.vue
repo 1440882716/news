@@ -190,8 +190,7 @@ export default {
   methods: {
     getCode() {
       console.log(this.status);
-      // debugger;
-      // return;
+
       if (this.status) {
         const TIME_COUNT = 60;
         if (!this.timer) {
