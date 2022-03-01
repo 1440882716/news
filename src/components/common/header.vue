@@ -6,9 +6,17 @@
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
             <router-link to="./login" style="text-decoration: none;">
-              <span class="m-l-20">请登录</span>
+              <span class="m-l-20" v-if="isLogin">已登录</span>
+              <span class="m-l-20" v-else>请登录</span>
             </router-link>
-            <router-link to="./regist" style="text-decoration: none;">
+            <router-link
+              to="./login"
+              v-if="isLogin"
+              style="text-decoration: none;"
+            >
+              <span class="m-l-20">退出</span>
+            </router-link>
+            <router-link to="./regist" v-else style="text-decoration: none;">
               <span class="m-l-20">快速注册</span>
             </router-link>
           </div>
@@ -35,17 +43,34 @@
 </template>
 
 <script>
+import { getToken, getLogin, removeToken, removeLogin } from "@/utils/auth";
 export default {
   name: "index",
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
+      isLogin: false,
+      loginTxt: "请登录",
       keyWord: ""
     };
   },
-
+  created() {
+    let aaa = getToken();
+    this.isLogin = getLogin();
+    console.log(this.isLogin);
+    // debugger;
+  },
   mounted() {},
-  methods: {}
+  methods: {
+    loginOut() {
+      removeToken();
+      removeLogin();
+
+      this.$router.push({
+        path: "/",
+        name: "index"
+      });
+    }
+  }
 };
 </script>
 

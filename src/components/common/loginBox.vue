@@ -82,6 +82,8 @@
 import msgBox from "./msg.vue";
 import Slider from "./slider.vue";
 import { loginSmsCode, loginPwd, forgetPwd } from "@/api/login";
+import { getSmsCode, checkSmsCode } from "@/api/regist";
+import { setToken, hasLogin } from "@/utils/auth";
 export default {
   name: "loginHead",
   components: {
@@ -114,10 +116,19 @@ export default {
           this.$refs.tips.toast("请输入密码");
         } else {
           // 提交数据登录
-          // loginSmsCode({userName:this.account,password:this.pwd}).then(res => {
-          //   if(res.code == 200){
-          //   }
-          // })
+          loginPwd({ userName: this.account, password: this.pwd }).then(res => {
+            if (res.code == 200) {
+              setToken(res.data);
+              hasLogin();
+              this.$refs.tips.toast(res.msg);
+              this.$router.push({
+                path: "/",
+                name: "index"
+              });
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
         }
       } else {
         if (this.phone == "") {
@@ -126,31 +137,52 @@ export default {
           this.$refs.tips.toast("请输入短信验证码");
         } else {
           // 提交数据登录
+          loginSmsCode({ mobile: this.phone, code: this.msgCode }).then(res => {
+            if (res.code == 200) {
+              setToken(res.data);
+              hasLogin();
+              this.$refs.tips.toast(res.msg);
+              this.$router.push({
+                path: "/",
+                name: "index"
+              });
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
         }
       }
       //   debugger;
     },
     getCode() {
-      console.log(this.status);
-
-      if (this.status) {
-        const TIME_COUNT = 60;
-        if (!this.timer) {
-          this.count = TIME_COUNT;
-          this.timeFlag = false;
-          this.timer = setInterval(() => {
-            if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
-            } else {
-              this.timeFlag = true;
-              clearInterval(this.timer);
-              this.timer = null;
-              this.count = "获取验证码";
-            }
-          }, 1000);
-        }
-      } else {
+      let regPhone = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+      if (!regPhone.test(this.phone)) {
+        this.$refs.tips.toast("请输入正确的手机号");
+      } else if (!this.status) {
         this.$refs.tips.toast("请拖动滑块");
+      } else {
+        getSmsCode({ mobile: this.phone }).then(res => {
+          if (res.code == 200) {
+            this.$refs.tips.toast(res.msg);
+            const TIME_COUNT = 60;
+            if (!this.timer) {
+              this.count = TIME_COUNT;
+              this.timeFlag = false;
+              this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                  this.count--;
+                } else {
+                  this.timeFlag = true;
+                  clearInterval(this.timer);
+                  this.timer = null;
+                  this.count = "获取验证码";
+                }
+              }, 1000);
+            }
+          } else {
+            this.$refs.tips.toast(res.msg);
+          }
+        });
       }
     }
   }

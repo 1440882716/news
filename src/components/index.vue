@@ -37,14 +37,16 @@
       </div>
       <!-- 标题 -->
       <div class="content flex-r flex-b title-box">
-        <div class="font16 bold-font">人民权力报</div>
-        <div class="pointer">去订阅<i class="el-icon-arrow-right"></i></div>
+        <div class="font18 bold-font">人民权力报</div>
+        <div class="pointer" @click="toList">
+          去订阅<i class="el-icon-arrow-right"></i>
+        </div>
       </div>
 
       <!-- 两大分类 -->
       <div class="content m-t-20">
         <!-- 人民权利报 -->
-        <div class="good-item flex-r" @click="toList">
+        <div class="good-item flex-r">
           <img class="class-img" src="../assets/img/class-img.png" alt="" />
 
           <div class="news-des0 news-des1 fff-font text-left">
@@ -57,17 +59,19 @@
               《人民权利报》版面内容安排：一版要闻综述，评论杂谈，省际交往，代表风采；二版民主政治，人生追求，典型报道，经验交流；三版道德法制，社会治理，经济新闻，权益保护；四版文摘文苑，世态风情，人文自然大观等。要求报纸图文并茂，贴近现实、贴近群众、贴近生活，成为人大工作的窗口，人大代表的益友，舆论监督的工具，民主法制的论坛。
             </span>
           </div>
-          <div class="buy-btn fff-font pointer">立即订阅</div>
+          <div class="buy-btn fff-font pointer" @click="toList">立即订阅</div>
         </div>
       </div>
       <!-- 标题 -->
       <div class="content flex-r flex-b title-box">
-        <div class="font16 bold-font">民主法制建设</div>
-        <div class="pointer">去订阅<i class="el-icon-arrow-right"></i></div>
+        <div class="font18 bold-font">民主法制建设</div>
+        <div class="pointer" @click="toList">
+          去订阅<i class="el-icon-arrow-right"></i>
+        </div>
       </div>
       <div class="content m-t-20">
         <!-- 人民权利报 -->
-        <div class="good-item flex-r" @click="toList">
+        <div class="good-item flex-r">
           <img class="class-img" src="../assets/img/class-img.png" alt="" />
 
           <div class="book-des0 book-des1 fff-font text-left">
@@ -80,7 +84,9 @@
               倡言民主政治，弘扬法治精神，捕捉社会热点，反映民众心声。为推进中国的社会主义民主政治服务；为健全社会主义民主、完善人民代表大会及其常务委员会的各项职能服务；为依法治国，建设社会主义法治国家服务。杂志创办以来，受到了社会各界的支持和赞扬，先后被评为四川省优秀期刊和四川省一级期刊。《民主法制建设》杂志的主要栏目有：本月聚焦、本刊专稿、思考与探索、基层园地、法制时空等。
             </span>
           </div>
-          <div class="buy-btn-book fff-font pointer">立即订阅</div>
+          <div class="buy-btn-book fff-font pointer" @click="toList">
+            立即订阅
+          </div>
         </div>
       </div>
     </div>

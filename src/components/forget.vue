@@ -26,11 +26,19 @@
               <input
                 class="re-step-right"
                 v-model="rePhone"
-                type="number"
+                type="text"
                 placeholder="请输入账户绑定的手机号码"
               />
             </div>
           </div>
+          <div class="re-step-item flex-r">
+            <div class="re-step-left m-r-20">
+              <span class="price-main">*</span>
+              <span>验证</span>
+            </div>
+            <Slider status="status"></Slider>
+          </div>
+
           <div class="re-step-item flex-r">
             <div class="re-step-left m-r-20">
               <span class="price-main">*</span>
@@ -62,16 +70,16 @@
             :rules="registRules"
             ref="registFrom"
           >
-            <el-form-item label="密码" prop="pwd">
+            <el-form-item label="密码" prop="password">
               <el-input
-                v-model="registFrom.pwd"
+                v-model="registFrom.password"
                 type="password"
                 placeholder="字母、数字组成，不少于6位"
               ></el-input>
             </el-form-item>
-            <el-form-item label="确认密码" prop="comfirmPwd">
+            <el-form-item label="确认密码" prop="confirmPassword">
               <el-input
-                v-model="registFrom.comfirmPwd"
+                v-model="registFrom.confirmPassword"
                 type="password"
                 placeholder="请确认密码"
               ></el-input>
@@ -98,13 +106,16 @@
 import loginHead from "./common/loginHead.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "../components/common/msg.vue";
-import { goodsInfo } from "@/api/classfy";
+import Slider from "../components/common/slider.vue";
+import { getSmsCode, checkSmsCode } from "@/api/regist";
+import { forgetPwd } from "@/api/login";
 export default {
   name: "regist",
   components: {
     loginHead,
     Footer,
-    msgBox
+    msgBox,
+    Slider
   },
   data() {
     const userpwd = (rule, value, callback) => {
@@ -116,56 +127,62 @@ export default {
       }
     };
     const pwd = (rule, value, callback) => {
-      if (value != this.registFrom.pwd) {
+      if (value != this.registFrom.password) {
         callback(new Error("两次输入的密码不一致"));
       } else {
         callback();
       }
     };
     return {
+      status: false,
       stepNum: 1,
       count: "获取验证码",
-      rePhone: "17608022536",
-      phoneCode: "111111",
+      rePhone: "",
+      phoneCode: "",
       registFrom: {
-        pwd: "111aaa",
-        comfirmPwd: "111aaa"
+        mobile: "",
+        password: "",
+        confirmPassword: ""
       },
       isAgree: false,
       registRules: {
-        pwd: { required: true, trigger: "blur", validator: userpwd },
-        comfirmPwd: { required: true, trigger: "blur", validator: pwd }
+        password: { required: true, trigger: "blur", validator: userpwd },
+        confirmPassword: { required: true, trigger: "blur", validator: pwd }
       }
     };
   },
-  created() {
-    this.test();
-  },
+  created() {},
   mounted() {},
   methods: {
-    test() {
-      goodsInfo().then(res => {
-        // console.log("测试");
-        console.log(res);
-
-        debugger;
-      });
-    },
     getCode() {
-      const TIME_COUNT = 60;
-      if (!this.timer) {
-        this.count = TIME_COUNT;
-        this.timeFlag = false;
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.count--;
+      let regPhone = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+      if (!regPhone.test(this.rePhone)) {
+        this.$refs.tips.toast("请输入正确的手机号");
+      } else if (!this.status) {
+        this.$refs.tips.toast("请拖动滑块");
+      } else {
+        getSmsCode({ mobile: this.rePhone }).then(res => {
+          if (res.code == 200) {
+            this.$refs.tips.toast(res.msg);
+            const TIME_COUNT = 60;
+            if (!this.timer) {
+              this.count = TIME_COUNT;
+              this.timeFlag = false;
+              this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                  this.count--;
+                } else {
+                  this.timeFlag = true;
+                  clearInterval(this.timer);
+                  this.timer = null;
+                  this.count = "获取验证码";
+                }
+              }, 1000);
+            }
           } else {
-            this.timeFlag = true;
-            clearInterval(this.timer);
-            this.timer = null;
-            this.count = "获取验证码";
+            this.$refs.tips.toast(res.msg);
           }
-        }, 1000);
+        });
       }
     },
     registStep(num) {
@@ -175,31 +192,36 @@ export default {
           this.$refs.tips.toast("请输入正确的手机号");
         } else if (!this.phoneCode) {
           this.$refs.tips.toast("请输入验证码");
-        } else if (this.phoneCode.length != 6) {
-          this.$refs.tips.toast("请输入正确的验证码");
         } else {
-          // 提交手机号、验证码通过进入设置新密码
-          //   this.rq
-          //     .get("/goods/app/index/banner", {
-          //       params: { phone: this.phone, code: this.code }
-          //     })
-          //     .then(res => {
-          //       console.log(res);
-          //       if (res.status == 200) {
-          this.stepNum = num * 1 + 1;
-          //       }
-          //     });
+          checkSmsCode({ mobile: this.rePhone, smsCode: this.phoneCode }).then(
+            res => {
+              if (res.code == 200) {
+                if (res.data) {
+                  // 进入下一步
+                  this.stepNum = num * 1 + 1;
+                  this.registFrom.mobile = this.rePhone;
+                } else {
+                  this.$refs.tips.toast("验证码错误");
+                }
+              }
+            }
+          );
         }
       } else if (num == 2) {
-        let a = 111;
         this.$refs.registFrom.validate(valid => {
           if (valid) {
+            forgetPwd(this.registFrom).then(res => {
+              if (res.code == 200) {
+                this.stepNum = num * 1 + 1;
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+            });
             // if (!this.isAgree) {
             //   this.$refs.tips.toast("请阅读并同意《会员注册与服务协议》");
             // } else {
             //   this.stepNum = num * 1 + 1;
             // }
-            this.stepNum = num * 1 + 1;
           }
         });
       }
