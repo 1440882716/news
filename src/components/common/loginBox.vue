@@ -81,7 +81,7 @@
 <script>
 import msgBox from "./msg.vue";
 import Slider from "./slider.vue";
-import { goodsInfo } from "@/api/login";
+import { loginSmsCode, loginPwd, forgetPwd } from "@/api/login";
 export default {
   name: "loginHead",
   components: {
@@ -108,13 +108,16 @@ export default {
     loginFun() {
       console.log(this.account);
       if (this.logintype == 1) {
-        // debugger;
         if (this.account == "") {
           this.$refs.tips.toast("请输入账号");
         } else if (this.pwd == "") {
           this.$refs.tips.toast("请输入密码");
         } else {
           // 提交数据登录
+          // loginSmsCode({userName:this.account,password:this.pwd}).then(res => {
+          //   if(res.code == 200){
+          //   }
+          // })
         }
       } else {
         if (this.phone == "") {

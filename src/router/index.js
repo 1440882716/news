@@ -35,6 +35,7 @@ export default new Router({
       path: '/regist',
       component: regist
     },
+
     {
       path: '/forget',
       component: forget

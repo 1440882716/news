@@ -76,16 +76,16 @@
                 placeholder="请输入用户名"
               ></el-input>
             </el-form-item>
-            <el-form-item label="密码" prop="pwd">
+            <el-form-item label="密码" prop="password">
               <el-input
-                v-model="registFrom.pwd"
+                v-model="registFrom.password"
                 type="password"
                 placeholder="字母、数字组成，不少于6位"
               ></el-input>
             </el-form-item>
-            <el-form-item label="确认密码" prop="comfirmPwd">
+            <el-form-item label="确认密码" prop="confirmPassword">
               <el-input
-                v-model="registFrom.comfirmPwd"
+                v-model="registFrom.confirmPassword"
                 type="password"
                 placeholder="请确认密码"
               ></el-input>
@@ -133,8 +133,15 @@
 <script>
 import loginHead from "./common/loginHead.vue";
 import Footer from "./common/footer.vue";
-import msgBox from "../components/common/msg.vue";
-import Slider from "../components/common/slider.vue";
+import msgBox from "./common/msg.vue";
+import Slider from "./common/slider.vue";
+import {
+  register,
+  getSmsCode,
+  checkSmsCode,
+  isExistMobile,
+  isExistUserName
+} from "@/api/regist";
 export default {
   name: "regist",
   components: {
@@ -160,7 +167,7 @@ export default {
       }
     };
     const pwd = (rule, value, callback) => {
-      if (value != this.registFrom.pwd) {
+      if (value != this.registFrom.password) {
         callback(new Error("两次输入的密码不一致"));
       } else {
         callback();
@@ -173,15 +180,17 @@ export default {
       rePhone: "",
       phoneCode: "",
       registFrom: {
-        userName: "111",
-        pwd: "111aaa",
-        comfirmPwd: "111aaa"
+        mobile: "",
+        userName: "",
+        password: "",
+        confirmPassword: "",
+        type: 1
       },
       isAgree: false,
       registRules: {
         userName: { required: true, trigger: "blur", validator: username },
-        pwd: { required: true, trigger: "blur", validator: userpwd },
-        comfirmPwd: { required: true, trigger: "blur", validator: pwd }
+        password: { required: true, trigger: "blur", validator: userpwd },
+        confirmPassword: { required: true, trigger: "blur", validator: pwd }
       }
     };
   },
@@ -190,60 +199,74 @@ export default {
   methods: {
     getCode() {
       console.log(this.status);
-
-      if (this.status) {
-        const TIME_COUNT = 60;
-        if (!this.timer) {
-          this.count = TIME_COUNT;
-          this.timeFlag = false;
-          this.timer = setInterval(() => {
-            if (this.count > 0 && this.count <= TIME_COUNT) {
-              this.count--;
-            } else {
-              this.timeFlag = true;
-              clearInterval(this.timer);
-              this.timer = null;
-              this.count = "获取验证码";
-            }
-          }, 1000);
-        }
-      } else {
+      let regPhone = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+      if (!regPhone.test(this.rePhone)) {
+        this.$refs.tips.toast("请输入正确的手机号");
+      } else if (!this.status) {
         this.$refs.tips.toast("请拖动滑块");
+      } else {
+        isExistMobile({ mobile: this.rePhone }).then(res => {
+          if (res.code == 200) {
+            if (res.data) {
+              this.$refs.tips.toast("改手机号已被注册,请更换手机号");
+            } else {
+              getSmsCode({ mobile: this.rePhone }).then(res => {
+                console.log(res);
+                if (res.code == 200) {
+                  this.$refs.tips.toast(res.msg);
+                  const TIME_COUNT = 60;
+                  if (!this.timer) {
+                    this.count = TIME_COUNT;
+                    this.timeFlag = false;
+                    this.timer = setInterval(() => {
+                      if (this.count > 0 && this.count <= TIME_COUNT) {
+                        this.count--;
+                      } else {
+                        this.timeFlag = true;
+                        clearInterval(this.timer);
+                        this.timer = null;
+                        this.count = "获取验证码";
+                      }
+                    }, 1000);
+                  }
+                } else {
+                  this.$refs.tips.toast(res.msg);
+                }
+              });
+            }
+          } else {
+            this.$refs.tips.toast(res.msg);
+          }
+        });
       }
     },
     registStep(num) {
       if (num == 1) {
-        var myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
-        if (!myreg.test(this.rePhone)) {
-          this.$refs.tips.toast("请输入正确的手机号");
-        } else if (!this.phoneCode) {
-          this.$refs.tips.toast("请输入验证码");
-        } else if (this.phoneCode.length != 6) {
-          this.$refs.tips.toast("请输入正确的验证码");
-        } else {
-          this.stepNum = num * 1 + 1;
-          // 提交手机号、验证码通过进入填写账号信息
-          //   this.rq
-          //     .get("/goods/app/index/banner", {
-          //       params: { phone: this.phone, code: this.code }
-          //     })
-          //     .then(res => {
-          //       console.log(res);
-          //       if (res.status == 200) {
-          //         this.stepNum = num;
-          //       }
-          //     });
-        }
+        checkSmsCode({ mobile: this.rePhone, smsCode: this.phoneCode }).then(
+          res => {
+            if (res.code == 200) {
+              if (res.data) {
+                // 进入下一步
+                this.stepNum = num * 1 + 1;
+                this.registFrom.mobile = this.rePhone;
+              } else {
+                this.$refs.tips.toast("验证码错误");
+              }
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          }
+        );
       } else if (num == 2) {
-        let a = 111;
         this.$refs.registFrom.validate(valid => {
           if (valid) {
-            // if (!this.isAgree) {
-            //   this.$refs.tips.toast("请阅读并同意《会员注册与服务协议》");
-            // } else {
-            //   this.stepNum = num * 1 + 1;
-            // }
-            this.stepNum = num * 1 + 1;
+            register(this.registFrom).then(res => {
+              if (res.code == 200) {
+                this.stepNum = num * 1 + 1;
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+            });
           }
         });
       }
