@@ -10,7 +10,7 @@
             全部商品 <span class="myActiveColor">{{ countNum }}</span>
           </div>
           <div class="font14 flex-r">
-            已选商品不含运费：<span class="price-color">¥{{ countPrice }}</span>
+            已选商品不含运费：<span class="price-color">¥ {{ allPrice }}</span>
             <div class="count-btn fff-font font12">结算</div>
           </div>
         </div>
@@ -19,12 +19,24 @@
           <!-- head -->
           <div class="goods-list-head m-b-10 main-color">
             <ul class="flex-r font14">
-              <li class="headline1 text-left">
-                <img
-                  class="choose-cart-icon m-l-20 m-t-5"
-                  src="../assets/img/choosed.png"
-                  alt=""
-                />
+              <li
+                class="headline1 flex-r text-left"
+                @click="selectfun(selectAll)"
+              >
+                <div>
+                  <img
+                    v-show="selectAll"
+                    class="choose-cart-icon m-l-20 m-t-5"
+                    src="../assets/img/choosed.png"
+                    alt=""
+                  />
+                  <img
+                    v-show="!selectAll"
+                    class="choose-cart-icon m-l-20 m-t-5"
+                    src="../assets/img/not-choose.png"
+                    alt=""
+                  />
+                </div>
                 <span class="m-l-10">全选</span>
               </li>
               <li class="headline2 text-left">商品信息</li>
@@ -37,12 +49,22 @@
           <!-- list -->
           <div class="cart-list flex-r font14" v-for="item in goodsList">
             <div class="flex-r headline1">
-              <img
-                class="choose-cart-icon m-l-30"
-                src="../assets/img/choosed.png"
-                alt=""
-              />
-              <div class="cart-goods-img">
+              <div class="pointer" @click="changeActive(item)">
+                <img
+                  v-show="item.select"
+                  class="choose-cart-icon m-l-30"
+                  src="../assets/img/choosed.png"
+                  alt=""
+                />
+                <img
+                  v-show="!item.select"
+                  class="choose-cart-icon m-l-30"
+                  src="../assets/img/not-choose.png"
+                  alt=""
+                />
+              </div>
+              <!-- 商品图片 -->
+              <div class="cart-goods-img pointer" @click="toDetail(item.id)">
                 <img :src="item.img" alt="" />
               </div>
             </div>
@@ -129,13 +151,13 @@
             <div class="headline4 flex">
               <el-input-number
                 v-model="item.num"
-                @change="changeNum()"
+                @change="changeNum(item)"
                 :min="1"
                 size="mini"
                 label="描述文字"
               ></el-input-number>
               <!-- <div class="flex-r change-num">
-                <div class="num-btn num-reduse">-</div>
+                <div class="num-btn num-reduse" >-</div>
                 <input
                   v-model="item.num"
                   class="cart-goods-num main-color"
@@ -144,18 +166,29 @@
                 <div class="num-btn num-add">+</div>
               </div> -->
             </div>
-            <div class="headline5 price-color font16 bold600">¥123.20</div>
-            <div class="headline6 pointer">删除</div>
+            <div class="headline5 price-color font16 bold600">
+              {{ item.count }}
+            </div>
+            <div class="headline6 pointer" @click="delItem(item)">删除</div>
           </div>
           <!-- count -->
           <div class="count-box flex-r felx-b font14 main-color">
-            <div class="count-left text-left">
-              <img
-                class="choose-cart-icon m-l-20 m-t-5"
-                src="../assets/img/choosed.png"
-                alt=""
-              />
-              <span class="m-l-10">全选</span>
+            <div class="count-left flex-r text-left">
+              <div class="m-t-5 pointer" @click="selectfun(selectAll)">
+                <img
+                  v-show="selectAll"
+                  class="choose-cart-icon m-l-20 m-t-5"
+                  src="../assets/img/choosed.png"
+                  alt=""
+                />
+                <img
+                  v-show="!selectAll"
+                  class="choose-cart-icon m-l-20 m-t-5"
+                  src="../assets/img/not-choose.png"
+                  alt=""
+                />
+              </div>
+              <span class="m-l-10 m-r-10">全选</span>
               <span>删除选中的商品</span>
             </div>
             <div class="count-right flex-r flex-e">
@@ -166,7 +199,7 @@
               </div>
               <div class="m-r-10">
                 合计（不含运费）：<span class="bold600 font16 price-color"
-                  >¥{{ countPrice }}</span
+                  >¥{{ allPrice }}</span
                 >
               </div>
               <div class="list-count fff-font">结算</div>
@@ -187,6 +220,7 @@
 <script>
 import Header from "./common/header.vue";
 import Footer from "./common/footer.vue";
+import { cartList, updateCart, delCart } from "@/api/cart";
 export default {
   name: "login",
   components: {
@@ -199,13 +233,15 @@ export default {
       // countPrice: 0,
       hasGoods: true,
       visible: false,
+      selectAll: false,
+      allPrice: 0,
       goodsList: [
         {
           img:
             "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-83/20151106152915_1.jpg",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
-          count: 123.2,
+          // count: 123.2,
           num: 1,
           dateStart: "",
           dateEnd: ""
@@ -215,7 +251,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
-          count: 123.2,
+          // count: 123.2,
           num: 1,
           dateStart: "",
           dateEnd: ""
@@ -225,7 +261,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094511228_3_small.jpg.webp",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
-          count: 123.2,
+          // count: 123.2,
           num: 2,
           dateStart: "",
           dateEnd: ""
@@ -235,7 +271,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
-          count: 123.2,
+          // count: 123.2,
           num: 1,
           dateStart: "",
           dateEnd: ""
@@ -245,24 +281,104 @@ export default {
   },
   computed: {
     countNum: function() {
-      let num = this.goodsList.length;
-      return num;
-    },
-    countPrice: function() {
-      let count = 0;
-      let price = this.goodsList.map(item => {
-        count += item.price * item.num;
-        return count;
+      let select_goods = this.goodsList.filter(item => {
+        return item.select;
       });
-      return price[price.length - 1].toFixed(2);
+      let num = select_goods.length;
+      return num;
     }
+    // countPrice: function() {
+    //   let count = 0;
+    //   let select_goods = this.goodsList.filter(item => {
+    //     return item.select;
+    //   });
+    //   let price = select_goods.map(item => {
+    //     count += item.price * item.num;
+    //     return count;
+    //   });
+    //   return price[price.length - 1].toFixed(2);
+    // }
   },
-  mounted() {},
+  created() {
+    this.setActive();
+  },
   methods: {
-    changeNum(e) {
-      // console.log(item);
-      console.log(e);
-      debugger;
+    // 遍历购物车数据添加是否选中状态
+    setActive() {
+      this.goodsList.map(item => {
+        this.$set(item, "select", false);
+        let count = (item.price * 1 * item.num).toFixed(2);
+        this.$set(item, "count", count);
+      });
+      // 购物车总价
+      this.allPrice = this.getTotalPrice();
+    },
+    // 计算总价
+    getTotalPrice() {
+      let select_goods = this.goodsList.filter(item => {
+        return item.select;
+      });
+      console.log(select_goods);
+      // debugger;
+      let goodsCount = 0;
+      for (let i = 0; i < select_goods.length; i++) {
+        goodsCount += select_goods[i].price * 1 * select_goods[i].num;
+      }
+      return goodsCount.toFixed(2);
+    },
+    changeActive(info) {
+      info.select = !info.select;
+      console.log(info);
+      // 是否全选
+      this.selectAll = this.isSelectAll();
+      // 计算总价
+      this.allPrice = this.getTotalPrice();
+    },
+    // 是否全选
+    isSelectAll() {
+      if (this.goodsList.length === 0) {
+        return false;
+      }
+      return this.goodsList.every(item => {
+        return item.select;
+      });
+    },
+    // 全选
+    selectfun(is_select) {
+      this.goodsList.forEach(item => {
+        return (item.select = !is_select);
+      });
+      this.selectAll = this.isSelectAll();
+      this.allPrice = this.getTotalPrice();
+      console.log(this.allPrice);
+    },
+    // 单项数量变化
+    changeNum(item) {
+      console.log(item);
+      for (let i = 0; i < this.goodsList.length; i++) {
+        if (item.id == this.goodsList[i].id) {
+          this.goodsList[i].count = (
+            this.goodsList[i].price *
+            1 *
+            this.goodsList[i].num
+          ).toFixed(2);
+        }
+      }
+      this.selectAll = this.isSelectAll();
+      this.allPrice = this.getTotalPrice();
+      console.log(this.allPrice);
+      // debugger;
+    },
+    // 删除
+    delItem(info) {},
+    toDetail(id) {
+      this.$router.push({
+        path: "/details",
+        name: "details",
+        query: {
+          goodsId: "1496359872988073985"
+        }
+      });
     }
   }
 };

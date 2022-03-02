@@ -152,6 +152,7 @@ import Footer from "./common/footer.vue";
 import Magnifier from "../components/common/magnifier.vue";
 import region from "../assets/data/area_format_user.json";
 import { goodsDetails } from "@/api/goods";
+import { addCart } from "@/api/cart";
 export default {
   components: {
     Header,
