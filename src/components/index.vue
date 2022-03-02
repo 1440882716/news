@@ -98,7 +98,7 @@
 import Header from "./common/header.vue";
 import bannar from "./common/bannar.vue";
 import Footer from "./common/footer.vue";
-// import { goodsInfo } from "@/api/classfy";
+import { paperPage } from "@/api/goods";
 export default {
   components: {
     Header,
@@ -110,7 +110,7 @@ export default {
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      keyWord: "",
+      goodsId: "1496359872988073985",
       bannarArr: [
         "https://bic.11185.cn/zxpt-sc-sys/news/906_1644653723588_696_SYS_817.jpg.webp",
         "https://bic.11185.cn/zxpt-sc-sys/news/611_1643533765680_968_SYS_113.jpg.webp",
@@ -169,24 +169,23 @@ export default {
       ]
     };
   },
-
+  created() {
+    this.getGoods();
+  },
   mounted() {},
   methods: {
-    // slide(data) {
-    //   console.log(data);
-    // },
-    // onTap(data) {
-    //   console.log(data);
-    // },
-    // onInit(data) {
-    //   console.log(data);
-    // },
-    toList() {
+    getGoods() {
+      paperPage().then(res => {
+        if (res.code == 200) {
+        }
+      });
+    },
+    toList(id) {
       this.$router.push({
         path: "/details",
         name: "details",
         query: {
-          msgKey: this.keyWord
+          goodsId: this.goodsId
         }
       });
     }

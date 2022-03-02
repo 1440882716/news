@@ -145,7 +145,7 @@
               </div>
             </div>
             <div class="headline5 price-color font16 bold600">¥123.20</div>
-            <div class="headline6">删除</div>
+            <div class="headline6 pointer">删除</div>
           </div>
           <!-- count -->
           <div class="count-box flex-r felx-b font14 main-color">

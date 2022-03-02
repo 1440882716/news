@@ -10,10 +10,12 @@
           </div>
         </div>
         <div class="goods-right text-left">
-          <div class="font24 m-b-20 bold-font">人民权力报</div>
-          <span class="tips-color font16">中共中央机关报</span>
+          <div class="font24 m-b-20 bold-font">{{ goodsData.name }}</div>
+          <span class="tips-color font16">{{ goodsData.description }}</span>
           <div class="price-box flex-r">
-            <div class="font14 tips-color price-title">价格</div>
+            <div class="font14 tips-color price-title">
+              {{ goodsData.price }}
+            </div>
             <div class="m-l-20">
               <div>
                 <span class="font14 price-main">¥</span>
@@ -101,8 +103,8 @@
           </div>
           <!-- 加购物车/立即购买 -->
           <div class="flex-r buy-box">
-            <div class="add-cart-box font14">加入购物车</div>
-            <div class="buy-first font14 fff-font">加入购物车</div>
+            <div class="add-cart-box font14 pointer">加入购物车</div>
+            <div class="buy-first font14 fff-font pointer">加入购物车</div>
           </div>
         </div>
       </div>
@@ -113,24 +115,30 @@
         </div>
         <div class="de-item-box">
           <el-descriptions title="">
-            <el-descriptions-item label="全国统一刊号"
-              >CN11-0065</el-descriptions-item
-            >
+            <el-descriptions-item label="全国统一刊号">{{
+              goodsData.paperNum
+            }}</el-descriptions-item>
             <el-descriptions-item label="报刊种类">报纸</el-descriptions-item>
-            <el-descriptions-item label="刊期">日报</el-descriptions-item>
-            <el-descriptions-item label="单价">1.8</el-descriptions-item>
-            <el-descriptions-item label="邮发代号">1-1</el-descriptions-item>
-            <el-descriptions-item label="出版日期">0</el-descriptions-item>
-            <el-descriptions-item label="出版社名称"
-              >人民日报社</el-descriptions-item
-            >
-            <el-descriptions-item label="收订种类">
+            <el-descriptions-item label="刊期">{{
+              goodsData.cycleName
+            }}</el-descriptions-item>
+            <el-descriptions-item label="单价">{{
+              goodsData.price
+            }}</el-descriptions-item>
+            <!-- <el-descriptions-item label="邮发代号">1-1</el-descriptions-item> -->
+            <el-descriptions-item label="出版日期">{{
+              goodsData.createTime
+            }}</el-descriptions-item>
+            <el-descriptions-item label="出版社名称">{{
+              goodsData.press
+            }}</el-descriptions-item>
+            <!-- <el-descriptions-item label="收订种类">
               按期
-            </el-descriptions-item>
+            </el-descriptions-item> -->
             <el-descriptions-item label="年价">288.0</el-descriptions-item>
-            <el-descriptions-item label="商品编号"
-              >5685645</el-descriptions-item
-            >
+            <el-descriptions-item label="商品编号">{{
+              goodsData.id
+            }}</el-descriptions-item>
           </el-descriptions>
         </div>
       </div>
@@ -143,6 +151,7 @@ import Header from "./common/header.vue";
 import Footer from "./common/footer.vue";
 import Magnifier from "../components/common/magnifier.vue";
 import region from "../assets/data/area_format_user.json";
+import { goodsDetails } from "@/api/goods";
 export default {
   components: {
     Header,
@@ -152,6 +161,8 @@ export default {
   name: "goods",
   data() {
     return {
+      goodsId: "",
+      goodsData: {},
       regionData: region,
       region: "",
       dateStart: "",
@@ -171,18 +182,22 @@ export default {
     };
   },
   created() {
-    this.msg = this.$route.query.msgKey;
-    console.log(this.msg);
-    // debugger;
-  },
-  mounted: function() {
-    // this.msg = this.$route.params.msgKey;
+    this.goodsId = this.$route.query.goodsId;
+    this.getDetails();
     // console.log(this.msg);
     // debugger;
   },
+  mounted() {},
   methods: {
     handleChange(value) {
       console.log(value);
+    },
+    getDetails() {
+      goodsDetails({ id: this.goodsId }).then(res => {
+        if (res.code == 200) {
+          this.goodsData = res.data;
+        }
+      });
     }
   }
 };
