@@ -127,14 +127,14 @@
             </div>
             <div class="headline3 font12">{{ item.price }}</div>
             <div class="headline4 flex">
-              <div class="flex-r change-num">
-                <!-- <el-input-number
-                  v-model="item.num"
-                  @change="handleChange"
-                  :min="1"
-                  :max="10"
-                  label="描述文字"
-                ></el-input-number> -->
+              <el-input-number
+                v-model="item.num"
+                @change="changeNum()"
+                :min="1"
+                size="mini"
+                label="描述文字"
+              ></el-input-number>
+              <!-- <div class="flex-r change-num">
                 <div class="num-btn num-reduse">-</div>
                 <input
                   v-model="item.num"
@@ -142,7 +142,7 @@
                   type="number"
                 />
                 <div class="num-btn num-add">+</div>
-              </div>
+              </div> -->
             </div>
             <div class="headline5 price-color font16 bold600">¥123.20</div>
             <div class="headline6 pointer">删除</div>
@@ -160,9 +160,8 @@
             </div>
             <div class="count-right flex-r flex-e">
               <div class="m-r-20">
-                已选商品<span class="font18 bold-font price-color">{{
-                  countNum
-                }}</span
+                已选商品<span class="font18 bold-font price-color">
+                  {{ countNum }} </span
                 >件
               </div>
               <div class="m-r-10">
@@ -206,6 +205,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-83/20151106152915_1.jpg",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
+          count: 123.2,
           num: 1,
           dateStart: "",
           dateEnd: ""
@@ -215,6 +215,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
+          count: 123.2,
           num: 1,
           dateStart: "",
           dateEnd: ""
@@ -224,6 +225,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094511228_3_small.jpg.webp",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
+          count: 123.2,
           num: 2,
           dateStart: "",
           dateEnd: ""
@@ -233,6 +235,7 @@ export default {
             "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
           name: "人民日报海外版2022自选定期",
           price: 123.2,
+          count: 123.2,
           num: 1,
           dateStart: "",
           dateEnd: ""
@@ -251,11 +254,17 @@ export default {
         count += item.price * item.num;
         return count;
       });
-      return price[price.length - 1];
+      return price[price.length - 1].toFixed(2);
     }
   },
   mounted() {},
-  methods: {}
+  methods: {
+    changeNum(e) {
+      // console.log(item);
+      console.log(e);
+      debugger;
+    }
+  }
 };
 </script>
 
