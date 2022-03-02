@@ -51,11 +51,6 @@
                 cols="10"
                 rows="4"
               ></textarea>
-              <!-- <el-input
-                v-model="accountForm.bankCard"
-                type="text"
-                placeholder="请输入详细地址"
-              ></el-input> -->
             </el-form-item>
             <!-- <el-form-item label="固定电话" prop="bankItem">
               <el-input
@@ -95,19 +90,8 @@
             <el-button type="primary" @click="comfirmAddress">确认</el-button>
           </div>
         </div>
-
         <Map></Map>
       </div>
-      <!-- <div class="add-card-btn fff-font pointer" @click="dialogVisible = true">
-        <span>完成</span>
-      </div> -->
-
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span> -->
     </el-dialog>
     <div class="info-content text-left">
       <div class="title-box flex-r flex-b">

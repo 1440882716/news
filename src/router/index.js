@@ -7,6 +7,7 @@ import login from '@/components/login'
 import regist from '@/components/regist'
 import forget from '@/components/forget'
 import cart from '@/components/cart'
+import confirmOrder from '@/components/confirmOrder'
 
 Vue.use(Router)
 
@@ -44,6 +45,12 @@ export default new Router({
       path: '/cart',
       component: cart
     },
+    {
+      path: '/confirmOrder',
+      name: 'confirmOrder',
+      component: confirmOrder
+    },
+
 
   ]
 })

@@ -202,7 +202,9 @@
                   >¥{{ allPrice }}</span
                 >
               </div>
-              <div class="list-count fff-font">结算</div>
+              <div class="list-count fff-font pointer" @click="toConfirm">
+                结算
+              </div>
             </div>
           </div>
         </div>
@@ -378,6 +380,12 @@ export default {
         query: {
           goodsId: "1496359872988073985"
         }
+      });
+    },
+    toConfirm() {
+      this.$router.push({
+        path: "/confirmOrder",
+        name: "confirmOrder"
       });
     }
   }
