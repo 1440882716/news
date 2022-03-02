@@ -17,17 +17,7 @@ export default {
   },
   data() {
     return {
-      navNum: 0,
-      navList: [
-        "个人资料",
-        "账户安全",
-        "我的银行卡",
-        "常用地址",
-        "发票抬头",
-        "我的订单",
-        "我的售后",
-        "发票管理"
-      ]
+      navNum: 0
     };
   },
   methods: {
