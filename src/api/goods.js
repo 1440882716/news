@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
 const userApi = {
-    paperPage: '/paperInfo/paperPage',
-    goodsDetails: '/paperInfo/details',
+    paperPage: '/client/paperInfo/paperPage',
+    goodsDetails: '/client/paperInfo/details',
 
 
 

@@ -45,6 +45,7 @@
             <el-form-item label="详细地址" prop="address">
               <textarea
                 class="textarea-box"
+                style="color: #606266;"
                 v-model="addressForm.address"
                 placeholder="请输入详细地址"
                 cols="10"
@@ -91,7 +92,7 @@
 <script>
 import city from "../../assets/data/area_format_user.json";
 import Map from "./map.vue";
-import { addAddress, updateAdd } from "@/api/address";
+import { addAddress, updateAdd, addList } from "@/api/address";
 export default {
   components: {
     Map
@@ -102,14 +103,14 @@ export default {
       cityData: city,
       isDefault: false,
       addressForm: {
-        name: "霍慈",
-        mobile: "17608087890",
+        name: "",
+        mobile: "",
         province: "",
         region: "",
         city: "",
         county: "",
-        address: "龙湖时代天街",
-        postCode: "000000",
+        address: "",
+        postCode: "",
         isDefault: false
       },
       accountRules: {
@@ -141,12 +142,41 @@ export default {
       }
     };
   },
-  //   props: ["isOpen"],
-
+  props: ["addData", "upData"],
+  watch: {
+    upData() {
+      this.addressForm.name = this.upData.name;
+      this.addressForm.mobile = this.upData.mobile;
+      this.addressForm.address = this.upData.address;
+      this.addressForm.region[0] = this.upData.province;
+      this.addressForm.region[1] = this.upData.city;
+      this.addressForm.region[2] = this.upData.county;
+    }
+  },
   created() {
-    // this.openDialog();
+    this.setFormData();
+    // if (this.upData.hasOwnProperty("id")) {
+    //   this.addressForm.name = this.upData.name;
+    //   this.addressForm.mobile = this.upData.mobile;
+    //   this.addressForm.region[0] = this.upData.province;
+    //   this.addressForm.region[1] = this.upData.city;
+    //   this.addressForm.region[2] = this.upData.county;
+    // }
+    // console.log(this.upData);
+    // debugger;
   },
   methods: {
+    setFormData() {
+      if (this.upData.hasOwnProperty("id")) {
+        this.addressForm.name = this.upData.name;
+        this.addressForm.mobile = this.upData.mobile;
+        this.addressForm.region[0] = this.upData.province;
+        this.addressForm.region[1] = this.upData.city;
+        this.addressForm.region[2] = this.upData.county;
+      }
+      console.log(this.addressForm);
+      //   debugger;
+    },
     // 打开弹窗
     openDialog() {
       this.dialogVisible = true;
@@ -164,11 +194,35 @@ export default {
       this.$refs.addressForm.validate(valid => {
         if (valid) {
           console.log(this.addressForm);
-          debugger;
+          //   this.addressForm.province = this.addressForm.region[0];
+          //   this.addressForm.city = this.addressForm.region[1];
+          //   this.addressForm.county = this.addressForm.region[2];
+          //   if (this.upData.hasOwnProperty("id")) {
+          //     updateAdd(this.addressForm).then(res => {
+          //       if (res.code == 200) {
+          //         addList().then(res => {
+          //           if (res.code == 200) {
+          //             this.$emit("changeData", res.data);
+          //             this.dialogVisible = false;
+          //           }
+          //         });
+          //       }
+          //     });
+          //   } else {
           this.addressForm.province = this.addressForm.region[0];
           this.addressForm.city = this.addressForm.region[1];
           this.addressForm.county = this.addressForm.region[2];
-          addAddress(this.addressForm).then(res => {});
+          addAddress(this.addressForm).then(res => {
+            if (res.code == 200) {
+              addList().then(res => {
+                if (res.code == 200) {
+                  this.$emit("changeData", res.data);
+                  this.dialogVisible = false;
+                }
+              });
+            }
+          });
+          //   }
         }
       });
     }

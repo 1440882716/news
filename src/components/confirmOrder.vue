@@ -1,8 +1,14 @@
 <template>
   <div class="container">
+    <msgBox></msgBox>
     <Header></Header>
     <!-- 新增地址弹框 -->
-    <addAddress ref="openBox"></addAddress>
+    <addAddress
+      ref="openBox"
+      :addData="addressList"
+      :upData="itemAddress"
+      @changeData="setData($event)"
+    ></addAddress>
     <div class="confirm-box p-b-80">
       <div class="text-left tips-title main-color">填写并核对订单信息</div>
       <div class="confirm-content main-color font14">
@@ -25,16 +31,41 @@
             </div>
           </div>
           <div class="address-list-box f666" v-else>
-            <div class="add-item-box flex-r flex-b" v-for="item in addressList">
+            <div
+              class="add-item-box flex-r flex-b"
+              v-for="(item, index) in addressList"
+              key="index"
+            >
               <div class="add-left flex-r">
-                <div class="lable-box">{{ item.lable }}</div>
+                <div class="m-r-10 font18" @click="chooseAdd(index, item)">
+                  <i
+                    :class="[
+                      'el-icon-success',
+                      ind == index ? 'myActiveColor' : 'f999'
+                    ]"
+                  ></i>
+                  <!-- <img
+                    class="choose-cart-icon m-l-20 m-t-5"
+                    src="../assets/img/choosed.png"
+                    alt=""
+                  />
+                  <img
+                    class="choose-cart-icon m-l-20 m-t-5"
+                    src="../assets/img/not-choose.png"
+                    alt=""
+                  /> -->
+                </div>
                 <div class="m-r-10 ">{{ item.name }}</div>
-                <div class="m-r-10 address-text">{{ item.address }}</div>
-                <div class="m-r-10">{{ item.phone }}</div>
+                <div class="m-r-10 address-text">
+                  {{ item.area }} {{ item.address }}
+                </div>
+                <div class="m-r-10">{{ item.mobile }}</div>
               </div>
               <div class="myActiveColor add-right text-right">
-                <span class="m-r-20 pointer">删除</span>
-                <span class="pointer">编辑</span>
+                <span class="m-r-20 pointer" @click="delAddFun(item.id)"
+                  >删除</span
+                >
+                <!-- <span class="pointer" @click="updAddFun(item)">编辑</span> -->
               </div>
             </div>
           </div>
@@ -102,7 +133,7 @@
         <div class="text-right m-b-10">
           <span class="font14 bold-font">寄送至：</span
           ><span class="font14"
-            >四川省成都市郫都区龙湖时代天街成都市郫都区龙湖时代天街</span
+            >{{ itemAddress.area }} {{ itemAddress.address }}</span
           >
         </div>
         <div class="text-right m-b-10">
@@ -121,16 +152,21 @@
 import Header from "./common/header.vue";
 import addAddress from "./common/addAddress.vue";
 import Footer from "./common/footer.vue";
+import msgBox from "./common/msg.vue";
+import { addList, delAdd } from "@/api/address";
 export default {
   name: "confirm",
   components: {
     Header,
     addAddress,
-    Footer
+    Footer,
+    msgBox
   },
   data() {
     return {
       isOpen: false,
+      ind: 0,
+      itemAddress: {},
       addressList: [
         {
           name: "77",
@@ -187,6 +223,9 @@ export default {
       ]
     };
   },
+  created() {
+    this.getAddress();
+  },
   methods: {
     chooseNav(ind) {
       // window.alert("111");
@@ -196,7 +235,41 @@ export default {
     },
     openAddBox() {
       this.$refs.openBox.openDialog();
+    },
+    getAddress() {
+      addList().then(res => {
+        if (res.code == 200) {
+          this.addressList = res.data;
+          for (let i = 0; i < this.addressList.length; i++) {
+            if (this.addressList[i].is_default) {
+              this.itemAddress = this.addressList[i];
+            }
+          }
+        }
+      });
+    },
+    // 新增地址后关闭弹框 更新地址列表
+    setData(msg) {
+      this.addressList = msg;
+    },
+    delAddFun(id) {
+      delAdd({ id: id }).then(res => {
+        if (res.code == 200) {
+          this.getAddress();
+        } else {
+          this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
+    chooseAdd(num, info) {
+      this.ind = num;
+      this.itemAddress = info;
     }
+    // 编辑地址
+    // updAddFun(info) {
+    //   this.itemAddress = info;
+    //   this.$refs.openBox.openDialog();
+    // }
   }
 };
 </script>
