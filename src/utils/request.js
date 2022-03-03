@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
+import { getToken } from "@/utils/auth";
+import qs from "qs";
 
 // create an axios instance
 const service = axios.create({
@@ -14,10 +16,9 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-
+        config.headers["Authorization"] = getToken();
         if (config.method == 'post') {
-
-
+            config.data = qs.stringify(config.data);
         }
         return config
     },

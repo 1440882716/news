@@ -12,7 +12,7 @@
 
         <div class="confirm-title flex-r flex-b m-t-10">
           <span class="bold-font">收货人信息</span>
-          <span class="myActiveColor pointer" @click="openAddBox"
+          <span class="myActiveColor pointer bold-font" @click="openAddBox"
             >新增收货地址</span
           >
         </div>
@@ -90,11 +90,14 @@
           </div>
         </div>
       </div>
-      <div class="flex-c flex-e m-t-20 f666">
+      <div class="flex flex-c flex-e m-t-20 f666">
         <div class="text-right m-b-10">
-          <span class="font14 bold-font">合计：</span
-          ><span class="font14 myActiveColor">¥ </span
-          ><span class="font20 bold-font myActiveColor">246.4</span>
+          <span class="font14 bold-font">共 </span>
+          <span class="font14 bold-font myActiveColor">2</span>
+          <span class="font14 bold-font"> 件</span>
+          <span class="font14 bold-font">合计：</span>
+          <span class="font14 myActiveColor">¥ </span>
+          <span class="font20 bold-font myActiveColor">246.4</span>
         </div>
         <div class="text-right m-b-10">
           <span class="font14 bold-font">寄送至：</span
@@ -106,7 +109,9 @@
           <span class="font14 bold-font">收货人：</span
           ><span class="font14">小七 17608086789</span>
         </div>
-        <div class="handle-order">提交订单</div>
+        <div class="flex flex-e">
+          <div class="handle-order fff-font pointer">提交订单</div>
+        </div>
       </div>
     </div>
     <Footer></Footer>

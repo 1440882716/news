@@ -21,9 +21,9 @@
                 type="text"
               ></el-input>
             </el-form-item>
-            <el-form-item label="手机号码" prop="phone">
+            <el-form-item label="手机号码" prop="mobile">
               <el-input
-                v-model="addressForm.phone"
+                v-model="addressForm.mobile"
                 type="text"
                 placeholder="请输入手机号"
               ></el-input>
@@ -51,28 +51,22 @@
                 rows="4"
               ></textarea>
             </el-form-item>
-            <!-- <el-form-item label="固定电话" prop="bankItem">
+
+            <el-form-item label="邮编" prop="postCode">
               <el-input
-                v-model="accountForm.bankItem"
-                placeholder="请输入固定电话（格式：010-63700000）"
-                type="text"
-              ></el-input>
-            </el-form-item> -->
-            <el-form-item label="邮编">
-              <el-input
-                v-model="addressForm.zipCode"
+                v-model="addressForm.postCode"
                 type="text"
                 placeholder="请输入邮政编码"
               ></el-input>
             </el-form-item>
 
-            <el-form-item label="标签">
+            <!-- <el-form-item label="标签">
               <el-input
                 v-model="addressForm.label"
                 placeholder="请输入标签（如：家里、公司）"
                 type="text"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
           <div class="default-box text-left pointer" @click="getDefault">
             <i
@@ -97,6 +91,7 @@
 <script>
 import city from "../../assets/data/area_format_user.json";
 import Map from "./map.vue";
+import { addAddress, updateAdd } from "@/api/address";
 export default {
   components: {
     Map
@@ -107,16 +102,19 @@ export default {
       cityData: city,
       isDefault: false,
       addressForm: {
-        name: "",
-        phone: "",
+        name: "霍慈",
+        mobile: "17608087890",
+        province: "",
         region: "",
-        address: "",
-        zipCode: "",
-        lable: ""
+        city: "",
+        county: "",
+        address: "龙湖时代天街",
+        postCode: "000000",
+        isDefault: false
       },
       accountRules: {
         name: [{ required: true, message: "请输入收货人", trigger: "blur" }],
-        phone: [
+        mobile: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
           {
             required: true,
@@ -130,23 +128,25 @@ export default {
         ],
         address: [
           { required: true, message: "请输入详细地址", trigger: "blur" }
+        ],
+        postCode: [
+          { required: true, message: "请输入邮编", trigger: "blur" },
+          {
+            required: true,
+            pattern: /^\d{6}$/,
+            message: "请输入正确的邮编",
+            trigger: "blur"
+          }
         ]
       }
     };
   },
   //   props: ["isOpen"],
-  //   watch: {
-  //     isOpen() {
-  //       this.dialogVisible = this.isOpen;
-  //     }
-  //   },
+
   created() {
     // this.openDialog();
   },
   methods: {
-    // openDialog() {
-    //   this.dialogVisible = this.isOpen;
-    // },
     // 打开弹窗
     openDialog() {
       this.dialogVisible = true;
@@ -160,7 +160,18 @@ export default {
     getDefault() {
       this.isDefault = !this.isDefault;
     },
-    comfirmAddress() {}
+    comfirmAddress() {
+      this.$refs.addressForm.validate(valid => {
+        if (valid) {
+          console.log(this.addressForm);
+          debugger;
+          this.addressForm.province = this.addressForm.region[0];
+          this.addressForm.city = this.addressForm.region[1];
+          this.addressForm.county = this.addressForm.region[2];
+          addAddress(this.addressForm).then(res => {});
+        }
+      });
+    }
   }
 };
 </script>
