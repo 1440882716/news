@@ -189,6 +189,7 @@ export default {
     },
     getDefault() {
       this.isDefault = !this.isDefault;
+      this.addressForm.isDefault = this.isDefault;
     },
     comfirmAddress() {
       this.$refs.addressForm.validate(valid => {

@@ -19,6 +19,9 @@
             <router-link to="./regist" v-else style="text-decoration: none;">
               <span class="m-l-20">快速注册</span>
             </router-link>
+            <router-link to="/" style="text-decoration: none;">
+              <span class="m-l-20">首页</span>
+            </router-link>
           </div>
           <div class="head-line-right">
             <ul class="flex-r flex-e head-ul-list">

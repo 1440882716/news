@@ -138,7 +138,9 @@
         </div>
         <div class="text-right m-b-10">
           <span class="font14 bold-font">收货人：</span
-          ><span class="font14">小七 17608086789</span>
+          ><span class="font14"
+            >{{ itemAddress.name }} {{ itemAddress.mobile }}</span
+          >
         </div>
         <div class="flex flex-e">
           <div class="handle-order fff-font pointer">提交订单</div>
@@ -167,38 +169,7 @@ export default {
       isOpen: false,
       ind: 0,
       itemAddress: {},
-      addressList: [
-        {
-          name: "77",
-          address: "四川省成都市郫都区龙湖时代天街",
-          phone: "17608086789",
-          lable: "公司"
-        },
-        {
-          name: "hhh",
-          address: "四川省成都市郫都区龙湖时代天街成都市郫都区龙湖时代天街",
-          phone: "17608086789",
-          lable: "家"
-        },
-        {
-          name: "77",
-          address: "四川省成都市郫都区龙湖时代天街",
-          phone: "17608086789",
-          lable: "公司"
-        },
-        {
-          name: "hhh",
-          address: "四川省成都市郫都区龙湖时代天街成都市郫都区龙湖时代天街",
-          phone: "17608086789",
-          lable: "家"
-        },
-        {
-          name: "77",
-          address: "四川省成都市郫都区龙湖时代天街",
-          phone: "17608086789",
-          lable: "公司"
-        }
-      ],
+      addressList: [],
       goodsList: [
         {
           img:
@@ -243,6 +214,7 @@ export default {
           for (let i = 0; i < this.addressList.length; i++) {
             if (this.addressList[i].is_default) {
               this.itemAddress = this.addressList[i];
+              this.ind = i;
             }
           }
         }
