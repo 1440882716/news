@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
 const userApi = {
-    addCart: '/cart/add',
-    updateCart: '/cart/update',
-    delCart: '/cart/del',
-    cartList: '/cart/list'
+    addCart: '/client/cart/add',
+    updateCart: '/client/cart/update',
+    delCart: '/client/cart/del',
+    cartList: '/client/cart/list'
 }
 export function addCart(data) {
     return request({

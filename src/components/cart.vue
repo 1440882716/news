@@ -80,7 +80,7 @@
                 >
                   <div class="flex-r details-item m-t-20">
                     <div class="details-item-left">年度：</div>
-                    <div class="right-box1">2022</div>
+                    <div class="right-box1">{{ item.paperYear }}</div>
                   </div>
                   <div class="flex-r details-item m-t-20">
                     <div class="details-item-left">订阅选择：</div>
@@ -127,7 +127,7 @@
                 </el-popover>
                 <p style="text-align: left;">
                   <span class="justify">年度:</span>
-                  <span>2022</span>
+                  <span>{{ item.paperYear }}</span>
                 </p>
                 <p style="text-align: left;">
                   <span class="justify">订阅选择:</span>
@@ -135,22 +135,22 @@
                 </p>
                 <p style="text-align: left;">
                   <span class="justify">起止日期:</span>
-                  <span>2022-02-21~2022-12-31</span>
+                  <span>{{ item.startrTime }}~{{ item.endTime }}</span>
                 </p>
                 <p style="text-align: left;">
                   <span class="justify">期数:</span>
-                  <span>314</span>
+                  <span>{{ item.periodNum }}</span>
                 </p>
-                <p style="text-align: left;">
+                <!-- <p style="text-align: left;">
                   <span class="justify">刊期:</span>
                   <span>0221~1231</span>
-                </p>
+                </p> -->
               </div>
             </div>
-            <div class="headline3 font12">{{ item.price }}</div>
+            <div class="headline3 font12">{{ item.totalPrice }}</div>
             <div class="headline4 flex">
               <el-input-number
-                v-model="item.num"
+                v-model="item.quantity"
                 @change="changeNum(item)"
                 :min="1"
                 size="mini"
@@ -302,9 +302,18 @@ export default {
     // }
   },
   created() {
+    this.getData();
     this.setActive();
   },
   methods: {
+    // 购物车数据
+    getData() {
+      cartList().then(res => {
+        if (res.code == 200) {
+          this.goodsList = res.data;
+        }
+      });
+    },
     // 遍历购物车数据添加是否选中状态
     setActive() {
       this.goodsList.map(item => {
@@ -328,6 +337,7 @@ export default {
       }
       return goodsCount.toFixed(2);
     },
+    // 商品选中和反选
     changeActive(info) {
       info.select = !info.select;
       console.log(info);
@@ -373,6 +383,7 @@ export default {
     },
     // 删除
     delItem(info) {},
+    // 商品详情
     toDetail(id) {
       this.$router.push({
         path: "/details",

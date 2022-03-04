@@ -14,9 +14,9 @@
           <div class="font24 m-b-20 bold-font">{{ goodsData.name }}</div>
           <span class="tips-color font16">{{ goodsData.description }}</span>
           <div class="price-box flex-r">
-            <div class="font14 tips-color price-title">
+            <!-- <div class="font14 tips-color price-title">
               {{ goodsData.price }}
-            </div>
+            </div> -->
             <div class="m-l-20">
               <div>
                 <span class="font14 price-main">¥</span>
@@ -40,13 +40,13 @@
           <div class="font14 tips-color">
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">年度：</div>
-              <div class="right-box1">2022</div>
+              <div class="right-box1">{{ yearTime }}</div>
             </div>
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">订阅选择：</div>
               <div class="right-box1">自选定期</div>
             </div>
-            <div class="flex-r details-item m-t-20">
+            <!-- <div class="flex-r details-item m-t-20">
               <div class="details-item-left">配送至：</div>
               <div>
                 <el-cascader
@@ -62,7 +62,7 @@
                   @change="handleChange"
                 ></el-cascader>
               </div>
-            </div>
+            </div> -->
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">起期：</div>
               <div>
@@ -108,10 +108,10 @@
           </div>
           <!-- 加购物车/立即购买 -->
           <div class="flex-r buy-box">
-            <div class="add-cart-box font14 pointer">加入购物车</div>
-            <div class="buy-first font14 fff-font pointer">
+            <div class="add-cart-box font14 pointer" @click="addGoods">
               加入购物车
             </div>
+            <div class="buy-first font14 fff-font pointer">立即购买</div>
           </div>
         </div>
       </div>
@@ -174,6 +174,7 @@ export default {
       goodsId: "",
       thisDate: "",
       thisYear: "",
+      yearTime: "",
       goodsData: {},
       regionData: region,
       region: "",
@@ -224,6 +225,7 @@ export default {
         nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
       var dateStr = year + "-" + month + "-" + day;
       this.dateStart = dateStr;
+      this.yearTime = year;
       this.thisYear = year + "-" + "12-31";
       this.dateEnd = year + "-" + "12-31";
       this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
@@ -268,6 +270,22 @@ export default {
         this.dateEnd = this.thisYear;
         this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
       }
+    },
+    addGoods() {
+      let data = {
+        paperId: this.goodsId,
+        paperYear: this.yearTime,
+        startTime: this.dateStart,
+        endTime: this.dateEnd,
+        quantity: this.goodsNum,
+        periodNum: this.goodsData.present,
+        totalPrice: this.countPrice
+      };
+      addCart(data).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+        }
+      });
     }
   }
 };
