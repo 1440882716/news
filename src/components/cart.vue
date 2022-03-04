@@ -311,6 +311,10 @@ export default {
       cartList().then(res => {
         if (res.code == 200) {
           this.goodsList = res.data;
+          this.goodsList.map(item => {
+            let count = (item.totalPrice * 1 * item.quantity).toFixed(2);
+            this.$set(item, "count", count);
+          });
         }
       });
     },
@@ -318,8 +322,8 @@ export default {
     setActive() {
       this.goodsList.map(item => {
         this.$set(item, "select", false);
-        let count = (item.price * 1 * item.num).toFixed(2);
-        this.$set(item, "count", count);
+        // let count = (item.price * 1 * item.num).toFixed(2);
+        // this.$set(item, "count", count);
       });
       // 购物车总价
       this.allPrice = this.getTotalPrice();
