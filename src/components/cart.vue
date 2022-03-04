@@ -1,7 +1,7 @@
 <template>
   <div class="container">
+    <msgBox ref="tips"></msgBox>
     <Header></Header>
-
     <!-- 购物车不为空 -->
     <div class="content p-b-80" v-if="hasGoods">
       <div class="cart-box">
@@ -90,9 +90,11 @@
                     <div class="details-item-left">起期：</div>
                     <div>
                       <el-date-picker
-                        v-model="item.dateStart"
+                        value-format="yyyy-MM-dd"
+                        v-model="item.startrTime"
                         type="date"
                         placeholder="选择日期"
+                        @change="changeStart(item)"
                       >
                       </el-date-picker>
                     </div>
@@ -101,9 +103,11 @@
                     <div class="details-item-left">止期：</div>
                     <div>
                       <el-date-picker
-                        v-model="item.dateEnd"
+                        value-format="yyyy-MM-dd"
+                        v-model="item.endTime"
                         type="date"
                         placeholder="选择日期"
+                        @change="changeEnd(item)"
                       >
                       </el-date-picker>
                     </div>
@@ -147,7 +151,7 @@
                 </p> -->
               </div>
             </div>
-            <div class="headline3 font12">{{ item.totalPrice }}</div>
+            <div class="headline3 font12">{{ item.price }}</div>
             <div class="headline4 flex">
               <el-input-number
                 v-model="item.quantity"
@@ -222,12 +226,15 @@
 <script>
 import Header from "./common/header.vue";
 import Footer from "./common/footer.vue";
+import msgBox from "./common/msg.vue";
+import { reckon } from "@/api/goods";
 import { cartList, updateCart, delCart } from "@/api/cart";
 export default {
   name: "login",
   components: {
     Header,
-    Footer
+    Footer,
+    msgBox
   },
   data() {
     return {
@@ -303,7 +310,7 @@ export default {
   },
   created() {
     this.getData();
-    this.setActive();
+    // this.setActive();
   },
   methods: {
     // 购物车数据
@@ -312,11 +319,94 @@ export default {
         if (res.code == 200) {
           this.goodsList = res.data;
           this.goodsList.map(item => {
-            let count = (item.totalPrice * 1 * item.quantity).toFixed(2);
+            let count = (item.price * 1 * item.quantity).toFixed(2);
             this.$set(item, "count", count);
+            this.$set(item, "select", false);
           });
         }
       });
+    },
+    // 修改购物车
+    updateCartItem(starttime, endtime, quantity, number, price, id) {
+      let data = {
+        startTime: starttime,
+        endTime: endtime,
+        quantity: quantity,
+        periodNum: number,
+        price: price,
+        id: id
+      };
+      updateCart(data).then(res => {});
+    },
+    // 获取期数
+    getNewsNum(paperid, start, endtime, price) {
+      reckon({
+        id: paperid,
+        startTime: start,
+        endTime: endtime
+      }).then(res => {
+        if (res.code == 200) {
+          // 拿到期数，计算单价、总价
+          // this.goodsData.present = res.data;
+          for (let i = 0; i < this.goodsList.length; i++) {
+            if (paperid == this.goodsList[i].paperId) {
+              this.goodsList[i].periodNum = res.data;
+              this.goodsList[i].price = price * res.data;
+              this.goodsList[i].count = (
+                this.goodsList[i].price * this.goodsList[i].quantity
+              ).toFixed(2);
+              this.updateCartItem(
+                start,
+                endtime,
+                this.goodsList[i].quantity,
+                res.data,
+                this.goodsList[i].price,
+                this.goodsList[i].id
+              );
+            }
+          }
+        }
+      });
+    },
+    // 改变起订日期
+    changeStart(info) {
+      console.log(info);
+      // debugger;
+      // return;
+      this.getNewsNum(
+        info.paperId,
+        info.startrTime,
+        info.endTime,
+        info.paperPrice
+      );
+    },
+    // 改变订阅结束日期
+    changeEnd(info) {
+      console.log(info);
+      // debugger;
+      // return;
+      var nowDate = new Date();
+      var year = nowDate.getFullYear();
+      let thisYear = year + "-" + "12-31";
+      let a = Date.parse(info.endTime);
+      let b = Date.parse(thisYear);
+      if (a < b) {
+        this.getNewsNum(
+          info.paperId,
+          info.startrTime,
+          info.endTime,
+          info.paperPrice
+        );
+      } else {
+        this.$refs.tips.toast("只能在今年内选择订阅结束时间");
+        info.endTime = thisYear;
+        this.getNewsNum(
+          info.paperId,
+          info.startrTime,
+          info.endTime,
+          info.paperPrice
+        );
+      }
     },
     // 遍历购物车数据添加是否选中状态
     setActive() {
@@ -337,7 +427,7 @@ export default {
       // debugger;
       let goodsCount = 0;
       for (let i = 0; i < select_goods.length; i++) {
-        goodsCount += select_goods[i].price * 1 * select_goods[i].num;
+        goodsCount += select_goods[i].price * 1 * select_goods[i].quantity;
       }
       return goodsCount.toFixed(2);
     },
@@ -376,8 +466,16 @@ export default {
           this.goodsList[i].count = (
             this.goodsList[i].price *
             1 *
-            this.goodsList[i].num
+            this.goodsList[i].quantity
           ).toFixed(2);
+          this.updateCartItem(
+            item.startrTime,
+            item.endTime,
+            item.quantity,
+            item.periodNum,
+            item.price,
+            item.id
+          );
         }
       }
       this.selectAll = this.isSelectAll();
@@ -386,7 +484,16 @@ export default {
       // debugger;
     },
     // 删除
-    delItem(info) {},
+    delItem(info) {
+      delCart({ id: info.id }).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          this.getData();
+        } else {
+          this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
     // 商品详情
     toDetail(id) {
       this.$router.push({
@@ -397,6 +504,7 @@ export default {
         }
       });
     },
+
     toConfirm() {
       this.$router.push({
         path: "/confirmOrder",

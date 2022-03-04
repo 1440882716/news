@@ -279,7 +279,7 @@ export default {
         endTime: this.dateEnd,
         quantity: this.goodsNum,
         periodNum: this.goodsData.present,
-        totalPrice: this.countPrice
+        price: this.countPrice
       };
       addCart(data).then(res => {
         if (res.code == 200) {

@@ -129,7 +129,7 @@
             </div>
             <div class="flex-r text-center">
               <div class="tips-color card-name-box">所在地区：</div>
-              <span>{{ item.region }}</span>
+              <span>{{ item.area }}</span>
             </div>
             <div class="flex-r text-center">
               <div class="tips-color card-name-box">地址：</div>
@@ -137,7 +137,7 @@
             </div>
             <div class="flex-r text-center">
               <div class="tips-color card-name-box">手机：</div>
-              <span>{{ item.phone }}</span>
+              <span>{{ item.mobile }}</span>
             </div>
           </div>
           <div class="handle-box flex-r flex-e">
@@ -164,7 +164,7 @@
 <script>
 import city from "../../assets/data/area_format_user.json";
 import Map from "./map.vue";
-import { address } from "@/api/address";
+import { addList, delAdd } from "@/api/address";
 export default {
   name: "mycard",
   components: {
@@ -227,8 +227,10 @@ export default {
   },
   methods: {
     getAddress() {
-      address().then(res => {
-        console.log(res);
+      addList().then(res => {
+        if (res.code == 200) {
+          this.addressList = res.data;
+        }
       });
     },
     //   关闭弹窗后清除表单内容
@@ -257,15 +259,12 @@ export default {
         type: "warning"
       })
         .then(() => {
-          for (let i = 0; i < this.addressList.length; i++) {
-            if (info.id == this.addressList[i].id) {
-              this.addressList.splice(i, 1);
+          delAdd({ id: info.id }).then(res => {
+            if (res.code == 200) {
+              thiss.getAddress();
+            } else {
             }
-          }
-          // this.$message({
-          //   type: "success",
-          //   message: "删除成功!"
-          // });
+          });
         })
         .catch(() => {});
     },
