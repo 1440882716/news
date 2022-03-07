@@ -352,7 +352,7 @@ export default {
           for (let i = 0; i < this.goodsList.length; i++) {
             if (paperid == this.goodsList[i].paperId) {
               this.goodsList[i].periodNum = res.data;
-              this.goodsList[i].price = price * res.data;
+              this.goodsList[i].price = (price * res.data).toFixed(2);
               this.goodsList[i].count = (
                 this.goodsList[i].price * this.goodsList[i].quantity
               ).toFixed(2);

@@ -259,9 +259,16 @@ export default {
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {
-        // this.addressForm.region = [];
-        this.$refs.accountForm.clearValidate();
-        // this.$refs[accountForm].resetFields();
+        this.addressForm.name = "";
+        this.addressForm.mobile = "";
+        this.addressForm.region = [];
+        this.addressForm.address = "";
+        this.addressForm.postcode = "";
+        this.addressForm.isDefault = false;
+        if (this.addressForm.hasOwnProperty("id")) {
+          delete this.addressForm.id;
+        }
+        this.$refs.addressForm.clearValidate();
       });
     },
     setDefaultFun(info) {
@@ -278,13 +285,10 @@ export default {
     },
     // 修改地址
     changeAccount(info) {
+      let arr = [info.province, info.city, info.county];
       this.addressForm.name = info.name;
       this.addressForm.mobile = info.mobile;
-      // this.addressForm.region = ["12", "1201", "120101"];
-      // this.addressForm.region.push(info.province);
-      // this.addressForm.region.push(info.city);
-      // this.addressForm.region.push(info.county);
-      // debugger;
+      this.addressForm.region = arr;
       this.addressForm.address = info.address;
       this.addressForm.postcode = info.postcode;
       this.addressForm.isDefault = info.is_default;
@@ -315,10 +319,6 @@ export default {
     },
     // 新增地址
     comfirmAddress() {
-      // console.log(this.addressForm);
-      // console.log(this.addressForm.region);
-      // debugger;
-      // return;
       this.$refs.addressForm.validate(valid => {
         if (valid) {
           this.addressForm.province = this.addressForm.region[0];
