@@ -4,7 +4,15 @@ const userApi = {
     addAddress: '/client/address/add',
     addList: '/client/address/addList',
     updateAdd: '/client/address/update',
-    delAdd: '/client/address/del'
+    delAdd: '/client/address/del',
+    setDefault: '/client/address/setDefault'
+}
+export function setDefault(data) {
+    return request({
+        url: userApi.setDefault,
+        method: 'get',
+        params: data
+    })
 }
 export function addAddress(data) {
     return request({

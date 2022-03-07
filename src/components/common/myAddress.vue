@@ -22,9 +22,9 @@
                 type="text"
               ></el-input>
             </el-form-item>
-            <el-form-item label="手机号码" prop="phone">
+            <el-form-item label="手机号码" prop="mobile">
               <el-input
-                v-model="addressForm.phone"
+                v-model="addressForm.mobile"
                 type="text"
                 placeholder="请输入手机号"
               ></el-input>
@@ -61,19 +61,19 @@
             </el-form-item> -->
             <el-form-item label="邮编">
               <el-input
-                v-model="addressForm.zipCode"
+                v-model="addressForm.postcode"
                 type="text"
                 placeholder="请输入邮政编码"
               ></el-input>
             </el-form-item>
 
-            <el-form-item label="标签">
+            <!-- <el-form-item label="标签">
               <el-input
                 v-model="addressForm.label"
                 placeholder="请输入标签（如：家里、公司）"
                 type="text"
               ></el-input>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
           <div class="default-box text-left pointer" @click="getDefault">
             <i
@@ -116,8 +116,13 @@
       <!-- 地址列表 -->
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in addressList">
-          <div class="type-img-box">
-            <!-- <i class="el-icon-user-solid"></i> -->
+          <div class="type-img-box" @click="setDefaultFun(item)">
+            <img
+              v-if="item.is_default"
+              class="default-icon"
+              src="../../assets/img/default.png"
+              alt=""
+            />
             <img class="type-img" src="../../assets/img/people3.png" alt="" />
             <div class="tips-color">{{ item.name }}</div>
           </div>
@@ -141,14 +146,14 @@
             </div>
           </div>
           <div class="handle-box flex-r flex-e">
-            <div class="handle-icon-box1" @click="changeAccount(item)">
+            <div class="handle-icon-box1 pointer" @click="changeAccount(item)">
               <img
                 class="handle-icon1"
                 src="../../assets/img/pencil.png"
                 alt=""
               />
             </div>
-            <div class="handle-icon-box2" @click="delAccount(item)">
+            <div class="handle-icon-box2 pointer" @click="delAccount(item)">
               <img
                 class="handle-icon2"
                 src="../../assets/img/trash.png"
@@ -164,7 +169,13 @@
 <script>
 import city from "../../assets/data/area_format_user.json";
 import Map from "./map.vue";
-import { addList, delAdd } from "@/api/address";
+import {
+  addList,
+  addAddress,
+  delAdd,
+  updateAdd,
+  setDefault
+} from "@/api/address";
 export default {
   name: "mycard",
   components: {
@@ -195,16 +206,19 @@ export default {
         }
       ],
       addressForm: {
-        name: "",
-        phone: "",
-        region: "",
-        address: "",
-        zipCode: "",
-        lable: ""
+        name: "温婉",
+        mobile: "15285249588",
+        province: "",
+        region: [],
+        city: "",
+        county: "",
+        address: "福州一路凉水井街泰山巷123号",
+        postCode: "678987",
+        isDefault: false
       },
       accountRules: {
         name: [{ required: true, message: "请输入收货人", trigger: "blur" }],
-        phone: [
+        mobile: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
           {
             required: true,
@@ -218,6 +232,15 @@ export default {
         ],
         address: [
           { required: true, message: "请输入详细地址", trigger: "blur" }
+        ],
+        postCode: [
+          { required: true, message: "请输入邮编", trigger: "blur" },
+          {
+            required: true,
+            pattern: /^\d{6}$/,
+            message: "请输入正确的邮编",
+            trigger: "blur"
+          }
         ]
       }
     };
@@ -236,18 +259,36 @@ export default {
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {
+        // this.addressForm.region = [];
         this.$refs.accountForm.clearValidate();
+        // this.$refs[accountForm].resetFields();
       });
     },
-
+    setDefaultFun(info) {
+      for (let i = 0; i < this.addressList.length; i++) {
+        if (info.id == this.addressList[i].id) {
+          this.addressList[i].is_default = true;
+          setDefault({ id: info.id }).then(res => {
+            if (res.code == 200) {
+              this.getAddress();
+            }
+          });
+        }
+      }
+    },
     // 修改地址
     changeAccount(info) {
       this.addressForm.name = info.name;
-      this.addressForm.phone = info.phone;
-      this.addressForm.region = info.region;
+      this.addressForm.mobile = info.mobile;
+      // this.addressForm.region = ["12", "1201", "120101"];
+      // this.addressForm.region.push(info.province);
+      // this.addressForm.region.push(info.city);
+      // this.addressForm.region.push(info.county);
+      // debugger;
       this.addressForm.address = info.address;
-      this.addressForm.zipCode = info.zipCode;
-      this.addressForm.lable = info.lable;
+      this.addressForm.postcode = info.postcode;
+      this.addressForm.isDefault = info.is_default;
+      this.addressForm.id = info.id;
       this.dialogVisible = true;
     },
     // 删除地址
@@ -270,8 +311,50 @@ export default {
     },
     getDefault() {
       this.isDefault = !this.isDefault;
+      this.addressForm.isDefault = this.isDefault;
     },
-    comfirmAddress() {}
+    // 新增地址
+    comfirmAddress() {
+      // console.log(this.addressForm);
+      // console.log(this.addressForm.region);
+      // debugger;
+      // return;
+      this.$refs.addressForm.validate(valid => {
+        if (valid) {
+          this.addressForm.province = this.addressForm.region[0];
+          this.addressForm.city = this.addressForm.region[1];
+          this.addressForm.county = this.addressForm.region[2];
+          if (this.addressForm.hasOwnProperty("id")) {
+            // 修改地址信息
+            updateAdd(this.addressForm).then(res => {
+              if (res.code == 200) {
+                this.getAddress();
+                this.dialogVisible = false;
+              } else {
+                // 修改信息失败
+              }
+            });
+          } else {
+            // 新增地址信息
+            addAddress(this.addressForm).then(res => {
+              if (res.code == 200) {
+                addList().then(res => {
+                  if (res.code == 200) {
+                    // this.$emit("changeData", res.data);
+                    this.getAddress();
+                    this.dialogVisible = false;
+                  }
+                });
+              } else {
+                // 新增地址失败
+              }
+            });
+          }
+        } else {
+          // 表单验证不通过
+        }
+      });
+    }
   }
 };
 </script>
@@ -362,12 +445,23 @@ export default {
   height: 120px;
   border: 1px solid #e5e5e5;
   margin-top: 20px;
+  position: relative;
 }
 .type-img-box {
   width: 200px;
   height: 100%;
-  /* line-height: 120px; */
   text-align: center;
+  background-color: #edffff;
+}
+.default-icon {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+}
+.default-add-box {
+  /* background-color: #ffdfbd; */
+}
+.not-default {
   background-color: #edffff;
 }
 .type-img {
