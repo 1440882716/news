@@ -6,6 +6,9 @@ import router from './router'
 import requests from '../src/utils/request.js'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
+
+
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: 'wOpTc8W4egqlCtKxhXC92NrngGXXAYVQ' //官方提供的ak秘钥

@@ -1,5 +1,6 @@
 <template>
   <div class="my-info">
+    <msgBox ref="tips"></msgBox>
     <el-dialog
       title="新增账户"
       :visible.sync="dialogVisible"
@@ -121,14 +122,14 @@
             </div>
           </div>
           <div class="handle-box flex-r flex-e">
-            <div class="handle-icon-box1" @click="changeAccount(item)">
+            <div class="handle-icon-box1 pointer" @click="changeAccount(item)">
               <img
                 class="handle-icon1"
                 src="../../assets/img/pencil.png"
                 alt=""
               />
             </div>
-            <div class="handle-icon-box2" @click="delAccount(item)">
+            <div class="handle-icon-box2 pointer" @click="delAccount(item)">
               <img
                 class="handle-icon2"
                 src="../../assets/img/trash.png"
@@ -144,8 +145,12 @@
 <script>
 import city from "../../assets/data/area_format_city.json";
 import { addCard, updCard, delCard, cardList } from "@/api/card";
+import msgBox from "./msg.vue";
 export default {
   name: "mycard",
+  components: {
+    msgBox
+  },
   data() {
     return {
       dialogVisible: false,
@@ -166,12 +171,11 @@ export default {
         // }
       ],
       accountForm: {
-        type: 1,
         name: "",
         zfbCard: "",
         cardNumber: "",
         bankName: "",
-        bankRegion: "",
+        bankRegion: [],
         province: "",
         city: "",
         branch: ""
@@ -225,51 +229,55 @@ export default {
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {
+        this.accountForm.name = "";
+        this.accountForm.cardNumber = "";
+        this.accountForm.bankName = "";
+        this.accountForm.bankRegion = [];
+        this.accountForm.branch = "";
         this.$refs.accountForm.clearValidate();
       });
     },
-    chooseLabel(value) {
-      console.log(value);
-      if (value == 1) {
-        this.isZfb = true;
-      } else {
-        this.isZfb = false;
-      }
-    },
-    // 修改支付宝/银行卡信息
+
+    // 修改银行卡信息
     changeAccount(info) {
-      if (info.type == 1) {
-        this.isZfb = true;
-        this.yhkType = true;
-        this.accountForm.type = 1;
-        this.accountForm.name = info.name;
-        this.accountForm.zfbCard = info.account;
-      } else {
-        this.isZfb = false;
-        this.zfbType = true;
-        this.accountForm.type = 1;
-        this.accountForm.name = info.name;
-        this.accountForm.bankCard = info.account;
-        this.accountForm.bankRegion = info.bankRegion;
-        this.accountForm.bankItem = info.bankItem;
-      }
+      // debugger;
+      let arr = [info.province, info.city];
+      this.accountForm.id = info.id;
+      this.accountForm.name = info.name;
+      this.accountForm.cardNumber = info.cardNumber;
+      this.accountForm.bankName = info.bankName;
+      this.accountForm.bankRegion = arr;
+      this.accountForm.branch = info.branch;
       this.dialogVisible = true;
+      // console.log(this.accountForm);
+
+      // debugger;
     },
     // 添加银行卡
     addCardFun() {
-      // console.log(this.accountForm);
-      // debugger;
-      // return;
       this.$refs.accountForm.validate(valid => {
         if (valid) {
           this.accountForm.province = this.accountForm.bankRegion[0];
           this.accountForm.city = this.accountForm.bankRegion[1];
-          addCard(this.accountForm).then(res => {
-            if (res.code == 200) {
-              this.dialogVisible = false;
-              this.getData();
-            }
-          });
+          if (this.accountForm.hasOwnProperty("id")) {
+            updCard(this.accountForm).then(res => {
+              if (res.code == 200) {
+                this.dialogVisible = false;
+                this.getData();
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+            });
+          } else {
+            addCard(this.accountForm).then(res => {
+              if (res.code == 200) {
+                this.dialogVisible = false;
+                this.getData();
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+            });
+          }
         }
       });
     },
@@ -285,6 +293,7 @@ export default {
             if (res.code == 200) {
               this.getData();
             } else {
+              this.$refs.tips.toast(res.msg);
             }
           });
         })
