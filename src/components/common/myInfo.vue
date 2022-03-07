@@ -135,7 +135,8 @@
         <div class="info-container" v-show="navTitle == 2">
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :headers="{ Authorization: token }"
+            action="http://192.168.31.23:8081/client/user/updAvatar"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -163,11 +164,13 @@
 
 <script>
 import region from "../../assets/data/area_format_user.json";
+import { getToken } from "@/utils/auth";
 export default {
   name: "index",
   data() {
     return {
       navTitle: 1,
+      token: "",
       dialogVisible: false,
       regionData: region,
       imageUrl: "",
@@ -194,7 +197,9 @@ export default {
       }
     };
   },
-
+  created() {
+    this.token = getToken();
+  },
   mounted() {},
   methods: {
     resetForm(formName) {

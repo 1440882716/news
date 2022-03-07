@@ -28,7 +28,11 @@
         <div class="bannar-box">
           <div class="block bannar-box">
             <el-carousel trigger="click" height="340px">
-              <el-carousel-item class="bannar-item" v-for="item in bannarArr">
+              <el-carousel-item
+                class="bannar-item"
+                v-for="item in bannarArr"
+                :key="item"
+              >
                 <img style="width: 1200px;height: 340px;" :src="item" alt="" />
               </el-carousel-item>
             </el-carousel>
