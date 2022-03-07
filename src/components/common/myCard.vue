@@ -13,13 +13,6 @@
           :rules="accountRules"
           ref="accountForm"
         >
-          <el-form-item label="请选择账户类型" prop="type">
-            <el-radio-group v-model="accountForm.type" style="width: 100%;">
-              <el-radio label="1" @change="chooseLabel">支付宝</el-radio>
-              <el-radio label="2" @change="chooseLabel">银行卡</el-radio>
-            </el-radio-group>
-          </el-form-item>
-
           <el-form-item label="用户姓名" prop="name">
             <el-input
               v-model="accountForm.name"
@@ -27,29 +20,22 @@
               type="text"
             ></el-input>
           </el-form-item>
-          <el-form-item label="支付宝账号" prop="zfbCard" v-show="isZfb">
-            <el-input
-              v-model="accountForm.zfbCard"
-              type="text"
-              placeholder="请输入支付宝账号"
-            ></el-input>
-          </el-form-item>
 
-          <el-form-item label="银行卡号" prop="bankCard" v-show="!isZfb">
+          <el-form-item label="银行卡号" prop="cardNumber">
             <el-input
-              v-model="accountForm.bankCard"
+              v-model="accountForm.cardNumber"
               type="text"
               placeholder="请输入银行卡号"
             ></el-input>
           </el-form-item>
-          <el-form-item label="开户银行" prop="bankName" v-show="!isZfb">
+          <el-form-item label="开户银行" prop="bankName">
             <el-input
               v-model="accountForm.bankName"
               type="text"
               placeholder="请输入银行卡号"
             ></el-input>
           </el-form-item>
-          <el-form-item label="开户地" prop="bankRegion" v-show="!isZfb">
+          <el-form-item label="开户地" prop="bankRegion">
             <el-cascader
               style="width: 100%;"
               v-model="accountForm.bankRegion"
@@ -63,9 +49,9 @@
               }"
             ></el-cascader>
           </el-form-item>
-          <el-form-item label="开户支行" prop="bankItem" v-show="!isZfb">
+          <el-form-item label="开户支行" prop="branch">
             <el-input
-              v-model="accountForm.bankItem"
+              v-model="accountForm.branch"
               placeholder="请输入开户支行"
               type="text"
             ></el-input>
@@ -78,7 +64,7 @@
           </p>
         </div>
       </div>
-      <div class="add-card-btn fff-font pointer" @click="dialogVisible = true">
+      <div class="add-card-btn fff-font pointer" @click="addCardFun">
         <span>完成</span>
       </div>
 
@@ -92,7 +78,7 @@
     <div class="info-content text-left">
       <div class="title-box flex-r flex-b">
         <div class="my-info-title">
-          我的银行卡/支付宝
+          我的银行卡
         </div>
         <div class="top-add-box font14 pointer" @click="dialogVisible = true">
           新增
@@ -106,16 +92,16 @@
           <div>
             <img class="add-icon" src="../../assets/img/add.png" alt="" />
           </div>
-          <span>添加银行卡/支付宝</span>
+          <span>添加银行卡</span>
         </div>
       </div>
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in cardList">
-          <div class="type-img-box" v-if="item.type == 1">
+          <!-- <div class="type-img-box" v-if="item.type == 1">
             <img class="type-img" src="../../assets/img/zfb.png" alt="" />
             <div class="tips-color">支付宝</div>
-          </div>
-          <div class="type-img-box" v-else>
+          </div> -->
+          <div class="type-img-box">
             <img class="type-img" src="../../assets/img/bank.png" alt="" />
             <div class="tips-color">银行卡</div>
           </div>
@@ -126,15 +112,12 @@
               <span>{{ item.name }}</span>
             </div>
             <div class="flex-r text-center">
-              <div class="tips-color card-name-box" v-if="item.type == 1">
-                支付宝账号：
-              </div>
-              <div class="tips-color card-name-box" v-else>银行卡号：</div>
-              <span>{{ item.account }}</span>
+              <div class="tips-color card-name-box">银行卡号：</div>
+              <span>{{ item.cardNumber }}</span>
             </div>
-            <div class="flex-r text-center" v-if="item.type == 2">
+            <div class="flex-r text-center">
               <div class="tips-color card-name-box">银行：</div>
-              <span>{{ item.bank }}</span>
+              <span>{{ item.bankName }}</span>
             </div>
           </div>
           <div class="handle-box flex-r flex-e">
@@ -160,6 +143,7 @@
 </template>
 <script>
 import city from "../../assets/data/area_format_city.json";
+import { addCard, updCard, delCard, cardList } from "@/api/card";
 export default {
   name: "mycard",
   data() {
@@ -185,26 +169,28 @@ export default {
         type: 1,
         name: "",
         zfbCard: "",
-        bankCard: "",
+        cardNumber: "",
         bankName: "",
         bankRegion: "",
-        bankItem: ""
+        province: "",
+        city: "",
+        branch: ""
       },
       accountRules: {
-        type: [{ required: true, message: "  ", trigger: "blur" }],
+        // type: [{ required: true, message: "  ", trigger: "blur" }],
         name: [
           { required: true, message: "开户人姓名不能为空", trigger: "blur" }
         ],
-        zfbCard: [
-          { required: true, message: "账号不能为空", trigger: "blur" },
-          {
-            required: true,
-            pattern: /^(?:1[3-9]\d{9}|[a-zA-Z\d._-]*\@[a-zA-Z\d.-]{1,10}\.[a-zA-Z\d]{1,20})$/,
-            message: "请输入正确的支付宝账号(手机号/邮箱)",
-            trigger: "blur"
-          }
-        ],
-        bankCard: [
+        // zfbCard: [
+        //   { required: true, message: "账号不能为空", trigger: "blur" },
+        //   {
+        //     required: true,
+        //     pattern: /^(?:1[3-9]\d{9}|[a-zA-Z\d._-]*\@[a-zA-Z\d.-]{1,10}\.[a-zA-Z\d]{1,20})$/,
+        //     message: "请输入正确的支付宝账号(手机号/邮箱)",
+        //     trigger: "blur"
+        //   }
+        // ],
+        cardNumber: [
           { required: true, message: "银行卡号不能为空", trigger: "blur" },
           {
             required: true,
@@ -219,13 +205,23 @@ export default {
         bankRegion: [
           { required: true, message: "开户地区不能为空", trigger: "blur" }
         ],
-        bankItem: [
+        branch: [
           { required: true, message: "开户支行不能为空", trigger: "blur" }
         ]
       }
     };
   },
+  created() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      cardList().then(res => {
+        if (res.code == 200) {
+          this.cardList = res.data;
+        }
+      });
+    },
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {
@@ -259,9 +255,40 @@ export default {
       }
       this.dialogVisible = true;
     },
+    // 添加银行卡
+    addCardFun() {
+      // console.log(this.accountForm);
+      // debugger;
+      // return;
+      this.$refs.accountForm.validate(valid => {
+        if (valid) {
+          this.accountForm.province = this.accountForm.bankRegion[0];
+          this.accountForm.city = this.accountForm.bankRegion[1];
+          addCard(this.accountForm).then(res => {
+            if (res.code == 200) {
+              this.dialogVisible = false;
+              this.getData();
+            }
+          });
+        }
+      });
+    },
     // 删除支付宝/银行卡
     delAccount(info) {
-      console.log(info);
+      this.$confirm("确定要删除该地址吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delCard({ id: info.id }).then(res => {
+            if (res.code == 200) {
+              this.getData();
+            } else {
+            }
+          });
+        })
+        .catch(() => {});
     }
   }
 };

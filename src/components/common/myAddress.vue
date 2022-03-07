@@ -293,7 +293,7 @@ export default {
     },
     // 删除地址
     delAccount(info) {
-      console.log(info);
+      // console.log(info);
       this.$confirm("确定要删除该地址吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
