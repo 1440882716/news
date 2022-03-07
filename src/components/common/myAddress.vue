@@ -253,7 +253,7 @@ export default {
     // 删除地址
     delAccount(info) {
       console.log(info);
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("确定要删除该地址吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -261,7 +261,7 @@ export default {
         .then(() => {
           delAdd({ id: info.id }).then(res => {
             if (res.code == 200) {
-              thiss.getAddress();
+              this.getAddress();
             } else {
             }
           });

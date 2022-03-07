@@ -4,7 +4,8 @@ const userApi = {
     addCart: '/client/cart/add',
     updateCart: '/client/cart/update',
     delCart: '/client/cart/del',
-    cartList: '/client/cart/list'
+    cartList: '/client/cart/list',
+    confirmUrl: '/client/cart/confirm'
 }
 export function addCart(data) {
     return request({
@@ -30,6 +31,13 @@ export function delCart(data) {
 export function cartList(data) {
     return request({
         url: userApi.cartList,
+        method: 'get',
+        params: data
+    })
+}
+export function confirmUrl(data) {
+    return request({
+        url: userApi.confirmUrl,
         method: 'get',
         params: data
     })

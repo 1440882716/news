@@ -7,7 +7,8 @@
       <div class="cart-box">
         <div class="cart-head flex-r flex-b">
           <div class="font18 main-color">
-            全部商品 <span class="myActiveColor">{{ countNum }}</span>
+            全部商品
+            <span class="myActiveColor">{{ this.goodsList.length }}</span>
           </div>
           <div class="font14 flex-r">
             已选商品不含运费：<span class="price-color">¥ {{ allPrice }}</span>
@@ -506,10 +507,24 @@ export default {
     },
 
     toConfirm() {
-      this.$router.push({
-        path: "/confirmOrder",
-        name: "confirmOrder"
-      });
+      if (this.countNum != 0) {
+        let select_goods = this.goodsList.filter(item => {
+          return item.select;
+        });
+        let idArr = select_goods.map(item => {
+          return item.id;
+        });
+        let idStr = idArr.join(",");
+        this.$router.push({
+          path: "/confirmOrder",
+          name: "confirmOrder",
+          query: {
+            goodsId: idStr
+          }
+        });
+      } else {
+        this.$refs.tips.toast("请选中商品后再操作");
+      }
     }
   }
 };

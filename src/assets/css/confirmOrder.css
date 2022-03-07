@@ -83,7 +83,19 @@
   width: 45%;
 }
 .headline3 {
-  width: 40%;
+  width: 15%;
+  height: 100%;
+  padding-right: 10px;
+  /* background-color: salmon; */
+}
+.headline4 {
+  width: 10%;
+  height: 100%;
+  padding-right: 10px;
+  /* background-color: salmon; */
+}
+.headline5 {
+  width: 15%;
   height: 100%;
   padding-right: 10px;
   /* background-color: salmon; */

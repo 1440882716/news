@@ -72,9 +72,6 @@
           <div class="order-box">
             <div class="confirm-title flex-r flex-b m-t-10 m-b-10">
               <span class="bold-font">订单列表</span>
-              <!-- <span class="myActiveColor pointer" @click="openAddBox"
-                >请核对</span
-              > -->
             </div>
             <div
               class="cart-list flex-r font14 m-b-10"
@@ -82,8 +79,11 @@
             >
               <div class="flex-r headline1">
                 <!-- 商品图片 -->
-                <div class="cart-goods-img pointer" @click="toDetail(item.id)">
-                  <img :src="item.img" alt="" />
+                <div
+                  class="cart-goods-img pointer"
+                  @click="toDetail(item.paperId)"
+                >
+                  <img :src="item.pics" alt="" />
                 </div>
               </div>
               <div class="flex-r headline2 flex-b">
@@ -91,7 +91,7 @@
                 <div class="goods-info font12 gray-font-color change-buy-info">
                   <p style="text-align: left;">
                     <span class="justify">年度:</span>
-                    <span>2022</span>
+                    <span>{{ item.paperYear }}</span>
                   </p>
                   <p style="text-align: left;">
                     <span class="justify">订阅选择:</span>
@@ -99,23 +99,26 @@
                   </p>
                   <p style="text-align: left;">
                     <span class="justify">起止日期:</span>
-                    <span>2022-02-21~2022-12-31</span>
+                    <span>{{ item.startrTime }}~{{ item.endTime }}</span>
                   </p>
                   <p style="text-align: left;">
                     <span class="justify">期数:</span>
-                    <span>314</span>
+                    <span>{{ item.periodNum }}</span>
                   </p>
-                  <p style="text-align: left;">
+                  <!-- <p style="text-align: left;">
                     <span class="justify">刊期:</span>
                     <span>0221~1231</span>
-                  </p>
+                  </p> -->
                 </div>
               </div>
-              <div class="headline3 font14 myActiveColor bold-font text-right">
+              <div class="headline3 font14 f666 bold-font text-right">
                 {{ item.price }}
               </div>
-              <div class="headline5 price-color font16 bold600">
-                {{ item.count }}
+              <div class="headline4 font14 f666 bold-font text-right">
+                x{{ item.quantity }}
+              </div>
+              <div class="headline5 price-color font16 bold600 text-right">
+                {{ item.price * item.quantity }}
               </div>
             </div>
           </div>
@@ -124,7 +127,9 @@
       <div class="flex flex-c flex-e m-t-20 f666">
         <div class="text-right m-b-10">
           <span class="font14 bold-font">共 </span>
-          <span class="font14 bold-font myActiveColor">2</span>
+          <span class="font14 bold-font myActiveColor">{{
+            goodsList.length
+          }}</span>
           <span class="font14 bold-font"> 件</span>
           <span class="font14 bold-font">合计：</span>
           <span class="font14 myActiveColor">¥ </span>
@@ -156,6 +161,7 @@ import addAddress from "./common/addAddress.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "./common/msg.vue";
 import { addList, delAdd } from "@/api/address";
+import { confirmUrl } from "@/api/cart";
 export default {
   name: "confirm",
   components: {
@@ -168,6 +174,8 @@ export default {
     return {
       isOpen: false,
       ind: 0,
+      goodsId: "",
+      goodsCount: 0,
       itemAddress: {},
       addressList: [],
       goodsList: [
@@ -195,7 +203,9 @@ export default {
     };
   },
   created() {
+    this.goodsId = this.$route.query.goodsId;
     this.getAddress();
+    this.getGoods();
   },
   methods: {
     chooseNav(ind) {
@@ -217,6 +227,14 @@ export default {
               this.ind = i;
             }
           }
+        }
+      });
+    },
+    // 获取下订单的商品数据
+    getGoods() {
+      confirmUrl({ cartList: this.goodsId }).then(res => {
+        if (res.code == 200) {
+          this.goodsList = res.data;
         }
       });
     },
