@@ -47,6 +47,9 @@ input {
 .hidden {
   overflow: hidden;
 }
+.header-bgc {
+  background-color: #202020;
+}
 /* input:focus {
   border: none;
 } */

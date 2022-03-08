@@ -29,6 +29,8 @@
           <myCard v-show="navNum == 2"></myCard>
           <!-- 我的地址 -->
           <myAddress v-show="navNum == 3"></myAddress>
+          <!-- 发票抬头 -->
+          <Invoice v-show="navNum == 4"></Invoice>
         </div>
       </div>
     </div>
@@ -41,6 +43,7 @@ import myInfo from "./common/myInfo.vue";
 import Account from "./common/account.vue";
 import myCard from "./common/myCard.vue";
 import myAddress from "./common/myAddress.vue";
+import Invoice from "./common/invoice.vue";
 import Footer from "./common/footer.vue";
 export default {
   name: "my",
@@ -51,6 +54,7 @@ export default {
     myInfo,
     Account,
     myCard,
+    Invoice,
     myAddress
   },
   data() {

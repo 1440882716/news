@@ -1,6 +1,7 @@
 <template>
   <div class="header">
-    <div class="container">
+    <!-- <div class="container header-bgc v1-head-box"> -->
+    <div class="container ">
       <div class="head-line">
         <div class="content font12  flex-r flex-b tips-color">
           <div class="head-line-left">
@@ -98,13 +99,18 @@ router-link {
 .head-line-left {
   width: 30%;
   text-align: left;
-  /* background-color: bisque; */
 }
 .head-line-right {
   width: 60%;
-  /* background-color: blueviolet; */
 }
 .head-ul-list li {
   margin-left: 10px;
+}
+
+/* ============================================最终版 */
+.v1-head-box {
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
 }
 </style>
