@@ -261,6 +261,7 @@
         <div class="flex flex-e" @click="handleOrder">
           <div class="handle-order fff-font pointer">提交订单</div>
         </div>
+        <img :src="qrImg" alt="" />
       </div>
     </div>
     <Footer></Footer>
@@ -296,7 +297,8 @@ export default {
       itemAddress: {},
       addressList: [],
       goodsList: [],
-      cardData: []
+      cardData: [],
+      qrImg: ""
     };
   },
   created() {
@@ -367,6 +369,11 @@ export default {
       });
     },
     handleOrder() {
+      // let qrcode = "https://qr.alipay.com/bax06387rh8te3fxuczd004d";
+      // this.qrImg = `https://cli.im/api/qrcode/code?text=%2F%2F${qrcode}%2F&mhid=sELPDFnok80gPHovKdI`;
+      // console.log(this.qrImg);
+      // debugger;
+      // return;
       let data = {
         addId: this.itemAddress.id,
         cartList: this.goodsId,
