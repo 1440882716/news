@@ -5,7 +5,15 @@ const userApi = {
     updateCart: '/client/cart/update',
     delCart: '/client/cart/del',
     cartList: '/client/cart/list',
-    confirmUrl: '/client/cart/confirm'
+    confirmUrl: '/client/cart/confirm',
+    createOrder: '/client/order/create'
+}
+export function createOrder(data) {
+    return request({
+        url: userApi.createOrder,
+        method: 'post',
+        data: data
+    })
 }
 export function addCart(data) {
     return request({

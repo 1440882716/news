@@ -98,10 +98,6 @@
       </div>
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in cardList">
-          <!-- <div class="type-img-box" v-if="item.type == 1">
-            <img class="type-img" src="../../assets/img/zfb.png" alt="" />
-            <div class="tips-color">支付宝</div>
-          </div> -->
           <div class="type-img-box">
             <img class="type-img" src="../../assets/img/bank.png" alt="" />
             <div class="tips-color">银行卡</div>

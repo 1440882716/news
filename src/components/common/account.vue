@@ -1,5 +1,6 @@
 <template>
   <div class="my-info">
+    <msgBox ref="tips"></msgBox>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>这是一段信息</span>
       <span slot="footer" class="dialog-footer">
@@ -107,75 +108,38 @@
         </div>
         <!-- 绑定手机 -->
         <div class="info-container font14" v-show="navTitle == 2">
-          <div v-show="oldTOnew == 'old'">
-            <div class="re-step-item flex-r">
-              <div class="re-step-left m-r-20">
-                <span class="price-main">*</span>
-                <span class="f666">旧手机号</span>
-              </div>
-              <el-input
-                type="text"
-                v-model="oldPhone"
-                :disabled="true"
-              ></el-input>
-              <div class="get-code pointer" @click="getCode">{{ count }}</div>
+          <div class="re-step-item flex-r">
+            <div class="re-step-left m-r-20">
+              <span class="price-main">*</span>
+              <span class="f666">新手机号</span>
             </div>
-            <div class="re-step-item m-t-20">
-              <div class="flex-r">
-                <div class="re-step-left m-r-20">
-                  <span class="price-main">*</span>
-                  <span class="f666">验证码</span>
-                </div>
-                <input
-                  class="re-step-right"
-                  v-model="oldPhoneCode"
-                  type="text"
-                  placeholder="请输入验证码"
-                />
-              </div>
-            </div>
-            <div class="pwd-btns-box">
-              <el-button class="primary-btn m-r-10" @click="toNewPhone"
-                >确认</el-button
-              >
-              <el-button class="border-btn" @click="navTitle = 0"
-                >返回</el-button
-              >
+            <el-input
+              type="text"
+              v-model="newPhone"
+              placeholder="请输入新手机号"
+            ></el-input>
+            <div class="get-code pointer" @click="getNewCode">
+              {{ count }}
             </div>
           </div>
-          <div v-show="oldTOnew == 'new'">
-            <div class="re-step-item flex-r">
+          <div class="re-step-item m-t-20">
+            <div class="flex-r">
               <div class="re-step-left m-r-20">
                 <span class="price-main">*</span>
-                <span class="f666">新手机号</span>
+                <span class="f666">验证码</span>
               </div>
-              <el-input type="text" v-model="newPhone"></el-input>
-              <div class="get-code pointer" @click="getNewCode">
-                {{ newcount }}
-              </div>
+              <el-input
+                v-model="phoneCode"
+                type="text"
+                placeholder="请输入验证码"
+              ></el-input>
             </div>
-            <div class="re-step-item m-t-20">
-              <div class="flex-r">
-                <div class="re-step-left m-r-20">
-                  <span class="price-main">*</span>
-                  <span class="f666">验证码</span>
-                </div>
-                <input
-                  class="re-step-right"
-                  v-model="oldPhoneCode"
-                  type="text"
-                  placeholder="请输入验证码"
-                />
-              </div>
-            </div>
-            <div class="pwd-btns-box">
-              <el-button class="primary-btn m-r-10" @click="toNewPhone"
-                >确认</el-button
-              >
-              <el-button class="border-btn" @click="navTitle = 0"
-                >返回</el-button
-              >
-            </div>
+          </div>
+          <div class="pwd-btns-box">
+            <el-button class="primary-btn m-r-10" @click="toNewPhone"
+              >确认</el-button
+            >
+            <el-button class="border-btn" @click="navTitle = 0">返回</el-button>
           </div>
         </div>
       </div>
@@ -184,8 +148,14 @@
 </template>
 
 <script>
+import { updPwd, updMobile, delAccount } from "@/api/user";
+import { getSmsCode } from "@/api/regist";
+import msgBox from "./msg.vue";
 export default {
   name: "account",
+  components: {
+    msgBox
+  },
   data() {
     const pwd = (rule, value, callback) => {
       if (value != this.changePwd.newPwd) {
@@ -200,10 +170,10 @@ export default {
       dialogVisible: false,
       oldTOnew: "old",
       count: "发送验证码",
-      newcount: "发送验证码",
+      // newcount: "发送验证码",
       oldPhone: "17608080989",
       newPhone: "",
-      oldPhoneCode: "",
+      phoneCode: "",
       changePwd: {
         oldPwd: "",
         newPwd: "",
@@ -228,16 +198,45 @@ export default {
   mounted() {},
   methods: {
     changeItem(num) {
-      this.navTitle = num;
       if (num == 1) {
+        this.navTitle = num;
         this.titleTxt = "修改密码";
       } else if (num == 2) {
+        this.navTitle = num;
         this.titleTxt = "请先完成身份验证";
-        this.oldTOnew = "old";
+        // this.oldTOnew = "old";
+      } else {
+        this.$confirm("确定要注销这个账号吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            delAccount().then(res => {
+              if (res.code == 200) {
+                // 注销成功，清除登录信息，回到首页
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+            });
+          })
+          .catch(() => {});
       }
     },
     // 确认修改密码
-    confirmChange() {},
+    confirmChange() {
+      this.$refs.changePwd.validate(valid => {
+        if (valid) {
+          updPwd(this.changePwd).then(res => {
+            if (res.code == 200) {
+              // 修改密码成功后 推出登录
+              this.navTitle = 0;
+            } else {
+            }
+          });
+        }
+      });
+    },
     // 获取验证码
     getCode() {
       // 发送请求获取验证码
@@ -257,13 +256,40 @@ export default {
         }, 1000);
       }
     },
-    // 解绑旧手机
-    toNewPhone() {
-      // 发送请求解绑旧手机
-      this.oldTOnew = "new";
+
+    // 发送验证码给新手机
+    getNewCode() {
+      let regPhone = /^[1][3,4,5,7,8,9][0-9]{9}$/;
+      if (!regPhone.test(this.newPhone)) {
+        this.$refs.tips.toast("请输入正确的手机号");
+      } else {
+        getSmsCode({ mobile: this.newPhone }).then(res => {
+          if (res.code == 200) {
+            this.$refs.tips.toast(res.msg);
+            this.getCode();
+          } else {
+            this.$refs.tips.toast(res.msg);
+          }
+        });
+      }
     },
     // 绑定新手机
-    getNewCode() {}
+    toNewPhone() {
+      if (this.phoneCode != "") {
+        updMobile({ mobile: this.newPhone, smsCode: this.phoneCode }).then(
+          res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.navTitle = 0;
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          }
+        );
+      } else {
+        this.$refs.tips.toast("请输入验证码");
+      }
+    }
   }
 };
 </script>

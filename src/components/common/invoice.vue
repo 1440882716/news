@@ -160,7 +160,6 @@
   </div>
 </template>
 <script>
-import city from "../../assets/data/area_format_city.json";
 import { addInvoice, updInvoice, pageData, delInvoice } from "@/api/invoice";
 import msgBox from "./msg.vue";
 export default {
@@ -172,18 +171,7 @@ export default {
     return {
       dialogVisible: false,
       typeNum: 1,
-      invoiceList: [
-        // { id: 1, name: "徐然", account: "1341235351245", type: 1 },
-        // {
-        //   id: 2,
-        //   type: 2,
-        //   name: "官官",
-        //   account: "621700575509687565645674",
-        //   bank: "建设银行",
-        //   bankRegion: "",
-        //   bankItem: "冠城广场支行"
-        // }
-      ],
+      invoiceList: [],
       accountForm: {
         type: 1,
         name: "",
@@ -260,7 +248,7 @@ export default {
           if (errMsg) {
           } else {
             if (this.accountForm.hasOwnProperty("id")) {
-              updCard(this.accountForm).then(res => {
+              updInvoice(this.accountForm).then(res => {
                 if (res.code == 200) {
                   this.dialogVisible = false;
                   this.getData();
@@ -285,7 +273,7 @@ export default {
         this.$refs.accountForm.validate(valid => {
           if (valid) {
             if (this.accountForm.hasOwnProperty("id")) {
-              updCard(this.accountForm).then(res => {
+              updInvoice(this.accountForm).then(res => {
                 if (res.code == 200) {
                   this.dialogVisible = false;
                   this.getData();

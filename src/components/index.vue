@@ -114,7 +114,7 @@ export default {
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      goodsId: "1499554743185973250",
+      goodsId: "1496359872988073985",
       bannarArr: [
         "https://bic.11185.cn/zxpt-sc-sys/news/906_1644653723588_696_SYS_817.jpg.webp",
         "https://bic.11185.cn/zxpt-sc-sys/news/611_1643533765680_968_SYS_113.jpg.webp",

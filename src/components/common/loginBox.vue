@@ -95,8 +95,8 @@ export default {
       status: false,
       logintype: 1,
       count: "获取验证码",
-      account: "17608086789",
-      pwd: "123aaa",
+      account: "小7",
+      pwd: "111aaa",
       phone: "",
       msgCode: ""
     };

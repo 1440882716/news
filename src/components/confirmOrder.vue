@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <msgBox></msgBox>
+    <msgBox ref="tips"></msgBox>
     <Header></Header>
     <!-- 新增地址弹框 -->
     <addAddress
@@ -34,7 +34,7 @@
             <div
               class="add-item-box flex-r flex-b"
               v-for="(item, index) in addressList"
-              key="index"
+              :key="index"
             >
               <div class="add-left flex-r">
                 <div class="m-r-10 font18" @click="chooseAdd(index, item)">
@@ -121,6 +121,117 @@
                 {{ item.price * item.quantity }}
               </div>
             </div>
+            <!-- 订单备注 -->
+            <div class="m-b-10">
+              <span class="bold-font">订单备注</span>
+              <el-input
+                class="m-t-10"
+                type="textarea"
+                :rows="4"
+                placeholder="请输入备注"
+                v-model="remark"
+              >
+              </el-input>
+            </div>
+            <div>
+              <span class="bold-font">支付方式</span>
+              <div class="flex-r ">
+                <div class="pointer m-r-20 text-center" @click="payWay = 1">
+                  <img
+                    v-if="payWay == 1"
+                    class="pay-box"
+                    src="../assets/img/wx.png"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="pay-box"
+                    src="../assets/img/active-wx.png"
+                    alt=""
+                  />
+                  <p>微信</p>
+                </div>
+                <div class="pointer m-r-20 text-center" @click="payWay = 2">
+                  <img
+                    v-if="payWay == 2"
+                    class="pay-box"
+                    src="../assets/img/zfbpay.png"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="pay-box"
+                    src="../assets/img/active-zfb.png"
+                    alt=""
+                  />
+                  <p class="">支付宝</p>
+                </div>
+                <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
+                  <img
+                    v-if="payWay == 3"
+                    class="pay-box-card"
+                    src="../assets/img/cardpay.png"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="pay-box-card"
+                    src="../assets/img/active-card.png"
+                    alt=""
+                  />
+                  <p>银行卡</p>
+                </div>
+                <div class="pointer text-center" @click="payWay = 4">
+                  <img
+                    v-if="payWay == 4"
+                    class="pay-box"
+                    src="../assets/img/pz.png"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="pay-box"
+                    src="../assets/img/active-pz.png"
+                    alt=""
+                  />
+                  <p>上传凭证</p>
+                </div>
+              </div>
+              <!-- 银行卡列表 -->
+              <div v-show="payWay == 3">
+                <div
+                  class="card-item-box flex-r pointer"
+                  v-for="item in cardData"
+                >
+                  <div class="type-img-box">
+                    <img
+                      class="type-img"
+                      src="../assets/img/cardpay.png"
+                      alt=""
+                    />
+                    <div class="tips-color">银行卡</div>
+                  </div>
+
+                  <div class="card-info font12">
+                    <div class="flex-r text-center m-t-20">
+                      <div class="tips-color card-name-box">姓名：</div>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <div class="flex-r text-center">
+                      <div class="tips-color card-name-box">银行卡号：</div>
+                      <span>{{ item.cardNumber }}</span>
+                    </div>
+                    <div class="flex-r text-center">
+                      <div class="tips-color card-name-box">银行：</div>
+                      <span>{{ item.bankName }}</span>
+                    </div>
+                  </div>
+                  <div class="handle-box text-center">
+                    <i class="el-icon-success f999 font18"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -133,7 +244,7 @@
           <span class="font14 bold-font"> 件</span>
           <span class="font14 bold-font">合计：</span>
           <span class="font14 myActiveColor">¥ </span>
-          <span class="font20 bold-font myActiveColor">246.4</span>
+          <span class="font20 bold-font myActiveColor">{{ goodsCount }}</span>
         </div>
         <div class="text-right m-b-10">
           <span class="font14 bold-font">寄送至：</span
@@ -147,7 +258,7 @@
             >{{ itemAddress.name }} {{ itemAddress.mobile }}</span
           >
         </div>
-        <div class="flex flex-e">
+        <div class="flex flex-e" @click="handleOrder">
           <div class="handle-order fff-font pointer">提交订单</div>
         </div>
       </div>
@@ -161,7 +272,8 @@ import addAddress from "./common/addAddress.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "./common/msg.vue";
 import { addList, delAdd } from "@/api/address";
-import { confirmUrl } from "@/api/cart";
+import { confirmUrl, createOrder } from "@/api/cart";
+import { cardList } from "@/api/card";
 export default {
   name: "confirm",
   components: {
@@ -176,30 +288,15 @@ export default {
       ind: 0,
       goodsId: "",
       goodsCount: 0,
+      remark: "",
+      payWay: -1,
+      cardId: "",
+      imgUrl: "",
+      unitRemarks: "",
       itemAddress: {},
       addressList: [],
-      goodsList: [
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-83/20151106152915_1.jpg",
-          name: "人民日报海外版2022自选定期",
-          price: 123.2,
-          // count: 123.2,
-          num: 1,
-          dateStart: "",
-          dateEnd: ""
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
-          name: "人民日报海外版2022自选定期人民日报海外版2022自选定期",
-          price: 123.2,
-          // count: 123.2,
-          num: 1,
-          dateStart: "",
-          dateEnd: ""
-        }
-      ]
+      goodsList: [],
+      cardData: []
     };
   },
   created() {
@@ -235,6 +332,11 @@ export default {
       confirmUrl({ cartList: this.goodsId }).then(res => {
         if (res.code == 200) {
           this.goodsList = res.data;
+          let count = 0;
+          for (let i = 0; i < this.goodsList.length; i++) {
+            count += this.goodsList[i].price * 1 * this.goodsList[i].quantity;
+          }
+          this.goodsCount = count.toFixed(2);
         }
       });
     },
@@ -254,6 +356,41 @@ export default {
     chooseAdd(num, info) {
       this.ind = num;
       this.itemAddress = info;
+    },
+    payWayFun(num) {
+      this.payWay = num;
+      cardList().then(res => {
+        if (res.code == 200) {
+          this.cardData = res.data;
+        } else {
+        }
+      });
+    },
+    handleOrder() {
+      let data = {
+        addId: this.itemAddress.id,
+        cartList: this.goodsId,
+        remarks: this.remark,
+        payType: this.payWay,
+        cardId: this.cardId,
+        imgUrl: this.imgUrl,
+        unitRemarks: this.unitRemarks
+      };
+      // debugger;
+      if (this.itemAddress.id == "") {
+        this.$refs.tips.toast("请选择收货地址");
+      } else if (this.goodsId == "") {
+        this.$refs.tips.toast("商品出错啦~");
+      } else if (this.payWay == "") {
+        this.$refs.tips.toast("请选择支付方式");
+      } else {
+        createOrder(data).then(res => {
+          if (res.code == 200) {
+          } else {
+            this.$refs.tips.toast(res.msg);
+          }
+        });
+      }
     }
     // 编辑地址
     // updAddFun(info) {

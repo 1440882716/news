@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container bg-img">
     <loginHead></loginHead>
     <div class="content">
       <!-- <div>欢迎登录</div> -->
       <div class="flex-r flex-a">
-        <img class="login-img" src="../assets/img/login-img.png" alt="" />
+        <!-- <img class="login-img" src="../assets/img/login-img.png" alt="" /> -->
         <div class="login-box">
           <!-- <div class="login-content"></div> -->
           <loginBox></loginBox>
@@ -56,5 +56,8 @@ export default {
   width: 100%;
   min-height: 260px;
   background-color: #fff;
+}
+.bg-img {
+  background-image: url(../assets/img/bannar.png);
 }
 </style>
