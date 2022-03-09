@@ -23,9 +23,9 @@
                 :class="[
                   'invoice-type',
                   'pointer',
-                  typeNum == 1 ? 'active-type' : ''
+                  accountForm.type == 1 ? 'active-type' : ''
                 ]"
-                @click="typeNum = 1"
+                @click="accountForm.type = 1"
               >
                 个人
               </div>
@@ -33,69 +33,70 @@
                 :class="[
                   'invoice-type',
                   'pointer',
-                  typeNum == 2 ? 'active-type' : ''
+                  accountForm.type == 2 ? 'active-type' : ''
                 ]"
-                @click="typeNum = 2"
+                @click="accountForm.type = 2"
               >
                 公司
               </div>
             </div>
           </el-form-item>
-          <el-form-item label="发票抬头" prop="invoice">
+          <el-form-item label="发票抬头" prop="name">
             <el-input
-              v-model="accountForm.invoice"
+              v-model="accountForm.name"
               placeholder="请填写发票抬头"
               type="text"
             ></el-input>
           </el-form-item>
 
-          <el-form-item label="单位税号" prop="company" v-show="typeNum == 2">
+          <el-form-item
+            label="单位税号"
+            prop="taxNo"
+            v-show="accountForm.type == 2"
+          >
             <el-input
-              v-model="accountForm.company"
+              v-model="accountForm.taxNo"
               type="text"
               placeholder="请填写单位税号"
             ></el-input>
           </el-form-item>
-          <el-form-item label="注册地址" prop="bankName" v-show="typeNum == 2">
+          <el-form-item
+            label="注册地址"
+            prop="bankName"
+            v-show="accountForm.type == 2"
+          >
             <el-input
-              v-model="accountForm.bankName"
+              v-model="accountForm.companyAddress"
               type="text"
               placeholder="请填写注册地址（选填）"
             ></el-input>
           </el-form-item>
-          <el-form-item label="注册电话" prop="bankName" v-show="typeNum == 2">
+          <el-form-item label="注册电话" v-show="accountForm.type == 2">
             <el-input
-              v-model="accountForm.bankName"
+              v-model="accountForm.companyMobile"
               type="text"
               placeholder="请填写注册电话（选填）"
             ></el-input>
           </el-form-item>
-          <el-form-item label="开户银行" prop="branch" v-show="typeNum == 2">
+          <el-form-item label="开户银行" v-show="accountForm.type == 2">
             <el-input
-              v-model="accountForm.branch"
+              v-model="accountForm.bankName"
               placeholder="请输入开户银行（选填）"
               type="text"
             ></el-input>
           </el-form-item>
-          <el-form-item label="银行账号" prop="branch" v-show="typeNum == 2">
+          <el-form-item label="银行账号" v-show="accountForm.type == 2">
             <el-input
-              v-model="accountForm.branch"
+              v-model="accountForm.bankCard"
               placeholder="请输入银行账号（选填）"
               type="text"
             ></el-input>
           </el-form-item>
         </el-form>
       </div>
-      <div class="add-card-btn fff-font pointer" @click="addCardFun">
+      <div class="add-card-btn fff-font pointer" @click="addFun">
         <span>完成</span>
       </div>
-
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span> -->
     </el-dialog>
     <div class="info-content text-left">
       <div class="title-box flex-r flex-b">
@@ -119,27 +120,22 @@
       </div>
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in invoiceList">
-          <!-- <div class="type-img-box" v-if="item.type == 1">
-            <img class="type-img" src="../../assets/img/zfb.png" alt="" />
-            <div class="tips-color">支付宝</div>
-          </div> -->
-          <div class="type-img-box">
-            <img class="type-img" src="../../assets/img/bank.png" alt="" />
-            <div class="tips-color">银行卡</div>
+          <div class="type-img-box" v-if="item.type == 1">
+            <img class="type-img" src="../../assets/img/people3.png" alt="" />
+            <div class="tips-color">个人发票</div>
           </div>
-
+          <div class="type-img-box" v-if="item.type == 2">
+            <img class="type-img" src="../../assets/img/conpany.png" alt="" />
+            <div class="tips-color">公司发票</div>
+          </div>
           <div class="card-info font12">
             <div class="flex-r text-center m-t-20">
-              <div class="tips-color card-name-box">姓名：</div>
+              <div class="tips-color card-name-box">发票抬头：</div>
               <span>{{ item.name }}</span>
             </div>
-            <div class="flex-r text-center">
-              <div class="tips-color card-name-box">银行卡号：</div>
-              <span>{{ item.cardNumber }}</span>
-            </div>
-            <div class="flex-r text-center">
-              <div class="tips-color card-name-box">银行：</div>
-              <span>{{ item.bankName }}</span>
+            <div class="flex-r text-center" v-if="item.type == 2">
+              <div class="tips-color card-name-box">单位税号：</div>
+              <span>{{ item.taxNo }}</span>
             </div>
           </div>
           <div class="handle-box flex-r flex-e">
@@ -165,7 +161,7 @@
 </template>
 <script>
 import city from "../../assets/data/area_format_city.json";
-// import { addCard, updCard, delCard, cardList } from "@/api/card";
+import { addInvoice, updInvoice, pageData, delInvoice } from "@/api/invoice";
 import msgBox from "./msg.vue";
 export default {
   name: "mycard",
@@ -189,20 +185,20 @@ export default {
         // }
       ],
       accountForm: {
-        typeNum: 1,
-        invoice: "",
-        company: "",
-        address: "",
-        phone: "",
-        bank: "",
-        bankName: ""
+        type: 1,
+        name: "",
+        taxNo: "",
+        companyAddress: "",
+        companyMobile: "",
+        bankName: "",
+        bankCard: ""
       },
       accountRules: {
-        invoice: [
-          { required: true, message: "开户人姓名不能为空", trigger: "blur" }
+        name: [
+          { required: true, message: "发票抬头不能为空", trigger: "blur" }
         ],
-        company: [
-          { required: true, message: "开户银行不能为空", trigger: "blur" }
+        taxNo: [
+          { required: true, message: "单位税号不能为空", trigger: "blur" }
         ]
       }
     };
@@ -212,7 +208,11 @@ export default {
   },
   methods: {
     getData() {
-      cardList().then(res => {
+      let data = {
+        page: this.page,
+        limit: this.limit
+      };
+      pageData(data).then(res => {
         if (res.code == 200) {
           this.invoiceList = res.data;
         }
@@ -221,11 +221,13 @@ export default {
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {
+        this.accountForm.type = 1;
         this.accountForm.name = "";
-        this.accountForm.cardNumber = "";
+        this.accountForm.taxNo = "";
+        this.accountForm.companyAddress = "";
+        this.accountForm.companyMobile = "";
         this.accountForm.bankName = "";
-        this.accountForm.bankRegion = [];
-        this.accountForm.branch = "";
+        this.accountForm.bankCard = "";
         this.$refs.accountForm.clearValidate();
       });
     },
@@ -233,54 +235,88 @@ export default {
     // 修改银行卡信息
     changeAccount(info) {
       // debugger;
-      let arr = [info.province, info.city];
       this.accountForm.id = info.id;
-      this.accountForm.name = info.name;
-      this.accountForm.cardNumber = info.cardNumber;
-      this.accountForm.bankName = info.bankName;
-      this.accountForm.bankRegion = arr;
-      this.accountForm.branch = info.branch;
+      if (info.type == 1) {
+        this.accountForm.type = info.type;
+        this.accountForm.name = info.name;
+      } else {
+        this.accountForm.type = info.type;
+        this.accountForm.name = info.name;
+        this.accountForm.taxNo = info.taxNo;
+        this.accountForm.companyAddress = info.companyAddress;
+        this.accountForm.companyMobile = info.companyMobile;
+        this.accountForm.bankName = info.bankName;
+        this.accountForm.bankCard = info.bankCard;
+      }
       this.dialogVisible = true;
-      // console.log(this.accountForm);
-      // debugger;
     },
     // 添加银行卡
-    addCardFun() {
-      this.$refs.accountForm.validate(valid => {
-        if (valid) {
-          this.accountForm.province = this.accountForm.bankRegion[0];
-          this.accountForm.city = this.accountForm.bankRegion[1];
-          if (this.accountForm.hasOwnProperty("id")) {
-            updCard(this.accountForm).then(res => {
-              if (res.code == 200) {
-                this.dialogVisible = false;
-                this.getData();
-              } else {
-                this.$refs.tips.toast(res.msg);
-              }
-            });
+    addFun() {
+      console.log(this.accountForm.type);
+      let formType = this.accountForm.type;
+      if (formType == 1) {
+        //   个人发票
+        this.$refs.accountForm.validateField(["name"], errMsg => {
+          if (errMsg) {
           } else {
-            addCard(this.accountForm).then(res => {
-              if (res.code == 200) {
-                this.dialogVisible = false;
-                this.getData();
-              } else {
-                this.$refs.tips.toast(res.msg);
-              }
-            });
+            if (this.accountForm.hasOwnProperty("id")) {
+              updCard(this.accountForm).then(res => {
+                if (res.code == 200) {
+                  this.dialogVisible = false;
+                  this.getData();
+                } else {
+                  this.$refs.tips.toast(res.msg);
+                }
+              });
+            } else {
+              addInvoice(this.accountForm).then(res => {
+                if (res.code == 200) {
+                  this.dialogVisible = false;
+                  this.getData();
+                } else {
+                  this.$refs.tips.toast(res.msg);
+                }
+              });
+            }
           }
-        }
-      });
+        });
+      } else {
+        //  公司发票
+        this.$refs.accountForm.validate(valid => {
+          if (valid) {
+            if (this.accountForm.hasOwnProperty("id")) {
+              updCard(this.accountForm).then(res => {
+                if (res.code == 200) {
+                  this.dialogVisible = false;
+                  this.getData();
+                } else {
+                  this.$refs.tips.toast(res.msg);
+                }
+              });
+            } else {
+              addInvoice(this.accountForm).then(res => {
+                if (res.code == 200) {
+                  this.dialogVisible = false;
+                  this.getData();
+                } else {
+                  this.$refs.tips.toast(res.msg);
+                }
+              });
+            }
+          }
+        });
+      }
+      debugger;
     },
     // 删除支付宝/银行卡
     delAccount(info) {
-      this.$confirm("确定要删除该地址吗?", "提示", {
+      this.$confirm("确定要删除这个发票抬头吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          delCard({ id: info.id }).then(res => {
+          delInvoice({ id: info.id }).then(res => {
             if (res.code == 200) {
               this.getData();
             } else {
