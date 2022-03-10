@@ -7,7 +7,15 @@ const userApi = {
     cartList: '/client/cart/list',
     confirmUrl: '/client/cart/confirm',
     createOrder: '/client/order/create',
-    orderPay: '/client/order/pay'
+    orderPay: '/client/order/pay',
+    wxPay: '/client/wxPay/scanCode'
+}
+export function wxPay(data) {
+    return request({
+        url: userApi.wxPay,
+        method: 'get',
+        params: data
+    })
 }
 export function orderPay(data) {
     return request({

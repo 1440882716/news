@@ -49,7 +49,7 @@
               <div>
                 用户名：<span class="main-color">{{ userName }}</span>
               </div>
-              <div class="m-t-10">昵称：{{ ruleForm.nickname }}</div>
+              <div class="m-t-10">昵称：{{ nickName }}</div>
             </div>
           </div>
           <div class="m-t-20">
@@ -60,10 +60,10 @@
               label-width="100px"
               class="demo-ruleForm"
             >
-              <el-form-item label="昵称" prop="nickname">
+              <el-form-item label="昵称">
                 <el-input
                   class=""
-                  v-model="nickName"
+                  v-model="ruleForm.nickname"
                   placeholder="请输入昵称"
                   width="100px"
                 ></el-input>
@@ -84,15 +84,6 @@
                   <el-radio label="女"></el-radio>
                 </el-radio-group>
               </el-form-item>
-
-              <!-- <el-form-item label="证件类型">
-                <el-input
-                  v-model="ruleForm.cardType"
-                  :disabled="true"
-                  placeholder="请选择证件类型"
-                ></el-input>
-              </el-form-item> -->
-
               <el-form-item label="身份证号">
                 <el-input v-model="ruleForm.idCard" :disabled="true"></el-input>
               </el-form-item>
@@ -166,7 +157,7 @@
 import region from "../../assets/data/area_format_user.json";
 import msgBox from "./msg.vue";
 import { getToken } from "@/utils/auth";
-import { userInfo, updPersonalDatao } from "@/api/user";
+import { userInfo, updPersonalData, updAvatar } from "@/api/user";
 export default {
   name: "info",
   components: {
@@ -223,26 +214,26 @@ export default {
       console.log(num);
     },
     // 保存信息
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          // 提交要修改的信息
-          this.ruleForm.province = this.ruleForm.region[0];
-          this.ruleForm.city = this.ruleForm.region[1];
-          this.ruleForm.area = this.ruleForm.region[2];
-          updPersonalDatao(ruleForm).then(res => {
-            if (res.code == 200) {
-              this.$refs.tips.toast(res.msg);
-              this.getData();
-            } else {
-              this.$refs.tips.toast(res.msg);
-            }
-          });
+    submitForm() {
+      // this.$refs.formName.validate(valid => {
+      // if (valid) {
+      // 提交要修改的信息
+      this.ruleForm.province = this.ruleForm.region[0];
+      this.ruleForm.city = this.ruleForm.region[1];
+      this.ruleForm.area = this.ruleForm.region[2];
+      // debugger;
+      updPersonalData(this.ruleForm).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          this.getData();
         } else {
-          // console.log("error submit!!");
-          return false;
+          this.$refs.tips.toast(res.msg);
         }
       });
+      // } else {
+      //   return false;
+      // }
+      // });
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
