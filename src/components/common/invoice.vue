@@ -294,7 +294,7 @@ export default {
           }
         });
       }
-      debugger;
+      // debugger;
     },
     // 删除支付宝/银行卡
     delAccount(info) {

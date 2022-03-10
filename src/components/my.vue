@@ -13,7 +13,7 @@
             <li
               v-for="(item, index) in navList"
               :key="index"
-              :class="[navNum == index ? 'myActiveColor' : '']"
+              :class="[navNum == index ? 'primary-color' : '']"
               @click="chooseNav(index)"
             >
               {{ item }}
@@ -31,6 +31,8 @@
           <myAddress v-show="navNum == 3"></myAddress>
           <!-- 发票抬头 -->
           <Invoice v-show="navNum == 4"></Invoice>
+          <!-- 订单列表 -->
+          <myOrder v-show="navNum == 5"></myOrder>
         </div>
       </div>
     </div>
@@ -44,6 +46,7 @@ import Account from "./common/account.vue";
 import myCard from "./common/myCard.vue";
 import myAddress from "./common/myAddress.vue";
 import Invoice from "./common/invoice.vue";
+import myOrder from "./common/myOrder.vue";
 import Footer from "./common/footer.vue";
 export default {
   name: "my",
@@ -55,6 +58,7 @@ export default {
     Account,
     myCard,
     Invoice,
+    myOrder,
     myAddress
   },
   data() {
