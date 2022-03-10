@@ -1,5 +1,6 @@
 <template>
   <div class="my-info">
+    <msgBox ref="tips"></msgBox>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>这是一段信息</span>
       <span slot="footer" class="dialog-footer">
@@ -45,8 +46,10 @@
               alt=""
             />
             <div class="tips-color font14 m-t-10">
-              <div>用户名：<span class="main-color">mu1****2536</span></div>
-              <div class="m-t-10">昵称：</div>
+              <div>
+                用户名：<span class="main-color">{{ userName }}</span>
+              </div>
+              <div class="m-t-10">昵称：{{ ruleForm.nickname }}</div>
             </div>
           </div>
           <div class="m-t-20">
@@ -60,7 +63,7 @@
               <el-form-item label="昵称" prop="nickname">
                 <el-input
                   class=""
-                  v-model="ruleForm.nickname"
+                  v-model="nickName"
                   placeholder="请输入昵称"
                   width="100px"
                 ></el-input>
@@ -82,22 +85,19 @@
                 </el-radio-group>
               </el-form-item>
 
-              <el-form-item label="证件类型">
+              <!-- <el-form-item label="证件类型">
                 <el-input
                   v-model="ruleForm.cardType"
                   :disabled="true"
                   placeholder="请选择证件类型"
                 ></el-input>
-              </el-form-item>
+              </el-form-item> -->
 
-              <el-form-item label="证件号码">
-                <el-input
-                  v-model="ruleForm.cardNum"
-                  :disabled="true"
-                ></el-input>
+              <el-form-item label="身份证号">
+                <el-input v-model="ruleForm.idCard" :disabled="true"></el-input>
               </el-form-item>
               <el-form-item label="手机号码">
-                <el-input v-model="ruleForm.phone" :disabled="true"></el-input>
+                <el-input v-model="ruleForm.mobile" :disabled="true"></el-input>
               </el-form-item>
               <el-form-item label="所在地区">
                 <!-- <el-input v-model="ruleForm.desc"></el-input> -->
@@ -112,7 +112,7 @@
                   }"
                 ></el-cascader>
               </el-form-item>
-              <el-form-item label="">
+              <el-form-item label="详细地址">
                 <el-input
                   v-model="ruleForm.address"
                   placeholder="请输入详细街道地址"
@@ -122,8 +122,8 @@
                 <el-button
                   class="el-btn-box primary-btn"
                   type="primary"
-                  @click="submitForm('ruleForm')"
-                  >立即创建</el-button
+                  @click="submitForm"
+                  >保存</el-button
                 >
                 <el-button class="border-btn" @click="resetForm('ruleForm')"
                   >重置</el-button
@@ -164,9 +164,14 @@
 
 <script>
 import region from "../../assets/data/area_format_user.json";
+import msgBox from "./msg.vue";
 import { getToken } from "@/utils/auth";
+import { userInfo, updPersonalDatao } from "@/api/user";
 export default {
-  name: "index",
+  name: "info",
+  components: {
+    msgBox
+  },
   data() {
     return {
       navTitle: 1,
@@ -174,34 +179,42 @@ export default {
       dialogVisible: false,
       regionData: region,
       imageUrl: "",
+      userName: "",
+      nickName: "",
       ruleForm: {
         nickname: "",
         name: "",
         sex: "",
-        cardType: "",
-        cardNum: "",
-        phone: "",
+        idCard: "",
+        mobile: "",
         region: "",
-        address: ""
+        address: "",
+        province: "",
+        city: "",
+        area: ""
       },
-      rules: {
-        nickname: [
-          { required: true, message: "请输入昵称", trigger: "blur" },
-          {
-            min: 3,
-            max: 5,
-            message: "仅支持20个字符以内的中英文、数字、下划线等",
-            trigger: "blur"
-          }
-        ]
-      }
+      rules: {}
     };
   },
   created() {
     this.token = getToken();
+    this.getData();
   },
   mounted() {},
   methods: {
+    getData() {
+      userInfo().then(res => {
+        if (res.code == 200) {
+          let arr = [res.data.province, res.data.city, res.data.area];
+          this.userName = res.data.userName;
+          this.nickName = res.data.nickname;
+          this.ruleForm.sex = res.data.sex;
+          this.ruleForm.mobile = res.data.mobile;
+          this.ruleForm.region = arr;
+          this.ruleForm.address = res.data.address;
+        }
+      });
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -214,6 +227,17 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 提交要修改的信息
+          this.ruleForm.province = this.ruleForm.region[0];
+          this.ruleForm.city = this.ruleForm.region[1];
+          this.ruleForm.area = this.ruleForm.region[2];
+          updPersonalDatao(ruleForm).then(res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.getData();
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
         } else {
           // console.log("error submit!!");
           return false;

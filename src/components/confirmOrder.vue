@@ -169,13 +169,13 @@
                 <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
                   <img
                     v-if="payWay == 3"
-                    class="pay-box-card"
+                    class="pay-box"
                     src="../assets/img/cardpay.png"
                     alt=""
                   />
                   <img
                     v-else
-                    class="pay-box-card"
+                    class="pay-box"
                     src="../assets/img/active-card.png"
                     alt=""
                   />
@@ -201,7 +201,8 @@
               <div v-show="payWay == 3">
                 <div
                   class="card-item-box flex-r pointer"
-                  v-for="item in cardData"
+                  v-for="(item, index) in cardData"
+                  @click="chooseBank(item, index)"
                 >
                   <div class="type-img-box">
                     <img
@@ -227,7 +228,13 @@
                     </div>
                   </div>
                   <div class="handle-box text-center">
-                    <i class="el-icon-success f999 font18"></i>
+                    <i
+                      :class="[
+                        'el-icon-success',
+                        'font24',
+                        bankInd == index ? 'myActiveColor' : 'f999'
+                      ]"
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -287,6 +294,8 @@ export default {
     return {
       isOpen: false,
       ind: 0,
+      bankId: "",
+      bankInd: -1,
       goodsId: "",
       goodsCount: 0,
       remark: "",
@@ -368,10 +377,15 @@ export default {
         }
       });
     },
+    chooseBank(info, ind) {
+      console.log(info);
+      console.log(ind);
+      this.bankInd = ind;
+      this.bankId = info.id;
+      // debugger;
+    },
     handleOrder() {
-      // let qrcode = "https://qr.alipay.com/bax06387rh8te3fxuczd004d";
-      // this.qrImg = `https://cli.im/api/qrcode/code?text=%2F%2F${qrcode}%2F&mhid=sELPDFnok80gPHovKdI`;
-      // console.log(this.qrImg);
+      console.log(this.qrImg);
       // debugger;
       // return;
       let data = {
@@ -383,7 +397,9 @@ export default {
         imgUrl: this.imgUrl,
         unitRemarks: this.unitRemarks
       };
+      console.log(data);
       // debugger;
+      // return;
       if (this.itemAddress.id == "") {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
@@ -393,12 +409,24 @@ export default {
       } else {
         createOrder(data).then(res => {
           if (res.code == 200) {
+            if (this.payWay == 1 || this.payWay == 2) {
+              // 将返回的支付宝地址存下来，在支付页面使用
+              this.$router.push({
+                path: "/pay",
+                name: "pay",
+                query: {
+                  orderId: res.data,
+                  payWay: this.payWay
+                }
+              });
+            }
           } else {
             this.$refs.tips.toast(res.msg);
           }
         });
       }
     }
+
     // 编辑地址
     // updAddFun(info) {
     //   this.itemAddress = info;
@@ -407,7 +435,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 @import "../assets/css/gloab.css";
 @import "../assets/css/confirmOrder.css";
 </style>

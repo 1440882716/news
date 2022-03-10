@@ -6,7 +6,15 @@ const userApi = {
     delCart: '/client/cart/del',
     cartList: '/client/cart/list',
     confirmUrl: '/client/cart/confirm',
-    createOrder: '/client/order/create'
+    createOrder: '/client/order/create',
+    orderPay: '/client/order/pay'
+}
+export function orderPay(data) {
+    return request({
+        url: userApi.orderPay,
+        method: 'get',
+        params: data
+    })
 }
 export function createOrder(data) {
     return request({

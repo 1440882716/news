@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'login_key'
 const IsLogin = 'is_login'
+const AliPay = "ali_pay"
 
 export function getToken() {
     return Cookies.get(TokenKey)
@@ -15,6 +16,10 @@ export function setToken(token) {
 }
 export function hasLogin() {
     return Cookies.set(IsLogin, true)
+}
+
+export function setAlipay(payUrl) {
+    return Cookies.set(AliPay, payUrl)
 }
 
 
