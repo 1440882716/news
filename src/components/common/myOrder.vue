@@ -3,7 +3,7 @@
     <msgBox ref="tips"></msgBox>
 
     <div class="info-content">
-      <el-tabs v-model="editableTabsValue" @tab-remove="removeTab">
+      <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
         <el-tab-pane
           v-for="(item, index) in editableTabs"
           :key="item.name"
@@ -27,11 +27,13 @@
           查询
         </div>
       </div> -->
+
       <div class="my-info-box" v-if="orderData.length == 0">
         <div class="font16 tips-color no-card-text">
           您暂时还没有订单哦~
         </div>
       </div>
+
       <div v-else>
         <div class="order-item-box font14 m-b-20" v-for="item in orderData">
           <div class="flex-r flex-b order-head-box">
@@ -40,7 +42,24 @@
               <span class="m-l-10">收货人：{{ item.name }}</span>
             </div>
             <div class="flex-r">
-              <span>剩余：23小时59分22秒</span>
+              <!-- <span>剩余：23小时59分22秒</span> -->
+              <!-- <count-down
+                v-on:end_callback="countDownE_cb()"
+                :currentTime="currentTime"
+                :startTime="item.start_time"
+                :endTime="item.end_time"
+                :endText="'订单已取消'"
+                :dayTxt="'天'"
+                :hourTxt="'时'"
+                :minutesTxt="'分'"
+                :secondsTxt="'秒'"
+              >
+              </count-down> -->
+              <count-down
+                :endTime="item.end_time"
+                :callback="callback"
+                endText="已经结束了"
+              ></count-down>
               <div class="handle-btn m-r-10 m-l-10">立即支付</div>
               <div class="handle-btn">取消订单</div>
             </div>
@@ -54,7 +73,7 @@
             v-for="info in item.goods"
           >
             <div class="flex-r">
-              <div class="order-img-box">
+              <div class="order-img-box" @click="toGoodsInfo(item)">
                 <img
                   class="order-goods-img"
                   src="../../assets/img/mzfz.png"
@@ -102,10 +121,13 @@
 <script>
 import { orderList, orderDetail, orderCancel, orderDel } from "@/api/order";
 import msgBox from "./msg.vue";
+// import CountDown from "vue2-countdown";
+import CountDown from "./countDown.vue";
 export default {
   name: "myorder",
   components: {
-    msgBox
+    msgBox,
+    CountDown
   },
   data() {
     return {
@@ -139,13 +161,22 @@ export default {
           name: "5"
         }
       ],
-      orderData: []
+      orderData: [],
+
+      currentTime: 0,
+      startTime: 1646977570000,
+      endTime: 1647066140000
     };
   },
   created() {
     this.getData();
   },
   methods: {
+    getTimestamp(time) {
+      //把时间日期转成时间戳
+      //   return parseInt(new Date(time).getTime() / 1000);
+      return new Date(time).getTime();
+    },
     getData() {
       let data = {
         current: this.currentPage
@@ -154,17 +185,42 @@ export default {
         if (res.code == 200) {
           this.orderData = res.data.records;
           this.orderCount = res.data.total;
+          this.orderData.map(item => {
+            let start = this.getTimestamp(item.createTime);
+            // let endTime = start + 24 * 60 * 60 * 1000;
+            let endTime = start + 24 * 60 * 60 * 1000;
+            // let timestamp = Date.parse(new Date());
+            // if(endTime - timestamp>0){
+            //     this.$set(item, "not_end", endTime);
+            // }
+            // this.$set(item, "start_time", start);
+            this.$set(item, "end_time", endTime);
+          });
         } else {
         }
       });
     },
     handleClick() {
       console.log(this.editableTabsValue);
-      //   debugger;
+      let start = this.getTimestamp("2022-03-11 14:22:20");
+      let end = start + 24 * 60 * 60;
+      console.log(start);
+      console.log(end);
+      debugger;
+    },
+    toGoodsInfo(info) {
+      console.log(info);
+      debugger;
     },
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
+    },
+    countDownS_cb: function(x) {
+      console.log(x);
+    },
+    countDownE_cb: function(x) {
+      console.log(x);
     }
   }
 };

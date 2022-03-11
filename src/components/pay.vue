@@ -10,14 +10,14 @@
             秒，过期后请刷新页面重新获取二维码。
           </div>
           <div class="flex-r">
-            <div class="qr-box m-r-20 m-l-20" v-if="payWay == 1">
-              <img src="../assets/img/qrcode.png" alt="" />
-            </div>
+            <!-- <div class="qr-box m-r-20 m-l-20" v-if="payWay == 1">
+              <img src="../assets/img/qrcode.png" alt="图片出错了" />
+            </div> -->
             <!-- 二维码 -->
             <div
               id="qrcode"
               class="m-r-20 m-l-20 m-t-20"
-              v-if="payWay == 2"
+              v-if="payWay == 1 || payWay == 2"
             ></div>
             <!-- 微信展示 -->
             <div class="font14 m-t-20">
@@ -83,7 +83,9 @@ export default {
         //   微信支付
         wxPay(data).then(res => {
           if (res.code == 200) {
-            //   this.wxCode =
+            this.zfbUrl = res.data;
+            this.getQR();
+            this.countDown();
           }
         });
       } else if (this.payWay == 2) {

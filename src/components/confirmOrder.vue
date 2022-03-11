@@ -393,7 +393,7 @@ export default {
         cartList: this.goodsId,
         remarks: this.remark,
         payType: this.payWay,
-        cardId: this.cardId,
+        cardId: this.bankId,
         imgUrl: this.imgUrl,
         unitRemarks: this.unitRemarks
       };
@@ -409,7 +409,7 @@ export default {
       } else {
         createOrder(data).then(res => {
           if (res.code == 200) {
-            if (this.payWay == 1 || this.payWay == 2) {
+            if (this.payWay == 1 || this.payWay == 2 || this.payWay == 3) {
               // 将返回的支付宝地址存下来，在支付页面使用
               this.$router.push({
                 path: "/pay",
@@ -420,6 +420,8 @@ export default {
                 }
               });
             }
+          } else if (this.payWay == 4) {
+            // 上传凭证
           } else {
             this.$refs.tips.toast(res.msg);
           }
