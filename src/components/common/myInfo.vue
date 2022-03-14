@@ -173,7 +173,7 @@ export default {
       imageUrl: "",
       userName: "",
       nickName: "",
-      headImg: "",
+      headImg: "../../assets/img/people3.png",
       ruleForm: {
         nickname: "",
         name: "",

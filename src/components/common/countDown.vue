@@ -26,8 +26,21 @@ export default {
       default: ""
     }
   },
+  watch: {
+    endTime() {
+      // this.content = this.endTime;
+      this.countdowm(this.endTime);
+    }
+  },
+  created() {
+    this.countdowm(this.endTime);
+    console.log(this.endTime);
+  },
   mounted() {
     this.countdowm(this.endTime);
+    console.log(this.endTime);
+    // this.$forceUpdate();
+    // debugger;
   },
   methods: {
     countdowm(timestamp) {
@@ -41,6 +54,7 @@ export default {
           let hour = Math.floor((t / 3600000) % 24);
           let min = Math.floor((t / 60000) % 60);
           let sec = Math.floor((t / 1000) % 60);
+
           hour = hour < 10 ? "0" + hour : hour;
           min = min < 10 ? "0" + min : min;
           sec = sec < 10 ? "0" + sec : sec;

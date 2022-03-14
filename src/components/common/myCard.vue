@@ -116,6 +116,11 @@
               <div class="tips-color card-name-box">银行：</div>
               <span>{{ item.bankName }}</span>
             </div>
+            <!-- <count-down
+              :endTime="item.endTime"
+              :callback="callback"
+              endText="已取消"
+            ></count-down> -->
           </div>
           <div class="handle-box flex-r flex-e">
             <div class="handle-icon-box1 pointer" @click="changeAccount(item)">
@@ -142,10 +147,12 @@
 import city from "../../assets/data/area_format_city.json";
 import { addCard, updCard, delCard, cardList } from "@/api/card";
 import msgBox from "./msg.vue";
+// import CountDown from "./countDown.vue";
 export default {
   name: "mycard",
   components: {
     msgBox
+    // CountDown
   },
   data() {
     return {
@@ -294,7 +301,8 @@ export default {
           });
         })
         .catch(() => {});
-    }
+    },
+    callback() {}
   }
 };
 </script>

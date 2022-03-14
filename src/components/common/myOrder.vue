@@ -35,31 +35,23 @@
       </div>
 
       <div v-else>
-        <div class="order-item-box font14 m-b-20" v-for="item in orderData">
+        <div
+          class="order-item-box font14 m-b-20"
+          v-for="(item, index) in orderData"
+          :key="index"
+        >
           <div class="flex-r flex-b order-head-box">
             <div>
               <span>{{ item.createTime }}</span>
               <span class="m-l-10">收货人：{{ item.name }}</span>
             </div>
             <div class="flex-r">
-              <!-- <span>剩余：23小时59分22秒</span> -->
-              <!-- <count-down
-                v-on:end_callback="countDownE_cb()"
-                :currentTime="currentTime"
-                :startTime="item.start_time"
-                :endTime="item.end_time"
-                :endText="'订单已取消'"
-                :dayTxt="'天'"
-                :hourTxt="'时'"
-                :minutesTxt="'分'"
-                :secondsTxt="'秒'"
-              >
-              </count-down> -->
               <count-down
                 :endTime="item.end_time"
                 :callback="callback"
-                endText="已经结束了"
+                endText="已取消"
               ></count-down>
+
               <div class="handle-btn m-r-10 m-l-10">立即支付</div>
               <div class="handle-btn">取消订单</div>
             </div>
@@ -81,7 +73,7 @@
                 />
               </div>
 
-              <div class="flex-r">
+              <div class="flex-r" @click="orderDetail(item)">
                 <div class="font14 f999 flex-c">
                   <p class="font16  main-color">{{ info.name }}</p>
                   <p style="text-align: left;">
@@ -132,6 +124,7 @@ export default {
   },
   data() {
     return {
+      statusNum: "0",
       orderNum: "",
       currentPage: 1,
       orderCount: 0,
@@ -166,7 +159,7 @@ export default {
 
       currentTime: 0,
       startTime: 1646977570000,
-      endTime: 1647066140000
+      endTime: "1647315805"
     };
   },
   created() {
@@ -175,12 +168,12 @@ export default {
   methods: {
     getTimestamp(time) {
       //把时间日期转成时间戳
-      //   return parseInt(new Date(time).getTime() / 1000);
       return new Date(time).getTime();
     },
     getData() {
       let data = {
-        current: this.currentPage
+        current: this.currentPage,
+        status: this.statusNum
       };
       orderList(data).then(res => {
         if (res.code == 200) {
@@ -188,14 +181,9 @@ export default {
           this.orderCount = res.data.total;
           this.orderData.map(item => {
             let start = this.getTimestamp(item.createTime);
-            // let endTime = start + 24 * 60 * 60 * 1000;
-            let endTime = start + 24 * 60 * 60 * 1000;
-            // let timestamp = Date.parse(new Date());
-            // if(endTime - timestamp>0){
-            //     this.$set(item, "not_end", endTime);
-            // }
-            // this.$set(item, "start_time", start);
-            this.$set(item, "end_time", endTime);
+            let lastTime = (start + 24 * 60 * 60 * 1000) / 1000;
+            lastTime = String(lastTime);
+            this.$set(item, "end_time", lastTime);
           });
         } else {
         }
@@ -203,10 +191,14 @@ export default {
     },
     handleClick() {
       console.log(this.editableTabsValue);
-      let start = this.getTimestamp("2022-03-11 14:22:20");
-      let end = start + 24 * 60 * 60;
-      console.log(start);
-      console.log(end);
+      this.statusNum = this.editableTabsValue;
+      this.currentPage = 1;
+      this.getData();
+      // debugger;
+    },
+    callback() {},
+    orderDetail(info) {
+      console.log(info);
       debugger;
     },
     toGoodsInfo(info) {
@@ -216,13 +208,25 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
-    },
-    countDownS_cb: function(x) {
-      console.log(x);
-    },
-    countDownE_cb: function(x) {
-      console.log(x);
     }
+    //  countDown(i) {
+    //   let that = this;
+    //   let item = that.list[i];
+    //   // 计算倒计时
+    //   that.list[i].countDownFn = setInterval(() => {
+    //     //  console.log(that.countDownFun(item.endTime))
+    //     if (that.countDownFun(item.countDownTime) == "倒计时结束") {
+    //       clearInterval(that.list[i].countDownFn); //清除定时器
+    //     } else {
+    //       item.countDownTime = that.countDownFun(item.endTime);
+    //       that.$set(
+    //         that.list,
+    //         item.countDownTime,
+    //         that.countDownFun(item.endTime)
+    //       );
+    //     }
+    //   }, 1000);
+    // }
   }
 };
 </script>
