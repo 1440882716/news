@@ -41,7 +41,7 @@
           <div class="my-head-img flex-r">
             <img
               class="head-img m-r-10"
-              src="../../assets/img/head.png"
+              :src="headImg"
               @click="selectNav(2)"
               alt=""
             />
@@ -127,7 +127,7 @@
           <el-upload
             class="avatar-uploader"
             :headers="{ Authorization: token }"
-            action="http://192.168.31.23:8081/client/user/updAvatar"
+            action="http://192.168.31.23:8080/client/user/updAvatar"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -144,9 +144,9 @@
           <div class="font12 tips-color m-b-20">
             仅支持JPG、PNG格式，文件小于2M
           </div>
-          <el-button class="primary-btn" type="primary" @click="keepHead"
+          <!-- <el-button class="primary-btn" type="primary" @click="keepHead"
             >保存</el-button
-          >
+          > -->
         </div>
       </div>
     </div>
@@ -165,6 +165,7 @@ export default {
   },
   data() {
     return {
+      imgApi: this.globleImgApi,
       navTitle: 1,
       token: "",
       dialogVisible: false,
@@ -172,6 +173,7 @@ export default {
       imageUrl: "",
       userName: "",
       nickName: "",
+      headImg: "",
       ruleForm: {
         nickname: "",
         name: "",
@@ -203,6 +205,14 @@ export default {
           this.ruleForm.mobile = res.data.mobile;
           this.ruleForm.region = arr;
           this.ruleForm.address = res.data.address;
+          if (res.data.avatar != "") {
+            this.headImg = this.imgApi + res.data.avatar;
+          } else {
+            this.headImg = "../../assets/img/people3.png";
+          }
+
+          // console.log(this.imgApi);
+          // debugger;
         }
       });
     },
@@ -237,16 +247,20 @@ export default {
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(res.data);
+      if (res.code == 200) {
+        this.getData();
+        this.$refs.tips.toast(res.msg);
+      }
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg" || "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
-
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG、png 格式!");
+        this.$refs.tips.toast("上传头像图片只能是 JPG、png 格式!");
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$refs.tips.toast("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
     },
@@ -335,15 +349,18 @@ router-link {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
+  /* width: 178px;
   height: 178px;
-  line-height: 178px;
+  line-height: 178px; */
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
   text-align: center;
   border: 1px solid #e4e7ed;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
+  width: 100px;
+  height: 100px;
   display: block;
 }
 .tips-img {

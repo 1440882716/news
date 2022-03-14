@@ -9,12 +9,15 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 
 
+
 import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: 'wOpTc8W4egqlCtKxhXC92NrngGXXAYVQ' //官方提供的ak秘钥
 })
 Vue.use(Element)
 Vue.prototype.rq = requests
+const imgApi = "http://192.168.31.23:8080"
+Vue.prototype.globleImgApi = imgApi
 
 Vue.config.productionTip = false
 

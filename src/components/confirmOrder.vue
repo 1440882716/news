@@ -238,6 +238,20 @@
                   </div>
                 </div>
               </div>
+              <!-- 上传线下支付凭证 -->
+              <div v-show="payWay == 4">
+                <!-- <span class="">上传线下支付凭证图片</span> -->
+                <el-upload
+                  class="avatar-uploader m-t-20"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :before-upload="beforeAvatarUpload"
+                >
+                  <img v-if="voucherImg" :src="voucherImg" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </div>
             </div>
           </div>
         </div>
@@ -307,7 +321,8 @@ export default {
       addressList: [],
       goodsList: [],
       cardData: [],
-      qrImg: ""
+      qrImg: "",
+      voucherImg: ""
     };
   },
   created() {
@@ -383,6 +398,23 @@ export default {
       this.bankInd = ind;
       this.bankId = info.id;
       // debugger;
+    },
+    // 上传凭证图片
+    handleAvatarSuccess(res, file) {
+      this.voucherImg = URL.createObjectURL(file.raw);
+      console.log(res.data);
+      this.$refs.tips.toast(res.msg);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg" || "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$refs.tips.toast("上传头像图片只能是 JPG、png 格式!");
+      }
+      if (!isLt2M) {
+        this.$refs.tips.toast("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     },
     handleOrder() {
       console.log(this.qrImg);
