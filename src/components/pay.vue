@@ -4,27 +4,42 @@
       <div class="content980 text-left">
         <span class="fff-font font24">收银台</span>
         <div class="m-t-20 pay-box-page ">
-          <div class="m-t-10 m-l-30">
+          <div class="m-t-10 m-l-30" v-if="payWay == 4">
             距离二维码过期还剩
             <span class="price-main">{{ count }}</span>
             秒，过期后请刷新页面重新获取二维码。
           </div>
-          <div class="flex-r">
+          <div class="flex-r flex-b">
             <!-- <div class="qr-box m-r-20 m-l-20" v-if="payWay == 1">
               <img src="../assets/img/qrcode.png" alt="图片出错了" />
             </div> -->
-            <!-- 二维码 -->
+            <!-- 微信和支付宝支付的二维码 -->
             <div
               id="qrcode"
               class="m-r-20 m-l-20 m-t-20"
               v-if="payWay == 1 || payWay == 2"
             ></div>
+            <!-- 银行卡 -->
+            <div v-if="payWay == 3"></div>
+            <!-- 上传线下支付凭证 -->
+            <div v-if="payWay == 4">
+              <el-upload
+                class="avatar-uploader m-t-20"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="voucherImg" :src="voucherImg" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </div>
             <!-- 微信展示 -->
-            <div class="font14 m-t-20">
+            <div class="font14 m-t-20 order-pay-det">
               <p class="font16">订单提交成功！请尽快完成支付~</p>
               <p>商户名称：某某某某</p>
               <p>商品名称：报刊业务订单</p>
-              <div class="pay-img-box">
+              <div class="pay-img-box" v-if="payWay == 1 || payWay == 2">
                 <span>扫码支付：</span>
                 <img
                   v-if="payWay == 2"
@@ -39,11 +54,33 @@
                   alt=""
                 />
               </div>
+              <div v-if="payWay == 4" class="flex-r">
+                <span>凭证单位备注：</span>
+                <el-input
+                  class="remark-inp-order"
+                  v-model="unitRemarks"
+                  placeholder="请输入内容"
+                ></el-input>
+              </div>
             </div>
             <!-- 价钱 -->
             <div class="text-right price-box font14">
               支付金额：<span class="font14 price-main">¥ </span
               ><span class="font18 price-main">24.99</span>
+              <!-- <div
+                class="handle-voucher pointer"
+                v-if="payWay == 4"
+                @click="handleVoucher"
+              >
+                提交支付凭证
+              </div> -->
+              <el-button
+                class="handle-voucher"
+                v-if="payWay == 4"
+                @click="handleVoucher"
+                type="primary"
+                >提交支付凭证</el-button
+              >
             </div>
             <!-- <div class="pointer" @click="getQR">测试获取二维码</div> -->
           </div>
@@ -65,7 +102,9 @@ export default {
       count: 0,
       navList: [],
       wxCode: "",
-      zfbUrl: "https://qr.alipay.com/bax06387rh8te3fxuczd004d"
+      zfbUrl: "https://qr.alipay.com/bax06387rh8te3fxuczd004d",
+      voucherImg: "",
+      unitRemarks: ""
     };
   },
   created() {
@@ -76,8 +115,8 @@ export default {
   methods: {
     getPayImg() {
       let data = {
-        orderId: this.orderId
-        //    payType:this.payWay
+        orderId: this.orderId,
+        payType: this.payWay
       };
       if (this.payWay == 1) {
         //   微信支付
@@ -100,6 +139,42 @@ export default {
           }
         });
       }
+    },
+    // 上传凭证支付
+    // 上传凭证图片
+    handleAvatarSuccess(res, file) {
+      this.voucherImg = URL.createObjectURL(file.raw);
+      if (res.code == 200) {
+      }
+      // console.log(res.data);
+      // this.$refs.tips.toast(res.msg);
+    },
+
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg" || "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$refs.tips.toast("上传头像图片只能是 JPG、png 格式!");
+      }
+      if (!isLt2M) {
+        this.$refs.tips.toast("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
+    handleVoucher() {
+      let data = {
+        orderId: this.orderId,
+        payType: this.payWay,
+        imgUrl: this.voucherImg,
+        unitRemarks: this.unitRemarks
+      };
+      console.log(data);
+      debugger;
+      return;
+      orderPay(data).then(res => {
+        if (res.code == 200) {
+        }
+      });
     },
     countDown() {
       const TIME_COUNT = 60;

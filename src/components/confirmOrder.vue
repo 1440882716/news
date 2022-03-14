@@ -441,19 +441,25 @@ export default {
       } else {
         createOrder(data).then(res => {
           if (res.code == 200) {
-            if (this.payWay == 1 || this.payWay == 2 || this.payWay == 3) {
-              // 将返回的支付宝地址存下来，在支付页面使用
-              this.$router.push({
-                path: "/pay",
-                name: "pay",
-                query: {
-                  orderId: res.data,
-                  payWay: this.payWay
-                }
-              });
-            }
-          } else if (this.payWay == 4) {
-            // 上传凭证
+            this.$router.push({
+              path: "/pay",
+              name: "pay",
+              query: {
+                orderId: res.data,
+                payWay: this.payWay
+              }
+            });
+            // if (this.payWay == 1 || this.payWay == 2 || this.payWay == 3) {
+            //   // 将返回的支付宝地址存下来，在支付页面使用
+            //   this.$router.push({
+            //     path: "/pay",
+            //     name: "pay",
+            //     query: {
+            //       orderId: res.data,
+            //       payWay: this.payWay
+            //     }
+            //   });
+            // }
           } else {
             this.$refs.tips.toast(res.msg);
           }
