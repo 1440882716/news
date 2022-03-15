@@ -1,0 +1,75 @@
+.order-step {
+  /* width: 245px; */
+  /* padding: 16px; */
+  height: 185px;
+  border: 1px solid #e5e5e5;
+}
+.order-step-left {
+  width: 200px;
+  height: 153px;
+  padding: 16px;
+  border-right: 1px solid #f4f5f6;
+}
+.order-step-right {
+  width: 730px;
+  height: 169px;
+
+  padding-right: 30px;
+  padding-left: 16px;
+  /* background-color: darkcyan; */
+}
+.buyer-info {
+  width: 70%;
+  height: 100%;
+  padding-top: 16px;
+  line-height: 30px;
+  border-right: 1px solid #f4f5f6;
+}
+.pay-info-de {
+  width: 25%;
+  padding-top: 16px;
+  line-height: 30px;
+}
+.address-text {
+  width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.step-goods {
+  border: 1px solid #e5e5e5;
+}
+.order-step-box {
+  width: 200px;
+  padding: 16px;
+  padding-right: 10px;
+  /* background-color: lightcoral; */
+}
+.order-de-goods {
+  width: 750px;
+  border-left: 1px solid #f4f5f6;
+}
+.goods-title-de {
+  /* width: 100%; */
+  height: 30px;
+  line-height: 30px;
+  /* border-bottom: 1px solid #f4f5f6; */
+  /* background-color: lightblue; */
+}
+.de-title1 {
+  width: 50%;
+}
+.de-title2 {
+  width: 12%;
+}
+.de-img-box {
+  width: 60px;
+  height: 80px;
+}
+.de-img {
+  width: 60px;
+  height: 80px;
+}
+.de-goods-item {
+  border: 1px solid #f4f5f6;
+}

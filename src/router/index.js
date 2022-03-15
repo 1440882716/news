@@ -8,6 +8,7 @@ import regist from '@/components/regist'
 import forget from '@/components/forget'
 import cart from '@/components/cart'
 import confirmOrder from '@/components/confirmOrder'
+import orderDetail from '@/components/orderDetail'
 import pay from '@/components/pay'
 
 Vue.use(Router)
@@ -50,6 +51,11 @@ export default new Router({
       path: '/confirmOrder',
       name: 'confirmOrder',
       component: confirmOrder
+    },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: orderDetail
     },
     {
       path: '/pay',

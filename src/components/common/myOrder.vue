@@ -49,11 +49,29 @@
               <count-down
                 :endTime="item.end_time"
                 :callback="callback"
-                endText="已取消"
+                endText=""
               ></count-down>
 
-              <div class="handle-btn m-r-10 m-l-10">立即支付</div>
-              <div class="handle-btn">取消订单</div>
+              <div
+                class="handle-btn m-r-10 m-l-10 pointer"
+                v-if="item.orderStatus == 0"
+              >
+                立即支付
+              </div>
+              <div
+                class="handle-btn pointer"
+                @click="cancelFun(item.id)"
+                v-if="item.orderStatus == 0 && item.payStatus == 0"
+              >
+                取消订单
+              </div>
+              <div
+                class="handle-btn pointer"
+                @click="delFun(item.id)"
+                v-if="item.orderStatus == 1 || item.orderStatus == 5"
+              >
+                删除订单
+              </div>
             </div>
           </div>
           <div class="flex-r order-count font12">
@@ -65,7 +83,7 @@
             v-for="info in item.goods"
           >
             <div class="flex-r">
-              <div class="order-img-box" @click="toGoodsInfo(item)">
+              <div class="order-img-box pointer" @click="toGoodsInfo(item)">
                 <img
                   class="order-goods-img"
                   src="../../assets/img/mzfz.png"
@@ -73,7 +91,7 @@
                 />
               </div>
 
-              <div class="flex-r" @click="orderDetail(item)">
+              <div class="flex-r pointer" @click="orderDetailFun(item)">
                 <div class="font14 f999 flex-c">
                   <p class="font16  main-color">{{ info.name }}</p>
                   <p style="text-align: left;">
@@ -197,9 +215,16 @@ export default {
       // debugger;
     },
     callback() {},
-    orderDetail(info) {
+    orderDetailFun(info) {
       console.log(info);
-      debugger;
+      this.$router.push({
+        path: "/orderDetail",
+        name: "orderDetail",
+        query: {
+          orderId: info.id
+        }
+      });
+      // debugger;
     },
     toGoodsInfo(info) {
       console.log(info);
@@ -207,7 +232,28 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
+
       this.getData();
+    },
+    // 取消订单
+    cancelFun(id) {
+      orderCancel({ id: id }).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          this.getData();
+        }
+      });
+    },
+    // 删除订单
+    delFun(id) {
+      if (id != "" && id != undefined) {
+        orderDel({ id: id }).then(res => {
+          if (res.code == 200) {
+            this.$refs.tips.toast(res.msg);
+            this.getData();
+          }
+        });
+      }
     }
     //  countDown(i) {
     //   let that = this;

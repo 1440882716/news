@@ -4,7 +4,7 @@
       <div class="content980 text-left">
         <span class="fff-font font24">收银台</span>
         <div class="m-t-20 pay-box-page ">
-          <div class="m-t-10 m-l-30" v-if="payWay == 4">
+          <div class="m-t-10 m-l-30" v-if="payWay == 1 || payWay == 2">
             距离二维码过期还剩
             <span class="price-main">{{ count }}</span>
             秒，过期后请刷新页面重新获取二维码。
@@ -118,27 +118,39 @@ export default {
         orderId: this.orderId,
         payType: this.payWay
       };
-      if (this.payWay == 1) {
-        //   微信支付
-        wxPay(data).then(res => {
+      if (this.payWay == 1 || this.payWay == 2) {
+        //   支付宝\微信支付
+        orderPay(data).then(res => {
           if (res.code == 200) {
+            // if (this.payWay == 2) {
             this.zfbUrl = res.data;
             this.getQR();
             this.countDown();
-          }
-        });
-      } else if (this.payWay == 2) {
-        //   支付宝支付
-        orderPay(data).then(res => {
-          if (res.code == 200) {
-            if (this.payWay == 2) {
-              this.zfbUrl = res.data;
-              this.getQR();
-              this.countDown();
-            }
+            // }
           }
         });
       }
+      // if (this.payWay == 1) {
+      //   //   微信支付
+      //   wxPay(data).then(res => {
+      //     if (res.code == 200) {
+      //       this.zfbUrl = res.data;
+      //       this.getQR();
+      //       this.countDown();
+      //     }
+      //   });
+      // } else if (this.payWay == 2) {
+      //   //   支付宝支付
+      //   orderPay(data).then(res => {
+      //     if (res.code == 200) {
+      //       if (this.payWay == 2) {
+      //         this.zfbUrl = res.data;
+      //         this.getQR();
+      //         this.countDown();
+      //       }
+      //     }
+      //   });
+      // }
     },
     // 上传凭证支付
     // 上传凭证图片
