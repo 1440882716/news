@@ -40,6 +40,7 @@
 
               <div
                 class="handle-btn m-r-10 m-l-10 pointer"
+                @click="payFun(item)"
                 v-if="item.orderStatus == 0"
               >
                 立即支付
@@ -47,7 +48,7 @@
               <div
                 class="handle-btn pointer"
                 @click="cancelFun(item.id)"
-                v-if="item.orderStatus == 0 && item.payStatus == 0"
+                v-if="item.orderStatus == 0"
               >
                 取消订单
               </div>
@@ -57,6 +58,19 @@
                 v-if="item.orderStatus == 1 || item.orderStatus == 5"
               >
                 删除订单
+              </div>
+              <div
+                class=" pointer"
+                @click="delFun(item.id)"
+                v-if="item.payWay == 4 && item.auditStatus == 0"
+              >
+                上传凭证审核中
+              </div>
+              <div
+                class=" pointer"
+                v-if="item.payWay == 4 && item.auditStatus == 2"
+              >
+                上传凭证审核中
               </div>
             </div>
           </div>
@@ -221,6 +235,8 @@ export default {
 
       this.getData();
     },
+    // 立即支付
+    payFun(info) {},
     // 取消订单
     cancelFun(id) {
       orderCancel({ id: id }).then(res => {
