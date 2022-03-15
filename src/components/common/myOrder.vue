@@ -12,21 +12,6 @@
         >
         </el-tab-pane>
       </el-tabs>
-      <!-- <el-input
-        size="small"
-        placeholder="请输入内容"
-        suffix-icon="el-icon-search"
-        v-model="orderNum"
-      >
-      </el-input> -->
-      <!-- <div class="title-box flex-r flex-b">
-        <div class="my-info-title">
-          全部订单
-        </div>
-        <div class="top-add-box font14 pointer">
-          查询
-        </div>
-      </div> -->
 
       <div class="my-info-box" v-if="orderData.length == 0">
         <div class="font16 tips-color no-card-text">
@@ -47,6 +32,7 @@
             </div>
             <div class="flex-r">
               <count-down
+                v-if="item.orderStatus == 0"
                 :endTime="item.end_time"
                 :callback="callback"
                 endText=""
