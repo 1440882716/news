@@ -393,8 +393,6 @@ export default {
       });
     },
     chooseBank(info, ind) {
-      console.log(info);
-      console.log(ind);
       this.bankInd = ind;
       this.bankId = info.id;
       // debugger;
@@ -417,9 +415,7 @@ export default {
       return isJPG && isLt2M;
     },
     handleOrder() {
-      console.log(this.qrImg);
-      // debugger;
-      // return;
+      // console.log(this.qrImg);
       let data = {
         addId: this.itemAddress.id,
         cartList: this.goodsId,

@@ -1,7 +1,118 @@
 <template>
   <div class="my-info">
     <msgBox ref="tips"></msgBox>
+    <!-- 重新支付选择支付方式 -->
+    <el-dialog
+      title="支付方式"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <!-- <span>支付方式的种类</span> -->
+      <div class="flex-r ">
+        <div class="pointer m-r-20 text-center" @click="payWay = 1">
+          <img
+            v-if="payWay == 1"
+            class="pay-box"
+            src="../../assets/img/wx.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="pay-box"
+            src="../../assets/img/active-wx.png"
+            alt=""
+          />
+          <p>微信</p>
+        </div>
+        <div class="pointer m-r-20 text-center" @click="payWay = 2">
+          <img
+            v-if="payWay == 2"
+            class="pay-box"
+            src="../../assets/img/zfbpay.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="pay-box"
+            src="../../assets/img/active-zfb.png"
+            alt=""
+          />
+          <p class="">支付宝</p>
+        </div>
+        <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
+          <img
+            v-if="payWay == 3"
+            class="pay-box"
+            src="../../assets/img/cardpay.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="pay-box"
+            src="../../assets/img/active-card.png"
+            alt=""
+          />
+          <p>银行卡</p>
+        </div>
+        <div class="pointer text-center" @click="payWay = 4">
+          <img
+            v-if="payWay == 4"
+            class="pay-box"
+            src="../../assets/img/pz.png"
+            alt=""
+          />
+          <img
+            v-else
+            class="pay-box"
+            src="../../assets/img/active-pz.png"
+            alt=""
+          />
+          <p>上传凭证</p>
+        </div>
+      </div>
+      <!-- 银行卡列表 -->
+      <div v-show="payWay == 3">
+        <div
+          class="card-item-box flex-r pointer"
+          v-for="(item, index) in cardData"
+          @click="chooseBank(item, index)"
+        >
+          <div class="type-img-box">
+            <img class="type-img" src="../../assets/img/cardpay.png" alt="" />
+            <div class="tips-color">银行卡</div>
+          </div>
 
+          <div class="card-info font12">
+            <div class="flex-r text-center m-t-20">
+              <div class="tips-color card-name-box">姓名：</div>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="flex-r text-center">
+              <div class="tips-color card-name-box">银行卡号：</div>
+              <span>{{ item.cardNumber }}</span>
+            </div>
+            <div class="flex-r text-center">
+              <div class="tips-color card-name-box">银行：</div>
+              <span>{{ item.bankName }}</span>
+            </div>
+          </div>
+          <div class="handle-box text-center">
+            <i
+              :class="[
+                'el-icon-success',
+                'font24',
+                bankInd == index ? 'myActiveColor' : 'f999'
+              ]"
+            ></i>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="payAgain">确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="info-content">
       <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
         <el-tab-pane
@@ -90,7 +201,6 @@
                   alt=""
                 />
               </div>
-
               <div class="flex-r pointer" @click="orderDetailFun(item)">
                 <div class="font14 f999 flex-c">
                   <p class="font16  main-color">{{ info.name }}</p>
@@ -131,6 +241,7 @@
 </template>
 <script>
 import { orderList, orderDetail, orderCancel, orderDel } from "@/api/order";
+import { cardList } from "@/api/card";
 import msgBox from "./msg.vue";
 // import CountDown from "vue2-countdown";
 import CountDown from "./countDown.vue";
@@ -142,11 +253,16 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
       statusNum: "0",
       orderNum: "",
       currentPage: 1,
       orderCount: 0,
       editableTabsValue: "0",
+      payWay: -1, //支付方式
+      cardData: [], //银行卡列表
+      bankId: "",
+      bankInd: -1,
       editableTabs: [
         {
           title: "全部订单",
@@ -174,7 +290,6 @@ export default {
         }
       ],
       orderData: [],
-
       currentTime: 0,
       startTime: 1646977570000,
       endTime: "1647315805"
@@ -184,6 +299,13 @@ export default {
     this.getData();
   },
   methods: {
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
     getTimestamp(time) {
       //把时间日期转成时间戳
       return new Date(time).getTime();
@@ -235,8 +357,28 @@ export default {
 
       this.getData();
     },
+    // 银行卡列表
+    payWayFun(num) {
+      this.payWay = num;
+      cardList().then(res => {
+        if (res.code == 200) {
+          this.cardData = res.data;
+        } else {
+        }
+      });
+    },
+    //选择银行卡
+    chooseBank(info, ind) {
+      this.bankInd = ind;
+      this.bankId = info.id;
+      // debugger;
+    },
+    payAgain() {},
     // 立即支付
-    payFun(info) {},
+    payFun(info) {
+      this.dialogVisible = true;
+      // this.payId = info.
+    },
     // 取消订单
     cancelFun(id) {
       orderCancel({ id: id }).then(res => {
@@ -341,5 +483,50 @@ export default {
   padding: 0 15px 10px 15px;
   border-bottom: 1px solid #e5e5e5;
   margin-bottom: 10px;
+}
+.pay-box {
+  width: 60px;
+  height: 60px;
+}
+.pay-box-card {
+  width: 70px;
+  height: 60px;
+}
+/* =================银行卡列表 */
+.card-item-box {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #e5e5e5;
+  margin-top: 20px;
+}
+.type-img-box {
+  width: 200px;
+  height: 100%;
+  /* line-height: 120px; */
+  text-align: center;
+  background-color: #edffff;
+}
+.type-img {
+  width: 54px;
+  height: 50px;
+  margin-top: 35px;
+}
+.card-info {
+  width: calc(100% - 300px);
+  height: 100%;
+  text-align: center;
+  /* background-color: darkgoldenrod; */
+}
+.card-name-box {
+  width: 120px;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.handle-box {
+  width: 150px;
+  height: 120px;
+  /* height: 100%; */
+  line-height: 120px;
+  /* background-color: salmon; */
 }
 </style>
