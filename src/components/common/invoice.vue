@@ -92,6 +92,9 @@
               type="text"
             ></el-input>
           </el-form-item>
+          <el-form-item label="即时配送" style="text-align: left;">
+            <el-switch v-model="accountForm.isDefault"></el-switch>
+          </el-form-item>
         </el-form>
       </div>
       <div class="add-card-btn fff-font pointer" @click="addFun">
@@ -121,10 +124,22 @@
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in invoiceList">
           <div class="type-img-box" v-if="item.type == 1">
+            <img
+              v-if="item.isDefault"
+              class="default-icon"
+              src="../../assets/img/default.png"
+              alt=""
+            />
             <img class="type-img" src="../../assets/img/people3.png" alt="" />
             <div class="tips-color">个人发票</div>
           </div>
           <div class="type-img-box" v-if="item.type == 2">
+            <img
+              v-if="item.isDefault"
+              class="default-icon"
+              src="../../assets/img/default.png"
+              alt=""
+            />
             <img class="type-img" src="../../assets/img/conpany.png" alt="" />
             <div class="tips-color">公司发票</div>
           </div>
@@ -179,7 +194,8 @@ export default {
         companyAddress: "",
         companyMobile: "",
         bankName: "",
-        bankCard: ""
+        bankCard: "",
+        isDefault: false
       },
       accountRules: {
         name: [
@@ -242,6 +258,9 @@ export default {
     addFun() {
       console.log(this.accountForm.type);
       let formType = this.accountForm.type;
+      console.log(this.accountForm);
+      // debugger;
+      // return;
       if (formType == 1) {
         //   个人发票
         this.$refs.accountForm.validateField(["name"], errMsg => {
@@ -411,6 +430,7 @@ export default {
   /* line-height: 120px; */
   text-align: center;
   background-color: #edffff;
+  position: relative;
 }
 .type-img {
   width: 54px;
@@ -487,5 +507,10 @@ export default {
 .active-type {
   border: 1px solid #409eff;
   color: #409eff;
+}
+.default-icon {
+  position: absolute;
+  top: -12px;
+  left: -12px;
 }
 </style>

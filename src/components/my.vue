@@ -33,6 +33,8 @@
           <Invoice v-show="navNum == 4"></Invoice>
           <!-- 订单列表 -->
           <myOrder v-show="navNum == 5"></myOrder>
+          <!-- 我的售后 -->
+          <afterSale v-show="navNum == 6"></afterSale>
         </div>
       </div>
     </div>
@@ -47,6 +49,7 @@ import myCard from "./common/myCard.vue";
 import myAddress from "./common/myAddress.vue";
 import Invoice from "./common/invoice.vue";
 import myOrder from "./common/myOrder.vue";
+import afterSale from "./common/afterSale.vue";
 import Footer from "./common/footer.vue";
 export default {
   name: "my",
@@ -59,7 +62,8 @@ export default {
     myCard,
     Invoice,
     myOrder,
-    myAddress
+    myAddress,
+    afterSale
   },
   data() {
     return {

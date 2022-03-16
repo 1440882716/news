@@ -113,6 +113,53 @@
         <el-button type="primary" @click="payAgain">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="发票信息"
+      :visible.sync="invoiceDialog"
+      width="40%"
+      :before-close="handleClose"
+    >
+      <!-- <span>发票信息</span> -->
+      <el-form ref="invoiceForm" :model="invoiceForm" label-width="100px">
+        <el-form-item label="开票类型">
+          <el-radio-group v-model="invoiceForm.status">
+            <el-radio label="个人"></el-radio>
+            <el-radio label="公司"></el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="公司名称">
+          <el-input v-model="invoiceForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="税号">
+          <el-input v-model="invoiceForm.taxNo"></el-input>
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input v-model="invoiceForm.money"></el-input>
+        </el-form-item>
+        <el-form-item label="公司地址">
+          <el-input v-model="invoiceForm.companyAddress"></el-input>
+        </el-form-item>
+        <el-form-item label="公司电话">
+          <el-input v-model="invoiceForm.companyMobile"></el-input>
+        </el-form-item>
+        <el-form-item label="开户行名称">
+          <el-input v-model="invoiceForm.bankName"></el-input>
+        </el-form-item>
+        <el-form-item label="开户行卡号">
+          <el-input v-model="invoiceForm.bankCard"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="invoiceForm.email"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="invoiceDialog = false">取 消</el-button>
+        <el-button type="primary" @click="invoiceDialog = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
     <div class="info-content">
       <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
         <el-tab-pane
@@ -202,10 +249,15 @@
               <span class="m-r-20">订单号：{{ item.id }}</span>
               <span>订单总额：{{ item.totalPrice }}</span>
             </div>
-
             <i
-              v-if="isOver && statusNum == '4'"
-              class="el-icon-success font18 f999"
+              @click="chooseOrder(item)"
+              v-if="statusNum == '4'"
+              :class="[
+                'el-icon-success',
+                'font18',
+                'pointer',
+                item.select ? 'price-color' : 'f999'
+              ]"
             ></i>
           </div>
           <div
@@ -260,6 +312,7 @@
 </template>
 <script>
 import { orderList, orderDetail, orderCancel, orderDel } from "@/api/order";
+import { pageData } from "@/api/invoice";
 import { cardList } from "@/api/card";
 import msgBox from "./msg.vue";
 // import CountDown from "vue2-countdown";
@@ -273,6 +326,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      invoiceDialog: false,
       statusNum: "0",
       orderNum: "",
       currentPage: 1,
@@ -281,7 +335,9 @@ export default {
       payId: "",
       payWay: -1, //支付方式
       cardData: [], //银行卡列表
-      isOver: false, //控制开发票的选择
+      companyType: "", //发票类型
+      // isOver: false, //控制开发票的选择
+      invoiceOrder: [],
       bankId: "",
       bankInd: -1,
       editableTabs: [
@@ -310,7 +366,20 @@ export default {
           name: "5"
         }
       ],
+      invoiceForm: {
+        status: "",
+        name: "",
+        taxNo: "",
+        money: "",
+        companyAddress: "",
+        companyMobile: "",
+        bankName: "",
+        bankCard: "",
+        email: ""
+      },
       orderData: [],
+      invoiceData: [],
+      invoiceItem: {},
       currentTime: 0,
       startTime: 1646977570000,
       endTime: "1647315805"
@@ -327,14 +396,46 @@ export default {
         })
         .catch(_ => {});
     },
-    // 出现选择订单的按钮
+    // 发票信息
     chooseInvoiceFun() {
-      this.isOver = true;
+      // this.isOver = true;
+      // this.invoiceOrder
+      let goodsCount = 0;
+      for (let i = 0; i < this.invoiceOrder.length; i++) {
+        goodsCount += this.invoiceOrder[i].totalPrice;
+      }
+      // console.log(goodsCount);
+      this.invoiceDialog = true;
+      pageData().then(res => {
+        if (res.code == 200) {
+          this.invoiceData = res.data;
+          for (let i = 0; i < this.invoiceData.length; i++) {
+            if (this.invoiceData[i].isDefault) {
+              // this.invoiceItem = this.invoiceData[i];
+              this.invoiceForm.status = this.invoiceData[i].type;
+              this.invoiceForm.name = this.invoiceData[i].name;
+              this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
+              // this.invoiceForm.money = this.invoiceData[i].companyMobile
+              this.invoiceForm.companyAddress = this.invoiceData[
+                i
+              ].companyAddress;
+              this.invoiceForm.companyMobile = this.invoiceData[
+                i
+              ].companyMobile;
+              this.invoiceForm.bankName = this.invoiceData[i].bankName;
+              this.invoiceForm.bankCard = this.invoiceData[i].bankCard;
+              // this.invoiceForm.email = ""
+            }
+          }
+        }
+      });
+      // debugger;
     },
+    //把时间日期转成时间戳
     getTimestamp(time) {
-      //把时间日期转成时间戳
       return new Date(time).getTime();
     },
+    // 订单列表
     getData() {
       let data = {
         current: this.currentPage,
@@ -350,24 +451,25 @@ export default {
             lastTime = String(lastTime);
             this.$set(item, "end_time", lastTime);
           });
+          if (this.statusNum == "4") {
+            this.orderData.map(item => {
+              this.$set(item, "select", false);
+            });
+          }
         } else {
         }
       });
     },
+    // 切换订单类型
     handleClick() {
-      console.log(this.editableTabsValue);
       this.statusNum = this.editableTabsValue;
-      // if (this.statusNum == "4") {
-      //   this.isOver = true;
-      // }
       this.currentPage = 1;
       this.getData();
-      // debugger;
     },
     callback() {},
     // 查看订单详情
     orderDetailFun(info) {
-      console.log(info);
+      // console.log(info);
       this.$router.push({
         path: "/orderDetail",
         name: "orderDetail",
@@ -377,13 +479,21 @@ export default {
       });
       // debugger;
     },
+    // 去商品详情
     toGoodsInfo(info) {
-      console.log(info);
+      // console.log(info);
+      this.$router.push({
+        path: "/details",
+        name: "details",
+        query: {
+          goodsId: info.paperId
+        }
+      });
       debugger;
     },
+    // 改变页码
     handleCurrentChange(val) {
       this.currentPage = val;
-
       this.getData();
     },
     // 银行卡列表
@@ -402,6 +512,7 @@ export default {
       this.bankId = info.id;
       // debugger;
     },
+    // 立即支付
     payAgain() {
       console.log(this.payId);
       console.log(this.payWay);
@@ -416,7 +527,7 @@ export default {
         }
       });
     },
-    // 立即支付
+    // 支付按钮
     payFun(info) {
       this.dialogVisible = true;
       this.payId = info.id;
@@ -440,25 +551,19 @@ export default {
           }
         });
       }
+    },
+    // 选择订单
+    chooseOrder(info) {
+      console.log(info);
+      info.select = !info.select;
+      let itemInd = this.invoiceOrder.indexOf(info.id);
+      console.log(itemInd);
+      this.invoiceOrder = this.orderData.filter(item => {
+        return item.select;
+      });
+      console.log(this.invoiceOrder);
+      // debugger;
     }
-    //  countDown(i) {
-    //   let that = this;
-    //   let item = that.list[i];
-    //   // 计算倒计时
-    //   that.list[i].countDownFn = setInterval(() => {
-    //     //  console.log(that.countDownFun(item.endTime))
-    //     if (that.countDownFun(item.countDownTime) == "倒计时结束") {
-    //       clearInterval(that.list[i].countDownFn); //清除定时器
-    //     } else {
-    //       item.countDownTime = that.countDownFun(item.endTime);
-    //       that.$set(
-    //         that.list,
-    //         item.countDownTime,
-    //         that.countDownFun(item.endTime)
-    //       );
-    //     }
-    //   }, 1000);
-    // }
   }
 };
 </script>
