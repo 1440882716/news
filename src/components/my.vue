@@ -76,6 +76,9 @@ export default {
       ]
     };
   },
+  created() {
+    this.navNum = this.$route.query.orderPage;
+  },
   methods: {
     chooseNav(ind) {
       // window.alert("111");

@@ -25,13 +25,16 @@
             </router-link>
           </div>
           <div class="head-line-right">
-            <ul class="flex-r flex-e head-ul-list">
-              <li>
-                <router-link to="./my" style="text-decoration: none;"
-                  >个人中心</router-link
-                >
+            <ul class="flex-r flex-e head-ul-list pointer">
+              <!-- <li> -->
+              <li @click="toMypage(0)">
+                个人中心
               </li>
-              <li>我的订单</li>
+              <!-- <router-link to="./my" style="text-decoration: none;"
+                  >个人中心</router-link
+                > -->
+              <!-- </li> -->
+              <li @click="toMypage(5)">我的订单</li>
               <li>
                 <router-link to="./cart" style="text-decoration: none;"
                   >购物车</router-link
@@ -72,6 +75,15 @@ export default {
       this.$router.push({
         path: "/",
         name: "index"
+      });
+    },
+    toMypage(num) {
+      this.$router.push({
+        path: "/My",
+        name: "My",
+        query: {
+          orderPage: num
+        }
       });
     }
   }

@@ -131,6 +131,18 @@
       </div>
 
       <div v-else>
+        <!-- 已完成的订单开发票 -->
+        <div class="flex flex-e">
+          <el-button
+            type="primary"
+            v-if="statusNum == '4'"
+            @click="chooseInvoiceFun"
+            class="text-right pointer invoice-btn m-b-10"
+          >
+            开发票
+          </el-button>
+        </div>
+
         <div
           class="order-item-box font14 m-b-20"
           v-for="(item, index) in orderData"
@@ -143,7 +155,7 @@
             </div>
             <div class="flex-r">
               <count-down
-                v-if="item.orderStatus == 0"
+                v-if="item.orderStatus == 0 && item.payWay != 4"
                 :endTime="item.end_time"
                 :callback="callback"
                 endText=""
@@ -185,9 +197,16 @@
               </div>
             </div>
           </div>
-          <div class="flex-r order-count font12">
-            <span class="m-r-20">订单号：{{ item.id }}</span>
-            <span>订单总额：{{ item.totalPrice }}</span>
+          <div class="flex-r flex-b order-count font12">
+            <div>
+              <span class="m-r-20">订单号：{{ item.id }}</span>
+              <span>订单总额：{{ item.totalPrice }}</span>
+            </div>
+
+            <i
+              v-if="isOver && statusNum == '4'"
+              class="el-icon-success font18 f999"
+            ></i>
           </div>
           <div
             class="flex-r flex-b order-goods-item-box"
@@ -259,8 +278,10 @@ export default {
       currentPage: 1,
       orderCount: 0,
       editableTabsValue: "0",
+      payId: "",
       payWay: -1, //支付方式
       cardData: [], //银行卡列表
+      isOver: false, //控制开发票的选择
       bankId: "",
       bankInd: -1,
       editableTabs: [
@@ -306,6 +327,10 @@ export default {
         })
         .catch(_ => {});
     },
+    // 出现选择订单的按钮
+    chooseInvoiceFun() {
+      this.isOver = true;
+    },
     getTimestamp(time) {
       //把时间日期转成时间戳
       return new Date(time).getTime();
@@ -332,11 +357,15 @@ export default {
     handleClick() {
       console.log(this.editableTabsValue);
       this.statusNum = this.editableTabsValue;
+      // if (this.statusNum == "4") {
+      //   this.isOver = true;
+      // }
       this.currentPage = 1;
       this.getData();
       // debugger;
     },
     callback() {},
+    // 查看订单详情
     orderDetailFun(info) {
       console.log(info);
       this.$router.push({
@@ -373,11 +402,24 @@ export default {
       this.bankId = info.id;
       // debugger;
     },
-    payAgain() {},
+    payAgain() {
+      console.log(this.payId);
+      console.log(this.payWay);
+      // debugger;
+      // return;
+      this.$router.push({
+        path: "/pay",
+        name: "pay",
+        query: {
+          orderId: this.payId,
+          payWay: this.payWay
+        }
+      });
+    },
     // 立即支付
     payFun(info) {
       this.dialogVisible = true;
-      // this.payId = info.
+      this.payId = info.id;
     },
     // 取消订单
     cancelFun(id) {
@@ -529,4 +571,9 @@ export default {
   line-height: 120px;
   /* background-color: salmon; */
 }
+/* .invoice-btn{
+  width: 70px;
+  height: 40px;
+
+} */
 </style>

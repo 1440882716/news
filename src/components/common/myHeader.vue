@@ -20,14 +20,10 @@
           </div>
           <div class="head-line-right">
             <ul class="flex-r flex-e head-ul-list">
-              <li>
-                <router-link
-                  to="./my"
-                  style="text-decoration: none;color: white;"
-                  >个人中心</router-link
-                >
+              <li @click="toMypage(0)">
+                个人中心
               </li>
-              <li>我的订单</li>
+              <li @click="toMypage(5)">我的订单</li>
               <li>
                 <router-link
                   to="./cart"
@@ -55,7 +51,17 @@ export default {
   },
 
   mounted() {},
-  methods: {}
+  methods: {
+    toMypage(num) {
+      this.$router.push({
+        path: "/My",
+        name: "My",
+        query: {
+          orderPage: 0
+        }
+      });
+    }
+  }
 };
 </script>
 

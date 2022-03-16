@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <msgBox ref="tips"></msgBox>
     <div class="pay-header">
       <div class="content980 text-left">
         <span class="fff-font font24">收银台</span>
@@ -25,7 +26,8 @@
             <div v-if="payWay == 4">
               <el-upload
                 class="avatar-uploader m-t-20"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                :headers="{ Authorization: token }"
+                action="http://192.168.31.105:8080/client/order/upload"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -92,9 +94,11 @@
 <script>
 import QRCode from "qrcodejs2";
 import { orderPay, wxPay } from "@/api/cart";
+import msgBox from "./common/msg.vue";
+import { getToken } from "@/utils/auth";
 export default {
   name: "pay",
-  components: { QRCode },
+  components: { QRCode, msgBox },
   data() {
     return {
       orderId: "",
@@ -102,8 +106,10 @@ export default {
       count: 0,
       navList: [],
       wxCode: "",
+      token: "",
       zfbUrl: "https://qr.alipay.com/bax06387rh8te3fxuczd004d",
       voucherImg: "",
+      dataImg: "",
       unitRemarks: ""
     };
   },
@@ -111,6 +117,7 @@ export default {
     this.orderId = this.$route.query.orderId;
     this.payWay = this.$route.query.payWay;
     this.getPayImg();
+    this.token = getToken();
   },
   methods: {
     getPayImg() {
@@ -157,6 +164,7 @@ export default {
     handleAvatarSuccess(res, file) {
       this.voucherImg = URL.createObjectURL(file.raw);
       if (res.code == 200) {
+        this.dataImg = res.location;
       }
       // console.log(res.data);
       // this.$refs.tips.toast(res.msg);
@@ -173,18 +181,25 @@ export default {
       }
       return isJPG && isLt2M;
     },
+    // 上传凭证
     handleVoucher() {
       let data = {
         orderId: this.orderId,
         payType: this.payWay,
-        imgUrl: this.voucherImg,
+        imgUrl: this.dataImg,
         unitRemarks: this.unitRemarks
       };
-      console.log(data);
-      debugger;
-      return;
       orderPay(data).then(res => {
         if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          // 上传凭证审核中  去到订单页面
+          this.$router.push({
+            path: "/My",
+            name: "My",
+            query: {
+              orderPage: 5
+            }
+          });
         }
       });
     },

@@ -22,6 +22,7 @@ export default new Router({
     },
     {
       path: '/my',
+      name: 'My',
       component: My
     },
     {
