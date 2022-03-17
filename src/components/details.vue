@@ -111,7 +111,9 @@
             <div class="add-cart-box font14 pointer" @click="addGoods">
               加入购物车
             </div>
-            <div class="buy-first font14 fff-font pointer">立即购买</div>
+            <div class="buy-first font14 fff-font pointer" @click="buyFirst">
+              立即购买
+            </div>
           </div>
         </div>
       </div>
@@ -160,7 +162,7 @@ import Magnifier from "../components/common/magnifier.vue";
 import msgBox from "./common/msg.vue";
 import region from "../assets/data/area_format_user.json";
 import { goodsDetails, reckon } from "@/api/goods";
-import { addCart } from "@/api/cart";
+import { addCart, directBuy } from "@/api/cart";
 export default {
   components: {
     Header,
@@ -284,6 +286,31 @@ export default {
       addCart(data).then(res => {
         if (res.code == 200) {
           this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
+    buyFirst() {
+      let data = {
+        paperId: this.goodsId,
+        paperYear: this.yearTime,
+        startTime: this.dateStart,
+        endTime: this.dateEnd,
+        quantity: this.goodsNum,
+        periodNum: this.goodsData.present,
+        price: this.countPrice
+      };
+      console.log(data);
+      // debugger;
+      // return;
+      directBuy(data).then(res => {
+        if (res.code == 200) {
+          this.$router.push({
+            path: "/confirmOrder",
+            name: "confirmOrder",
+            query: {
+              goodsId: "0"
+            }
+          });
         }
       });
     }

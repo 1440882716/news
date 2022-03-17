@@ -306,7 +306,7 @@
             v-for="info in item.goods"
           >
             <div class="flex-r">
-              <div class="order-img-box pointer" @click="toGoodsInfo(item)">
+              <div class="order-img-box pointer" @click="toGoodsInfo(info)">
                 <img
                   class="order-goods-img"
                   src="../../assets/img/mzfz.png"
@@ -561,7 +561,6 @@ export default {
     },
     // 去商品详情
     toGoodsInfo(info) {
-      // console.log(info);
       this.$router.push({
         path: "/details",
         name: "details",
@@ -569,7 +568,6 @@ export default {
           goodsId: info.paperId
         }
       });
-      debugger;
     },
     // 改变页码
     handleCurrentChange(val) {

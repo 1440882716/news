@@ -10,6 +10,22 @@ const userApi = {
     orderPay: '/client/order/pay',
     wxPay: '/client/wxPay/scanCode',
     unionPay: '/client/unionPay',
+    directBuy: '/client/cart/direct',
+    approve: '/client/cart/approve'
+}
+export function approve(data) {
+    return request({
+        url: userApi.approve,
+        method: 'get',
+        params: data
+    })
+}
+export function directBuy(data) {
+    return request({
+        url: userApi.directBuy,
+        method: 'post',
+        data: data
+    })
 }
 export function unionPay(data) {
     return request({

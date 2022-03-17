@@ -64,7 +64,7 @@
             <div class="de-title2 font12 m-t-20">{{ item.realPrice }}</div>
             <div class="de-title2 font12 m-t-20">{{ item.number }}</div>
             <div class="de-title2 font12 m-t-20">
-              {{ item.realPrice * item.number }}
+              {{ (item.realPrice * item.number).toFixed(2) }}
             </div>
           </div>
           <div class="m-l-10 m-b-10 font14">订单备注：请尽快送达</div>

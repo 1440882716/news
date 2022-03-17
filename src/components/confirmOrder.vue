@@ -239,7 +239,7 @@ import addAddress from "./common/addAddress.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "./common/msg.vue";
 import { addList, delAdd } from "@/api/address";
-import { confirmUrl, createOrder } from "@/api/cart";
+import { confirmUrl, createOrder, approve } from "@/api/cart";
 import { cardList } from "@/api/card";
 export default {
   name: "confirm",
@@ -273,7 +273,11 @@ export default {
   created() {
     this.goodsId = this.$route.query.goodsId;
     this.getAddress();
-    this.getGoods();
+    if (this.goodsId != "0") {
+      this.getGoods();
+    } else {
+      this.getbuyFirst();
+    }
   },
   methods: {
     chooseNav(ind) {
@@ -281,6 +285,18 @@ export default {
       // console.log(ind);
       this.navNum = ind;
       // debugger;
+    },
+    getbuyFirst() {
+      approve().then(res => {
+        if (res.code == 200) {
+          this.goodsList = res.data;
+          let count = 0;
+          for (let i = 0; i < this.goodsList.length; i++) {
+            count += this.goodsList[i].price * 1 * this.goodsList[i].quantity;
+          }
+          this.goodsCount = count.toFixed(2);
+        }
+      });
     },
     openAddBox() {
       this.$refs.openBox.openDialog();
