@@ -198,7 +198,7 @@
                 </div>
               </div>
               <!-- 银行卡列表 -->
-              <div v-show="payWay == 3">
+              <!-- <div v-show="payWay == 3">
                 <div
                   class="card-item-box flex-r pointer"
                   v-for="(item, index) in cardData"
@@ -237,10 +237,9 @@
                     ></i>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- 上传线下支付凭证 -->
-              <div v-show="payWay == 4">
-                <!-- <span class="">上传线下支付凭证图片</span> -->
+              <!-- <div v-show="payWay == 4">
                 <el-upload
                   class="avatar-uploader m-t-20"
                   action="https://jsonplaceholder.typicode.com/posts/"
@@ -251,7 +250,7 @@
                   <img v-if="voucherImg" :src="voucherImg" class="avatar" />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

@@ -121,10 +121,10 @@
     >
       <!-- <span>发票信息</span> -->
       <el-form ref="invoiceForm" :model="invoiceForm" label-width="100px">
-        <el-form-item label="开票类型">
-          <el-radio-group v-model="invoiceForm.status">
-            <el-radio label="个人"></el-radio>
-            <el-radio label="公司"></el-radio>
+        <el-form-item label="开票类型" style="text-align: left;">
+          <el-radio-group>
+            <el-radio v-model="invoiceForm.status" label="1">个人</el-radio>
+            <el-radio v-model="invoiceForm.status" label="2">公司</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="公司名称">
@@ -292,7 +292,7 @@
             </div>
             <div>
               金额：<span class="price-main font16 bold-font">{{
-                info.realPrice * info.number
+                (info.realPrice * info.number).toFixed(2)
               }}</span>
             </div>
           </div>
@@ -450,6 +450,7 @@ export default {
             let lastTime = (start + 24 * 60 * 60 * 1000) / 1000;
             lastTime = String(lastTime);
             this.$set(item, "end_time", lastTime);
+            // this.$set(item, "goodsC", lastTime);
           });
           if (this.statusNum == "4") {
             this.orderData.map(item => {

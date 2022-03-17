@@ -92,7 +92,7 @@
               type="text"
             ></el-input>
           </el-form-item>
-          <el-form-item label="即时配送" style="text-align: left;">
+          <el-form-item label="默认发票" style="text-align: left;">
             <el-switch v-model="accountForm.isDefault"></el-switch>
           </el-form-item>
         </el-form>

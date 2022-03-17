@@ -93,7 +93,7 @@
 </template>
 <script>
 import QRCode from "qrcodejs2";
-import { orderPay, wxPay } from "@/api/cart";
+import { orderPay, wxPay, unionPay } from "@/api/cart";
 import msgBox from "./common/msg.vue";
 import { getToken } from "@/utils/auth";
 export default {
@@ -136,28 +136,17 @@ export default {
             // }
           }
         });
+      } else if (this.payWay == 3) {
+        // 银联支付
+        unionPay({ orderId: this.orderId }).then(res => {
+          console.log(res);
+          window.localStorage.removeItem("callbackHTML");
+          window.localStorage.setItem("callbackHTML", res);
+          var newWin = window.open("");
+          newWin.document.write(localStorage.getItem("callbackHTML"));
+          newWin.document.close();
+        });
       }
-      // if (this.payWay == 1) {
-      //   //   微信支付
-      //   wxPay(data).then(res => {
-      //     if (res.code == 200) {
-      //       this.zfbUrl = res.data;
-      //       this.getQR();
-      //       this.countDown();
-      //     }
-      //   });
-      // } else if (this.payWay == 2) {
-      //   //   支付宝支付
-      //   orderPay(data).then(res => {
-      //     if (res.code == 200) {
-      //       if (this.payWay == 2) {
-      //         this.zfbUrl = res.data;
-      //         this.getQR();
-      //         this.countDown();
-      //       }
-      //     }
-      //   });
-      // }
     },
     // 上传凭证支付
     // 上传凭证图片

@@ -8,7 +8,15 @@ const userApi = {
     confirmUrl: '/client/cart/confirm',
     createOrder: '/client/order/create',
     orderPay: '/client/order/pay',
-    wxPay: '/client/wxPay/scanCode'
+    wxPay: '/client/wxPay/scanCode',
+    unionPay: '/client/unionPay',
+}
+export function unionPay(data) {
+    return request({
+        url: userApi.unionPay,
+        method: 'get',
+        params: data
+    })
 }
 export function wxPay(data) {
     return request({
