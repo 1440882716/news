@@ -5,6 +5,14 @@ const userApi = {
     updInvoice: '/client/userInvoice/update',
     pageData: '/client/userInvoice/getList',
     delInvoice: '/client/userInvoice/del',
+    handupInvoice: '/client/receipt/drawer'
+}
+export function handupInvoice(data) {
+    return request({
+        url: userApi.handupInvoice,
+        method: 'post',
+        data: data
+    })
 }
 export function delInvoice(data) {
     return request({

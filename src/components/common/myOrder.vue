@@ -119,45 +119,78 @@
       width="40%"
       :before-close="handleClose"
     >
-      <!-- <span>发票信息</span> -->
+      <!-- 当前发票信息 -->
+      <div class="text-right pointer" @click="innerVisible = true">
+        选择其他发票
+      </div>
       <el-form ref="invoiceForm" :model="invoiceForm" label-width="100px">
         <el-form-item label="开票类型" style="text-align: left;">
-          <el-radio-group>
-            <el-radio v-model="invoiceForm.status" label="1">个人</el-radio>
-            <el-radio v-model="invoiceForm.status" label="2">公司</el-radio>
+          <el-radio-group v-model="invoiceForm.status">
+            <el-radio :label="1">个人</el-radio>
+            <el-radio :label="2">公司</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="公司名称">
+        <el-form-item label="公司/个人名称">
           <el-input v-model="invoiceForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="税号">
+        <el-form-item label="税号" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.taxNo"></el-input>
         </el-form-item>
         <el-form-item label="金额">
-          <el-input v-model="invoiceForm.money"></el-input>
+          <el-input :disabled="true" v-model="invoiceForm.money"></el-input>
         </el-form-item>
-        <el-form-item label="公司地址">
+        <el-form-item label="公司地址" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.companyAddress"></el-input>
         </el-form-item>
-        <el-form-item label="公司电话">
+        <el-form-item label="公司电话" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.companyMobile"></el-input>
         </el-form-item>
-        <el-form-item label="开户行名称">
+        <el-form-item label="开户行名称" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.bankName"></el-input>
         </el-form-item>
-        <el-form-item label="开户行卡号">
+        <el-form-item label="开户行卡号" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.bankCard"></el-input>
         </el-form-item>
         <el-form-item label="邮箱">
           <el-input v-model="invoiceForm.email"></el-input>
         </el-form-item>
       </el-form>
-
+      <!-- 内层嵌套的dialog -->
+      <el-dialog
+        width="30%"
+        title="内层 Dialog"
+        :visible.sync="innerVisible"
+        append-to-body
+      >
+        <div>发票列表</div>
+        <div
+          class="card-item-box flex-r pointer"
+          v-for="item in invoiceData"
+          @click="chooseInvoiceItem(item)"
+        >
+          <div class="type-img-box" v-if="item.type == 1">
+            <img class="type-img" src="../../assets/img/people3.png" alt="" />
+            <div class="tips-color">个人发票</div>
+          </div>
+          <div class="type-img-box" v-if="item.type == 2">
+            <img class="type-img" src="../../assets/img/conpany.png" alt="" />
+            <div class="tips-color">公司发票</div>
+          </div>
+          <div class="card-info font12">
+            <div class="flex-r text-center m-t-20">
+              <div class="tips-color card-name-box">发票抬头：</div>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="flex-r text-center" v-if="item.type == 2">
+              <div class="tips-color card-name-box">单位税号：</div>
+              <span>{{ item.taxNo }}</span>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
       <span slot="footer" class="dialog-footer">
         <el-button @click="invoiceDialog = false">取 消</el-button>
-        <el-button type="primary" @click="invoiceDialog = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="getInvoice">确 定</el-button>
       </span>
     </el-dialog>
     <div class="info-content">
@@ -224,6 +257,13 @@
               </div>
               <div
                 class="handle-btn pointer"
+                @click="cancelFun(item.id)"
+                v-if="item.orderStatus == 4"
+              >
+                退订
+              </div>
+              <div
+                class="handle-btn pointer"
                 @click="delFun(item.id)"
                 v-if="item.orderStatus == 1 || item.orderStatus == 5"
               >
@@ -258,7 +298,8 @@
                 'pointer',
                 item.select ? 'price-color' : 'f999'
               ]"
-            ></i>
+              >是否开发票</i
+            >
           </div>
           <div
             class="flex-r flex-b order-goods-item-box"
@@ -312,7 +353,7 @@
 </template>
 <script>
 import { orderList, orderDetail, orderCancel, orderDel } from "@/api/order";
-import { pageData } from "@/api/invoice";
+import { pageData, handupInvoice } from "@/api/invoice";
 import { cardList } from "@/api/card";
 import msgBox from "./msg.vue";
 // import CountDown from "vue2-countdown";
@@ -325,8 +366,10 @@ export default {
   },
   data() {
     return {
+      listtest: [1, 2, 3, 4, 5, 6],
       dialogVisible: false,
       invoiceDialog: false,
+      innerVisible: false, //内层嵌套的dialog
       statusNum: "0",
       orderNum: "",
       currentPage: 1,
@@ -404,32 +447,67 @@ export default {
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
       }
-      // console.log(goodsCount);
-      this.invoiceDialog = true;
-      pageData().then(res => {
-        if (res.code == 200) {
-          this.invoiceData = res.data;
-          for (let i = 0; i < this.invoiceData.length; i++) {
-            if (this.invoiceData[i].isDefault) {
-              // this.invoiceItem = this.invoiceData[i];
-              this.invoiceForm.status = this.invoiceData[i].type;
-              this.invoiceForm.name = this.invoiceData[i].name;
-              this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
-              // this.invoiceForm.money = this.invoiceData[i].companyMobile
-              this.invoiceForm.companyAddress = this.invoiceData[
-                i
-              ].companyAddress;
-              this.invoiceForm.companyMobile = this.invoiceData[
-                i
-              ].companyMobile;
-              this.invoiceForm.bankName = this.invoiceData[i].bankName;
-              this.invoiceForm.bankCard = this.invoiceData[i].bankCard;
-              // this.invoiceForm.email = ""
+      if (this.invoiceOrder.length != 0) {
+        this.invoiceDialog = true;
+        pageData().then(res => {
+          if (res.code == 200) {
+            this.invoiceData = res.data;
+            for (let i = 0; i < this.invoiceData.length; i++) {
+              if (this.invoiceData[i].isDefault) {
+                this.invoiceForm.status = this.invoiceData[i].type;
+                this.invoiceForm.name = this.invoiceData[i].name;
+                this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
+                this.invoiceForm.money = goodsCount.toFixed(2);
+                this.invoiceForm.companyAddress = this.invoiceData[
+                  i
+                ].companyAddress;
+                this.invoiceForm.companyMobile = this.invoiceData[
+                  i
+                ].companyMobile;
+                this.invoiceForm.bankName = this.invoiceData[i].bankName;
+                this.invoiceForm.bankCard = this.invoiceData[i].bankCard;
+                // this.invoiceForm.email = ""
+              }
             }
           }
+        });
+      } else {
+        this.$refs.tips.toast("请选择要开发票的订单");
+      }
+
+      // debugger;
+    },
+    // 重新选择发票信息
+    chooseInvoiceItem(info) {
+      this.invoiceForm.status = info.type;
+      this.invoiceForm.name = info.name;
+      this.invoiceForm.taxNo = info.taxNo;
+      // this.invoiceForm.money = goodsCount.toFixed(2);
+      this.invoiceForm.companyAddress = info.companyAddress;
+      this.invoiceForm.companyMobile = info.companyMobile;
+      this.invoiceForm.bankName = info.bankName;
+      this.invoiceForm.bankCard = info.bankCard;
+      this.innerVisible = false;
+    },
+    // 提交发票信息
+    getInvoice() {
+      // this.invoiceDialog = false;
+      console.log(this.invoiceForm);
+      handupInvoice(this.invoiceForm).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+        } else {
+          this.$refs.tips.toast(res.msg);
         }
+        this.invoiceDialog = false;
       });
       // debugger;
+
+      // if (this.invoiceForm.status == 1) {
+      //   // 开个人发票
+      // } else if (this.invoiceForm.status == 2) {
+      //   // 开公司发票
+      // }
     },
     //把时间日期转成时间戳
     getTimestamp(time) {
@@ -458,6 +536,7 @@ export default {
             });
           }
         } else {
+          this.$refs.tips.toast(res.msg);
         }
       });
     },
@@ -497,6 +576,15 @@ export default {
       this.currentPage = val;
       this.getData();
     },
+    // getInvoiceList() {
+    //   cardList().then(res => {
+    //     if (res.code == 200) {
+    //       this.cardData = res.data;
+    //       this.innerVisible = true;
+    //     } else {
+    //     }
+    //   });
+    // },
     // 银行卡列表
     payWayFun(num) {
       this.payWay = num;
@@ -557,13 +645,10 @@ export default {
     chooseOrder(info) {
       console.log(info);
       info.select = !info.select;
-      let itemInd = this.invoiceOrder.indexOf(info.id);
-      console.log(itemInd);
       this.invoiceOrder = this.orderData.filter(item => {
         return item.select;
       });
       console.log(this.invoiceOrder);
-      // debugger;
     }
   }
 };
@@ -589,7 +674,6 @@ export default {
   /* padding-top: 500px; */
 }
 .order-item-box {
-  /* padding: 20px 15px; */
   border: 1px solid #e5e5e5;
 }
 .order-head-box {
@@ -677,9 +761,29 @@ export default {
   line-height: 120px;
   /* background-color: salmon; */
 }
-/* .invoice-btn{
-  width: 70px;
-  height: 40px;
-
-} */
+.card-item-box {
+  width: 100%;
+  height: 120px;
+  border: 1px solid #e5e5e5;
+  margin-top: 20px;
+}
+.type-img-box {
+  width: 150px;
+  height: 100%;
+  /* line-height: 120px; */
+  text-align: center;
+  background-color: #edffff;
+  position: relative;
+}
+.type-img {
+  width: 54px;
+  height: 50px;
+  margin-top: 35px;
+}
+.card-info {
+  width: calc(100% - 200px);
+  height: 100%;
+  text-align: center;
+  /* background-color: darkgoldenrod; */
+}
 </style>

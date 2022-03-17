@@ -197,60 +197,6 @@
                   <p>上传凭证</p>
                 </div>
               </div>
-              <!-- 银行卡列表 -->
-              <!-- <div v-show="payWay == 3">
-                <div
-                  class="card-item-box flex-r pointer"
-                  v-for="(item, index) in cardData"
-                  @click="chooseBank(item, index)"
-                >
-                  <div class="type-img-box">
-                    <img
-                      class="type-img"
-                      src="../assets/img/cardpay.png"
-                      alt=""
-                    />
-                    <div class="tips-color">银行卡</div>
-                  </div>
-
-                  <div class="card-info font12">
-                    <div class="flex-r text-center m-t-20">
-                      <div class="tips-color card-name-box">姓名：</div>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <div class="flex-r text-center">
-                      <div class="tips-color card-name-box">银行卡号：</div>
-                      <span>{{ item.cardNumber }}</span>
-                    </div>
-                    <div class="flex-r text-center">
-                      <div class="tips-color card-name-box">银行：</div>
-                      <span>{{ item.bankName }}</span>
-                    </div>
-                  </div>
-                  <div class="handle-box text-center">
-                    <i
-                      :class="[
-                        'el-icon-success',
-                        'font24',
-                        bankInd == index ? 'myActiveColor' : 'f999'
-                      ]"
-                    ></i>
-                  </div>
-                </div>
-              </div> -->
-              <!-- 上传线下支付凭证 -->
-              <!-- <div v-show="payWay == 4">
-                <el-upload
-                  class="avatar-uploader m-t-20"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload"
-                >
-                  <img v-if="voucherImg" :src="voucherImg" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-              </div> -->
             </div>
           </div>
         </div>
