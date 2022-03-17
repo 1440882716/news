@@ -4,7 +4,7 @@
 }
 a {
   text-decoraction: none !important;
-  color: #8e8e92;
+  color: #ffffff;
 }
 router-link {
   text-decoraction: none;
@@ -14,7 +14,7 @@ router-link {
 }
 .router-link-active {
   text-decoration: none;
-  color: #8e8e92;
+  color: #ffffff;
 }
 .full-container {
   width: 100%;
