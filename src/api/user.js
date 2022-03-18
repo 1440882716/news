@@ -6,7 +6,8 @@ const userApi = {
     updPersonalData: '/client/user/updPersonalData',
     updAvatar: '/client/user/updAvatar',
     userInfo: '/client/user/info',
-    delAccount: '/client/user/del'
+    delAccount: '/client/user/del',
+
 }
 export function delAccount(data) {
     return request({
