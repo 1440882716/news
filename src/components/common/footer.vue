@@ -87,7 +87,7 @@
 .footer {
   width: 100%;
   height: auto;
-  border-top: 5px solid #409eff;
+  border-top: 5px solid #a30202;
   /* margin-top: 40px; */
 }
 .footer-box {

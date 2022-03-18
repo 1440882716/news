@@ -218,7 +218,7 @@ router-link {
   padding: 10px 0px;
 }
 .active-type {
-  border-bottom: 3px solid #409eff;
+  border-bottom: 3px solid #a30202;
 }
 .account-inp {
   width: calc(100% - 32px);
@@ -251,7 +251,7 @@ router-link {
   height: 32px;
   text-align: center;
   line-height: 32px;
-  background-color: #409eff;
+  background-color: #a30202;
   cursor: pointer;
 }
 .other-page {

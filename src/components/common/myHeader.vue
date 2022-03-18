@@ -81,11 +81,11 @@ router-link {
   width: 100%;
   background-image: linear-gradient(
     90deg,
-    #1058ac 0%,
-    #2269bb 23%,
-    #2f75c5 56%,
-    #498ddc 85%,
-    #409eff 100%
+    #a30202 0%,
+    #b60202 23%,
+    #cb0303 56%,
+    #e01313 85%,
+    #f32626 100%
   );
 }
 .container-my {

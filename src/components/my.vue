@@ -13,7 +13,7 @@
             <li
               v-for="(item, index) in navList"
               :key="index"
-              :class="[navNum == index ? 'primary-color' : '']"
+              :class="[navNum == index ? 'main-red' : '']"
               @click="chooseNav(index)"
             >
               {{ item }}

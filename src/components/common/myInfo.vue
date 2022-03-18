@@ -20,7 +20,7 @@
             :class="[
               'info-nav-item',
               'pointer',
-              navTitle == 1 ? 'myActiveColor' : 'main-color'
+              navTitle == 1 ? 'main-red' : 'main-color'
             ]"
             @click="selectNav(1)"
           >
@@ -30,7 +30,7 @@
             :class="[
               'info-nav-item',
               'pointer',
-              navTitle == 2 ? 'myActiveColor' : 'main-color'
+              navTitle == 2 ? 'main-red' : 'main-color'
             ]"
             @click="selectNav(2)"
           >

@@ -4,7 +4,7 @@
     <div class="content">
       <!-- <div>欢迎登录</div> -->
       <div class="flex-r flex-a">
-        <!-- <img class="login-img" src="../assets/img/login-img.png" alt="" /> -->
+        <img class="login-img" src="../assets/img/login-img.png" alt="" />
         <div class="login-box">
           <!-- <div class="login-content"></div> -->
           <loginBox></loginBox>
@@ -58,6 +58,7 @@ export default {
   background-color: #fff;
 }
 .bg-img {
-  background-image: url(../assets/img/bannar.png);
+  /* background-image: url(../assets/img/login-img1.png);
+  background-size: 100% 680px; */
 }
 </style>

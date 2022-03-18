@@ -2,7 +2,7 @@
   <div class="header">
     <div class="container gray-head-bgc">
       <div class="head-line">
-        <div class="content-login font12  flex-r flex-b tips-color">
+        <div class="content-login font14  flex-r flex-b fff-font">
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
             <router-link to="/" style="text-decoration: none;">
@@ -59,7 +59,7 @@ router-link {
   text-decoration: none;
 }
 .gray-head-bgc {
-  background-color: #f6f6fa;
+  background-color: #202020;
 }
 .content-login {
   width: 980px;
@@ -67,8 +67,8 @@ router-link {
 }
 .head-line {
   width: 100%;
-  height: 30px;
-  line-height: 30px;
+  height: 80px;
+  line-height: 80px;
   /* background-color: #f6f6fa; */
 }
 .head-line-left {
