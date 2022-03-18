@@ -88,6 +88,15 @@ export default {
           //   this.invoiceList = res.data;
         }
       });
+    },
+    orderDetailFun(info) {
+      this.$router.push({
+        path: "/orderDetail",
+        name: "orderDetail",
+        query: {
+          orderId: info.id
+        }
+      });
     }
   }
 };

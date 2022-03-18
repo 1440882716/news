@@ -21,78 +21,51 @@
       </div>
     </div> -->
     <!-- 轮播、商品模块 -->
-    <div class="full-container gray-bgc p-t-10 p-b-80">
+    <div class="full-container gray-bgc p-b-80">
       <!-- 分类和广告 -->
-      <div class="content bannar-center-box flex-r flex-b">
+      <div class="bannar-center-box flex-r flex-b">
         <!-- 轮播图 -->
         <div class="bannar-box">
+          <!-- 轮播图 -->
           <div class="block bannar-box">
-            <el-carousel trigger="click" height="340px">
+            <el-carousel trigger="click" height="1000px">
               <el-carousel-item
                 class="bannar-item"
                 v-for="item in bannarArr"
                 :key="item"
               >
-                <img style="width: 1200px;height: 340px;" :src="item" alt="" />
+                <img
+                  style="width: 100%"
+                  src="../assets/img/bannar.png"
+                  alt=""
+                />
               </el-carousel-item>
             </el-carousel>
           </div>
         </div>
-      </div>
-      <!-- 标题 -->
-      <div class="content flex-r flex-b title-box">
-        <div class="font18 bold-font">人民权力报</div>
-        <div class="pointer" @click="toList">
-          去订阅<i class="el-icon-arrow-right"></i>
-        </div>
-      </div>
-
-      <!-- 两大分类 -->
-      <div class="content m-t-20">
-        <!-- 人民权利报 -->
-        <div class="good-item flex-r">
-          <img class="class-img" src="../assets/img/class-img.png" alt="" />
-
-          <div class="news-des0 news-des1 fff-font text-left">
-            <span class="font14 text-left m-t-10">
-              《人民权利报》的宗旨、任务是：坚持党的基本路线，以宪法为依据，本着“一切权利属于人民”的宗旨，积极宣传宪法和法律，宣传人民代表大会制度，宣传社会主义民主和社会主义法制；为地方各级人大及其常委会履行职权服务，为各级人大代表履行职责服务，为进一步坚持和完善人民代表大会制度，不断推行社会主义民主和社会主义法制服务，为人民行使当家作主的政治权利和维护人民的合法利益服务。
-            </span>
-          </div>
-          <div class="news-des0 news-des2 fff-font text-left">
-            <span class="font14 text-left m-t-10">
-              《人民权利报》版面内容安排：一版要闻综述，评论杂谈，省际交往，代表风采；二版民主政治，人生追求，典型报道，经验交流；三版道德法制，社会治理，经济新闻，权益保护；四版文摘文苑，世态风情，人文自然大观等。要求报纸图文并茂，贴近现实、贴近群众、贴近生活，成为人大工作的窗口，人大代表的益友，舆论监督的工具，民主法制的论坛。
-            </span>
-          </div>
-          <div class="buy-btn fff-font pointer" @click="toList">立即订阅</div>
-        </div>
-      </div>
-      <!-- 标题 -->
-      <div class="content flex-r flex-b title-box">
-        <div class="font18 bold-font">民主法制建设</div>
-        <div class="pointer" @click="toList">
-          去订阅<i class="el-icon-arrow-right"></i>
-        </div>
-      </div>
-      <div class="content m-t-20">
-        <!-- 人民权利报 -->
-        <div class="good-item flex-r">
-          <img class="class-img" src="../assets/img/class-img.png" alt="" />
-
-          <div class="book-des0 book-des1 fff-font text-left">
-            <span class="font14 text-left m-t-10">
-              《民主法制建设》杂志是四川省人民代表大会常务委员会创办的机关刊物。是全国人大系统创办较早的刊物之一。刊物为国际大16开，64页，四封彩印，面向国内外公开发行。
-            </span>
-          </div>
-          <div class="book-des0 book-des2 fff-font text-left">
-            <span class="font14 text-left m-t-10">
-              倡言民主政治，弘扬法治精神，捕捉社会热点，反映民众心声。为推进中国的社会主义民主政治服务；为健全社会主义民主、完善人民代表大会及其常务委员会的各项职能服务；为依法治国，建设社会主义法治国家服务。杂志创办以来，受到了社会各界的支持和赞扬，先后被评为四川省优秀期刊和四川省一级期刊。《民主法制建设》杂志的主要栏目有：本月聚焦、本刊专稿、思考与探索、基层园地、法制时空等。
-            </span>
-          </div>
-          <div class="buy-btn-book fff-font pointer" @click="toList">
-            立即订阅
+        <!-- 新闻动态和通知公告 -->
+        <div class="news-ad-box flex flex-e">
+          <div class="news-and-ad flex-c flex-b fff-font text-left">
+            <div class="news-ad-item">
+              <div class="ad-news-title font24">新闻动态</div>
+              <div class="flex-r flex-b" v-for="item in newsArr">
+                <div class="ellipsis-text">{{ item.text }}</div>
+                <div v-if="item.hot" class="hot-text-box font12">热门</div>
+              </div>
+            </div>
+            <div class="deliver-line"></div>
+            <div class="news-ad-item">
+              <div class="ad-news-title font24">通知公告</div>
+              <div class="flex-r flex-b" v-for="item in newsArr">
+                <div class="ellipsis-text">{{ item.text }}</div>
+                <div v-if="item.hot" class="hot-text-box font12">热门</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+      <!-- 两大报纸 -->
+      <div class="home-goods-two"></div>
     </div>
     <Footer></Footer>
   </div>
@@ -116,9 +89,71 @@ export default {
       msg: "Welcome to Your Vue.js App",
       goodsId: "1496359872988073985",
       bannarArr: [
-        "../assets/img/bannar.png",
-        "../assets/img/bannar.png",
         "../assets/img/bannar.png"
+        // "../assets/img/bannar.png"
+        // "../assets/img/bannar.png"
+      ],
+      newsArr: [
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        }
       ],
 
       goodsArr: [
