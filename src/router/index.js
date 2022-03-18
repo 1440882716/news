@@ -10,6 +10,8 @@ import cart from '@/components/cart'
 import confirmOrder from '@/components/confirmOrder'
 import orderDetail from '@/components/orderDetail'
 import pay from '@/components/pay'
+import help from '@/components/help'
+import helpDetail from '@/components/helpDetail'
 
 Vue.use(Router)
 
@@ -62,6 +64,16 @@ export default new Router({
       path: '/pay',
       name: 'pay',
       component: pay
+    },
+    {
+      path: '/help',
+      name: 'help',
+      component: help
+    },
+    {
+      path: '/helpDetail',
+      name: 'helpDetail',
+      component: helpDetail
     }
 
 

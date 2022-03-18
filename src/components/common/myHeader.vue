@@ -18,7 +18,7 @@
               <span class="m-l-20">快速注册</span>
             </router-link>
           </div>
-          <div class="head-line-right">
+          <div class="head-line-right pointer">
             <ul class="flex-r flex-e head-ul-list">
               <li @click="toMypage(0)">
                 个人中心
@@ -31,7 +31,13 @@
                   >购物车</router-link
                 >
               </li>
-              <li>帮助中心</li>
+              <li>
+                <router-link
+                  to="./help"
+                  style="text-decoration: none;color: white;"
+                  >帮助中心</router-link
+                >
+              </li>
             </ul>
           </div>
         </div>

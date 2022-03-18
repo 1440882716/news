@@ -71,12 +71,11 @@
               <el-form-item label="真实姓名">
                 <el-input
                   v-model="ruleForm.name"
-                  :disabled="true"
                   placeholder="请输入姓名"
                 ></el-input>
-                <el-button class="primary-btn" type="primary"
+                <!-- <el-button class="primary-btn" type="primary"
                   >实名认证</el-button
-                >
+                > -->
               </el-form-item>
               <el-form-item label="性别">
                 <el-radio-group v-model="ruleForm.sex">
@@ -85,7 +84,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="身份证号">
-                <el-input v-model="ruleForm.idCard" :disabled="true"></el-input>
+                <el-input v-model="ruleForm.idCard"></el-input>
               </el-form-item>
               <el-form-item label="手机号码">
                 <el-input v-model="ruleForm.mobile" :disabled="true"></el-input>

@@ -7,7 +7,22 @@ const userApi = {
     updAvatar: '/client/user/updAvatar',
     userInfo: '/client/user/info',
     delAccount: '/client/user/del',
-
+    newsList: '/client/help/list',
+    newsItem: '/client/help/item'
+}
+export function newsItem(data) {
+    return request({
+        url: userApi.newsItem,
+        method: 'get',
+        params: data
+    })
+}
+export function newsList(data) {
+    return request({
+        url: userApi.newsList,
+        method: 'get',
+        params: data
+    })
 }
 export function delAccount(data) {
     return request({
