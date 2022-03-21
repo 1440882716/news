@@ -64,8 +64,54 @@
           </div>
         </div>
       </div>
-      <!-- 两大报纸 -->
-      <div class="home-goods-two"></div>
+      <!-- 民主法制建设 -->
+      <div class="home-goods-two flex-r fff-font">
+        <div class="two-goods-img">
+          <img class="goods-img-size" src="../assets/img/mzfz.png" alt="" />
+        </div>
+        <div class="goods-des-box text-left">
+          <p class="font48">{{ newsFirst.name }}</p>
+          <p class="font28 m-t-40">{{ newsFirst.description }}</p>
+          <div class="font20 m-t-40 home-price-text">
+            ￥<span class="font48">{{
+              (newsFirst.price * newsFirst.totalNum).toFixed(2)
+            }}</span
+            >/年
+          </div>
+          <div
+            class="buy-first-home font24 m-t-30 pointer"
+            @click="toDetail(newsFirst.id)"
+          >
+            立即订阅
+          </div>
+        </div>
+      </div>
+      <!-- 民主法制建设 -->
+      <div class="home-goods-two flex-r fff-font">
+        <div class="goods-des-box-second text-left">
+          <p class="font48">{{ newsSecond.name }}</p>
+          <p class="font28 m-t-40">{{ newsSecond.description }}</p>
+          <div class="font20 m-t-40 home-price-text">
+            ￥<span class="font48">{{
+              (newsSecond.price * newsSecond.totalNum).toFixed(2)
+            }}</span
+            >/年
+          </div>
+          <div
+            class="buy-first-home font24 m-t-30 pointer"
+            @click="toDetail(newsSecond.id)"
+          >
+            立即订阅
+          </div>
+        </div>
+        <div class="two-goods-img text-left">
+          <img
+            class="goods-img-size-second"
+            src="../assets/img/mzfz.png"
+            alt=""
+          />
+        </div>
+      </div>
     </div>
     <Footer></Footer>
   </div>
@@ -87,12 +133,8 @@ export default {
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      goodsId: "1496359872988073985",
-      bannarArr: [
-        "../assets/img/bannar.png"
-        // "../assets/img/bannar.png"
-        // "../assets/img/bannar.png"
-      ],
+      // goodsId: "1496359872988073985",
+      bannarArr: ["../assets/img/bannar.png"],
       newsArr: [
         {
           text:
@@ -155,57 +197,8 @@ export default {
           hot: false
         }
       ],
-
-      goodsArr: [
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/723_1635909552430_316_SYS_158.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/975_1641352944086_955_SYS_097.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/723_1635909552430_316_SYS_158.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/723_1635909552430_316_SYS_158.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/975_1641352944086_955_SYS_097.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/723_1635909552430_316_SYS_158.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/975_1641352944086_955_SYS_097.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-sys/news/723_1635909552430_316_SYS_158.jpg.webp",
-          name: "冬奥会个性化邮票长卷珍藏套装",
-          price: 398.0
-        }
-      ]
+      newsFirst: {},
+      newsSecond: {}
     };
   },
   created() {
@@ -216,15 +209,17 @@ export default {
     getGoods() {
       paperPage().then(res => {
         if (res.code == 200) {
+          this.newsFirst = res.data.records[0];
+          this.newsSecond = res.data.records[1];
         }
       });
     },
-    toList(id) {
+    toDetail(id) {
       this.$router.push({
         path: "/details",
         name: "details",
         query: {
-          goodsId: this.goodsId
+          goodsId: id
         }
       });
     }
