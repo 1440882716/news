@@ -3,8 +3,11 @@
     <msgBox ref="tips"></msgBox>
     <!-- 寒假快乐和 -->
     <Header></Header>
-    <div class="content p-b-80">
-      公告详情
+    <div class="content p-b-80 m-t-20">
+      <h2 class="m-b-10">{{ title }}</h2>
+      <div class="text-left" v-html="content"></div>
+      <div class="text-center">{{ remarks }}</div>
+      <div class="text-right">发布：{{ creatorName }}</div>
     </div>
     <Footer></Footer>
   </div>
@@ -13,6 +16,7 @@
 import Header from "./common/header.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "./common/msg.vue";
+import { noticeDetail } from "@/api/user";
 export default {
   components: {
     Header,
@@ -22,7 +26,12 @@ export default {
   name: "goods",
   data() {
     return {
-      noticeId: ""
+      noticeId: "",
+      title: "",
+      content: "",
+      time: "",
+      creatorName: "",
+      remarks: ""
     };
   },
 
@@ -32,7 +41,16 @@ export default {
   },
   mounted() {},
   methods: {
-    getDetails() {}
+    getDetails() {
+      noticeDetail({ id: this.noticeId }).then(res => {
+        if (res.code == 200) {
+          this.title = res.data.title;
+          this.content = res.data.content;
+          this.time = res.data.createTime;
+          this.remarks = res.data.remarks;
+        }
+      });
+    }
   }
 };
 </script>

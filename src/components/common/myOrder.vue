@@ -291,7 +291,7 @@
             </div>
             <i
               @click="chooseOrder(item)"
-              v-if="statusNum == '4'"
+              v-if="item.isBill == false && statusNum == '4'"
               :class="[
                 'el-icon-success',
                 'font18',
@@ -444,9 +444,14 @@ export default {
       // this.isOver = true;
       // this.invoiceOrder
       let goodsCount = 0;
+      let idArr = [];
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
+        idArr.push(this.invoiceOrder[i].id);
       }
+      // console.log(idArr);
+      // debugger;
+      // return;
       if (this.invoiceOrder.length != 0) {
         this.invoiceDialog = true;
         pageData().then(res => {
@@ -454,6 +459,7 @@ export default {
             this.invoiceData = res.data;
             for (let i = 0; i < this.invoiceData.length; i++) {
               if (this.invoiceData[i].isDefault) {
+                this.invoiceForm.ordersId = idArr.join(",");
                 this.invoiceForm.status = this.invoiceData[i].type;
                 this.invoiceForm.name = this.invoiceData[i].name;
                 this.invoiceForm.taxNo = this.invoiceData[i].taxNo;

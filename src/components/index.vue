@@ -280,15 +280,15 @@ export default {
     },
     toNotice(id) {
       console.log(id);
-      // if (id != "" && id != undefined) {
-      this.$router.push({
-        path: "/noticeDetail",
-        name: "noticeDetail",
-        query: {
-          noticeId: id
-        }
-      });
-      // }
+      if (id != "" && id != undefined) {
+        this.$router.push({
+          path: "/noticeDetail",
+          name: "noticeDetail",
+          query: {
+            noticeId: id
+          }
+        });
+      }
     },
     toDetail(id) {
       this.$router.push({
