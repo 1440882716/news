@@ -47,18 +47,12 @@
         <div class="news-ad-box flex flex-e">
           <div class="news-and-ad flex-c flex-b fff-font text-left">
             <div class="news-ad-item">
-              <div class="ad-news-title font24">新闻动态</div>
-              <div class="flex-r flex-b" v-for="item in newsArr">
-                <div class="ellipsis-text">{{ item.text }}</div>
-                <div v-if="item.hot" class="hot-text-box font12">热门</div>
-              </div>
-            </div>
-            <div class="deliver-line"></div>
-            <div class="news-ad-item">
-              <div class="ad-news-title font24">通知公告</div>
-              <div class="flex-r flex-b" v-for="item in newsArr">
-                <div class="ellipsis-text">{{ item.text }}</div>
-                <div v-if="item.hot" class="hot-text-box font12">热门</div>
+              <div class="ad-news-title font24">公告</div>
+              <div class="flex-r flex-b" v-for="item in noticeData">
+                <div class="ellipsis-text pointer" @click="toNotice(item.id)">
+                  {{ item.title }}
+                </div>
+                <div class="hot-text-box font12 m-r-20">热门</div>
               </div>
             </div>
           </div>
@@ -86,7 +80,7 @@
           </div>
         </div>
       </div>
-      <!-- 民主法制建设 -->
+      <!-- 人民权力报 -->
       <div class="home-goods-two flex-r fff-font">
         <div class="goods-des-box-second text-left">
           <p class="font48">{{ newsSecond.name }}</p>
@@ -122,6 +116,7 @@ import Header from "./common/header.vue";
 import bannar from "./common/bannar.vue";
 import Footer from "./common/footer.vue";
 import { paperPage } from "@/api/goods";
+import { noticeList } from "@/api/user";
 export default {
   components: {
     Header,
@@ -195,14 +190,76 @@ export default {
           text:
             "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
           hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: true
+        },
+        {
+          text:
+            "风雨兼程半世纪，列车奔驰追梦路——莽莽全国政协召开双周协商座谈会 义务教育",
+          hot: false
         }
       ],
+      noticeData: [],
       newsFirst: {},
       newsSecond: {}
     };
   },
   created() {
     this.getGoods();
+    this.getNotice();
   },
   mounted() {},
   methods: {
@@ -213,6 +270,25 @@ export default {
           this.newsSecond = res.data.records[1];
         }
       });
+    },
+    getNotice() {
+      noticeList().then(res => {
+        if (res.code == 200) {
+          this.noticeData = res.data;
+        }
+      });
+    },
+    toNotice(id) {
+      console.log(id);
+      // if (id != "" && id != undefined) {
+      this.$router.push({
+        path: "/noticeDetail",
+        name: "noticeDetail",
+        query: {
+          noticeId: id
+        }
+      });
+      // }
     },
     toDetail(id) {
       this.$router.push({

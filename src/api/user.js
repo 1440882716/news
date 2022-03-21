@@ -8,7 +8,16 @@ const userApi = {
     userInfo: '/client/user/info',
     delAccount: '/client/user/del',
     newsList: '/client/help/list',
-    newsItem: '/client/help/item'
+    newsItem: '/client/help/item',
+    noticeList: '/client/announce/list'
+}
+
+export function noticeList(data) {
+    return request({
+        url: userApi.noticeList,
+        method: 'get',
+        params: data
+    })
 }
 export function newsItem(data) {
     return request({

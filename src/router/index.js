@@ -12,6 +12,7 @@ import orderDetail from '@/components/orderDetail'
 import pay from '@/components/pay'
 import help from '@/components/help'
 import helpDetail from '@/components/helpDetail'
+import noticeDetail from '@/components/noticeDetail'
 
 Vue.use(Router)
 
@@ -74,6 +75,11 @@ export default new Router({
       path: '/helpDetail',
       name: 'helpDetail',
       component: helpDetail
+    },
+    {
+      path: '/noticeDetail',
+      name: 'noticeDetail',
+      component: noticeDetail
     }
 
 
