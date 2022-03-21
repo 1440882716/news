@@ -26,17 +26,17 @@
           <!-- 账户安全 -->
           <Account v-show="navNum == 1"></Account>
           <!-- 我的银行卡 -->
-          <myCard v-show="navNum == 2"></myCard>
-          <!-- 我的地址 -->
-          <myAddress v-show="navNum == 3"></myAddress>
+          <myCard v-show="navNum == 2" ref="child2"></myCard>
+          <!-- 常用地址 -->
+          <myAddress v-show="navNum == 3" ref="child3"></myAddress>
           <!-- 发票抬头 -->
-          <Invoice v-show="navNum == 4"></Invoice>
-          <!-- 订单列表 -->
-          <myOrder v-show="navNum == 5"></myOrder>
+          <Invoice v-show="navNum == 4" ref="child4"></Invoice>
+          <!-- 我的订单 -->
+          <myOrder v-show="navNum == 5" ref="child5"></myOrder>
           <!-- 我的售后 -->
-          <afterSale v-show="navNum == 6"></afterSale>
+          <afterSale v-show="navNum == 6" ref="child6"></afterSale>
           <!-- 发票管理 -->
-          <invoiceList v-show="navNum == 7" :dataType="1"></invoiceList>
+          <invoiceList v-show="navNum == 7" ref="child7"></invoiceList>
         </div>
       </div>
     </div>
@@ -92,7 +92,21 @@ export default {
       // window.alert("111");
       // console.log(ind);
       this.navNum = ind;
-      // debugger;
+      if (ind == 0) {
+        this.$refs.child1.getData();
+      } else if (ind == 2) {
+        this.$refs.child2.getData();
+      } else if (ind == 3) {
+        this.$refs.child3.getAddress();
+      } else if (ind == 4) {
+        this.$refs.child4.getData();
+      } else if (ind == 5) {
+        this.$refs.child5.getData();
+      } else if (ind == 6) {
+        this.$refs.child6.getData();
+      } else if (ind == 7) {
+        this.$refs.child7.getData();
+      }
     }
   }
 };

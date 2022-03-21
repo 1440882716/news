@@ -131,22 +131,14 @@ export default {
           name: "0"
         }
       ],
-      orderData: []
+      orderData: [],
+      reQuest: ""
     };
   },
-  props: ["dataType"],
-  watch: {},
   created() {
     this.getData();
   },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
     // 发票订单列表
     getData() {
       let data = {
