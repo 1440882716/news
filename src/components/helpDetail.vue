@@ -9,9 +9,13 @@
       <!-- <div class="font14 text-left">账户设置</div> -->
       <div class="line-box"></div>
       <div class="news-list-box text-left">
-        <div v-for="item in heleData">
-          <span>{{ item.title }}</span>
-          <div v-html="item.content"></div>
+        <div>
+          <div class="font14 bold-font text-center m-b-20">
+            {{ heleData.title }}
+          </div>
+          <div v-html="heleData.content"></div>
+          <div class="text-right m-t-20">{{ heleData.creatorName }}</div>
+          <div class="text-right">{{ heleData.crtTime }}</div>
         </div>
       </div>
     </div>
@@ -32,7 +36,7 @@ export default {
   data() {
     return {
       helpId: "",
-      heleData: []
+      heleData: {}
     };
   },
   created() {

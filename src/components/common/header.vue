@@ -55,7 +55,14 @@
                   >购物车</router-link
                 >
               </li>
-              <li>帮助中心</li>
+              <li>
+                <!-- 帮助中心 -->
+                <router-link
+                  to="./help"
+                  style="text-decoration: none;color: white;"
+                  >帮助中心</router-link
+                >
+              </li>
             </ul>
             <router-link to="./login" style="text-decoration: none;">
               <span class="m-l-20" v-if="isLogin">已登录</span>

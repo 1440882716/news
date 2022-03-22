@@ -5,6 +5,9 @@
         <div class=" font12  flex-r flex-b fff-font">
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
+            <router-link to="/" style="text-decoration: none;color: white;">
+              <span class="m-l-20">返回首页</span>
+            </router-link>
             <router-link
               to="./login"
               style="text-decoration: none;color: white;"
@@ -105,12 +108,12 @@ router-link {
   /* background-color: #f6f6fa; */
 }
 .head-line-left {
-  width: 30%;
+  width: 50%;
   text-align: left;
   /* background-color: bisque; */
 }
 .head-line-right {
-  width: 60%;
+  width: 40%;
   /* background-color: blueviolet; */
 }
 .head-ul-list li {

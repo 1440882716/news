@@ -257,7 +257,7 @@
               </div>
               <div
                 class="handle-btn pointer"
-                @click="cancelFun(item.id)"
+                @click="backNews(item.id)"
                 v-if="item.orderStatus == 4"
               >
                 退订
@@ -635,6 +635,8 @@ export default {
         }
       });
     },
+    // 退订
+    backNews(id) {},
     // 删除订单
     delFun(id) {
       if (id != "" && id != undefined) {
