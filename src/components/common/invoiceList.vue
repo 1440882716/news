@@ -1,7 +1,18 @@
 <template>
   <div class="my-info">
     <msgBox ref="tips"></msgBox>
-
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>查询发票成功</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="downPDF(pdfUrl)">立即下载</el-button>
+      </span>
+    </el-dialog>
     <div class="info-content">
       <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
         <el-tab-pane
@@ -44,21 +55,28 @@
             </div>
             <div class="flex-r">
               <div
-                class="handle-btn m-r-10 m-l-10 pointer"
+                class="handle-btn m-l-10 pointer"
                 @click="delInvoice(item.id)"
               >
                 删除
               </div>
               <div
                 v-if="item.status == 1"
-                class="handle-btn m-r-10 m-l-10 pointer"
+                class="handle-btn m-l-10 pointer"
                 @click="queryData(item.id)"
               >
                 查询
               </div>
               <div
+                v-if="item.status == 2"
+                class="handle-btn m-l-10 pointer"
+                @click="downPDF(item.pdfUrl)"
+              >
+                下载发票
+              </div>
+              <div
                 v-if="item.status == 3"
-                class="handle-btn m-r-10 m-l-10 pointer"
+                class="handle-btn m-l-10 pointer"
                 @click="reInvoice(item.id)"
               >
                 重新开票
@@ -87,13 +105,18 @@
                     <span>{{ item.invoiceTypeName }}</span>
                   </p>
                   <p style="text-align: left;">
-                    <span class="justify">公司名称：</span>
+                    <span class="justify">发票抬头：</span>
                     <span>{{ item.invoice }}</span>
                   </p>
+                  <!-- <p style="text-align: left;" @click="downPDF(item.pdfUrl)">
+                    <span class="justify">下载发票</span>
+                    <span>{{ item.pdfUrl }}</span>
+                  </p> -->
                 </div>
               </div>
             </div>
             <div>商品：{{ item.commodityName }}</div>
+            <!-- <div>下载发票</div> -->
           </div>
         </div>
         <el-pagination
@@ -111,7 +134,7 @@
 <script>
 import msgBox from "./msg.vue";
 import CountDown from "./countDown.vue";
-import { invoiceList, delInvoiceList, query } from "@/api/invoice";
+import { invoiceList, delInvoiceList, query, reopen } from "@/api/invoice";
 export default {
   name: "myorder",
   components: {
@@ -120,6 +143,7 @@ export default {
   },
   data() {
     return {
+      dialogVisible: false,
       statusNum: "0",
       orderNum: "",
       currentPage: 1,
@@ -132,7 +156,8 @@ export default {
         }
       ],
       orderData: [],
-      reQuest: ""
+      reQuest: "",
+      pdfUrl: ""
     };
   },
   created() {
@@ -166,14 +191,32 @@ export default {
       });
     },
     // 重新开票
-    reInvoice() {},
+    reInvoice(id) {
+      reopen({ id: id }).then(res => {
+        if (res.code == 200) {
+        } else {
+          this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
     // 查询开票结果
     queryData(id) {
       query({ id: id }).then(res => {
         if (res.code == 200) {
-          // this.getData();
+          console.log(res.data);
+          if (res.data != null) {
+            this.dialogVisible = true;
+            this.pdfUrl = res.data;
+          }
+        } else {
+          this.$refs.tips.toast(res.msg);
         }
       });
+    },
+    // 下载发票
+    downPDF(pfdLink) {
+      window.open(pfdLink, "_blank");
+      this.dialogVisible = false;
     },
     // 改变页码
     handleCurrentChange(val) {

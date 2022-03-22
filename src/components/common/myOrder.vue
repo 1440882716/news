@@ -497,8 +497,9 @@ export default {
     },
     // 提交发票信息
     getInvoice() {
-      // this.invoiceDialog = false;
       console.log(this.invoiceForm);
+      // debugger;
+      // return;
       handupInvoice(this.invoiceForm).then(res => {
         if (res.code == 200) {
           this.$refs.tips.toast(res.msg);

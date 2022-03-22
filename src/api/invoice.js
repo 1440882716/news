@@ -8,7 +8,15 @@ const userApi = {
     handupInvoice: '/client/receipt/drawer',
     invoiceList: '/client/receipt/list',
     delInvoiceList: '/client/receipt/del',
-    query: '/client/receipt/query'
+    query: '/client/receipt/query',
+    reopen: '/client/receipt/reopen'
+}
+export function reopen(data) {
+    return request({
+        url: userApi.reopen,
+        method: 'get',
+        params: data
+    })
 }
 export function query(data) {
     return request({

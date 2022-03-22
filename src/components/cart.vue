@@ -66,7 +66,7 @@
               </div>
               <!-- 商品图片 -->
               <div class="cart-goods-img pointer" @click="toDetail(item.id)">
-                <img :src="item.img" alt="" />
+                <img :src="item.pics" alt="" />
               </div>
             </div>
 
@@ -507,7 +507,7 @@ export default {
     },
 
     toConfirm() {
-      if (this.countNum != 0) {
+      if (this.countNum == 1) {
         let select_goods = this.goodsList.filter(item => {
           return item.select;
         });
@@ -522,8 +522,10 @@ export default {
             goodsId: idStr
           }
         });
+      } else if (this.countNum > 1) {
+        this.$refs.tips.toast("只能选择一个商品下单");
       } else {
-        this.$refs.tips.toast("请选中商品后再操作");
+        this.$refs.tips.toast("请选择一个商品下单");
       }
     }
   }
