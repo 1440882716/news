@@ -10,7 +10,16 @@ const userApi = {
     newsList: '/client/help/list',
     newsItem: '/client/help/item',
     noticeList: '/client/announce/list',
-    noticeDetail: '/client/announce/detail'
+    noticeDetail: '/client/announce/detail',
+    noticeDown: '/mini/announce/download'
+}
+export function noticeDown(data) {
+    return request({
+        url: userApi.noticeDown,
+        method: 'get',
+        responseType: "arraybuffer",
+        params: data
+    })
 }
 export function noticeDetail(data) {
     return request({
