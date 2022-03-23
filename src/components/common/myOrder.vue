@@ -113,6 +113,7 @@
         <el-button type="primary" @click="payAgain">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 发票信息 -->
     <el-dialog
       title="发票信息"
       :visible.sync="invoiceDialog"
@@ -126,8 +127,8 @@
       <el-form ref="invoiceForm" :model="invoiceForm" label-width="100px">
         <el-form-item label="开票类型" style="text-align: left;">
           <el-radio-group v-model="invoiceForm.status">
-            <el-radio :label="1">个人</el-radio>
-            <el-radio :label="2">公司</el-radio>
+            <el-radio disabled :label="1">个人</el-radio>
+            <el-radio disabled :label="2">公司</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="公司/个人名称">

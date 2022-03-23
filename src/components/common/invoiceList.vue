@@ -7,10 +7,27 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>查询发票成功</span>
+      <div class="m-b-20 text-center">查询发票成功!</div>
+      <el-form label-width="100px" :model="form" ref="form">
+        <el-form-item
+          prop="email"
+          label="邮箱"
+          :rules="[
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            {
+              type: 'email',
+              message: '请输入正确的邮箱地址',
+              trigger: ['blur', 'change']
+            }
+          ]"
+        >
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="downPDF(pdfUrl)">立即下载</el-button>
+        <el-button type="primary" @click="postEmail">发送到邮箱</el-button>
       </span>
     </el-dialog>
     <div class="info-content">
@@ -26,23 +43,11 @@
 
       <div class="my-info-box" v-if="orderData.length == 0">
         <div class="font16 tips-color no-card-text">
-          您暂时还没有订单哦~
+          您暂时还没有发票订单哦~
         </div>
       </div>
 
       <div v-else>
-        <!-- 已完成的订单开发票 -->
-        <!-- <div class="flex flex-e">
-          <el-button
-            type="primary"
-            v-if="statusNum == '4'"
-            @click="chooseInvoiceFun"
-            class="text-right pointer invoice-btn m-b-10"
-          >
-            开发票
-          </el-button>
-        </div> -->
-
         <div
           class="order-item-box font14 m-b-20"
           v-for="(item, index) in orderData"
@@ -81,6 +86,13 @@
               >
                 重新开票
               </div>
+              <div
+                v-if="item.status == 2"
+                class="handle-btn m-l-10 pointer"
+                @click="openEmail(item)"
+              >
+                发送到邮箱
+              </div>
             </div>
           </div>
           <div class="flex-r flex-b order-count font12">
@@ -108,10 +120,6 @@
                     <span class="justify">发票抬头：</span>
                     <span>{{ item.invoice }}</span>
                   </p>
-                  <!-- <p style="text-align: left;" @click="downPDF(item.pdfUrl)">
-                    <span class="justify">下载发票</span>
-                    <span>{{ item.pdfUrl }}</span>
-                  </p> -->
                 </div>
               </div>
             </div>
@@ -134,7 +142,13 @@
 <script>
 import msgBox from "./msg.vue";
 import CountDown from "./countDown.vue";
-import { invoiceList, delInvoiceList, query, reopen } from "@/api/invoice";
+import {
+  invoiceList,
+  delInvoiceList,
+  query,
+  reopen,
+  toEmail
+} from "@/api/invoice";
 export default {
   name: "myorder",
   components: {
@@ -157,7 +171,11 @@ export default {
       ],
       orderData: [],
       reQuest: "",
-      pdfUrl: ""
+      pdfUrl: "",
+      form: {
+        email: ""
+      },
+      getPage: ""
     };
   },
   created() {
@@ -201,13 +219,14 @@ export default {
     },
     // 查询开票结果
     queryData(id) {
+      this.getPage = id;
       query({ id: id }).then(res => {
         if (res.code == 200) {
-          console.log(res.data);
           if (res.data != null) {
             this.dialogVisible = true;
             this.pdfUrl = res.data;
           }
+          this.getData();
         } else {
           this.$refs.tips.toast(res.msg);
         }
@@ -215,8 +234,28 @@ export default {
     },
     // 下载发票
     downPDF(pfdLink) {
-      window.open(pfdLink, "_blank");
+      this.pdfUrl = pfdLink;
+      window.open(this.pdfUrl, "_blank");
       this.dialogVisible = false;
+    },
+    openEmail(info) {
+      this.dialogVisible = true;
+      this.getPage = info.id;
+    },
+    // 将发票发送到邮箱
+    postEmail() {
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          toEmail({ id: this.getPage, email: this.form.email }).then(res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.dialogVisible = false;
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
+        }
+      });
     },
     // 改变页码
     handleCurrentChange(val) {
@@ -258,8 +297,8 @@ export default {
   margin-bottom: 10px;
 }
 .handle-btn {
-  /* padding: 5px; */
-  width: 70px;
+  /* width: 70px; */
+  padding: 0px 10px;
   height: 28px;
   line-height: 28px;
   text-align: center;

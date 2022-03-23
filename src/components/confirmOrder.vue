@@ -290,6 +290,7 @@ export default {
       approve().then(res => {
         if (res.code == 200) {
           this.goodsList = res.data;
+          this.goodsId = res.data[0].id;
           let count = 0;
           for (let i = 0; i < this.goodsList.length; i++) {
             count += this.goodsList[i].price * 1 * this.goodsList[i].quantity;
@@ -376,24 +377,17 @@ export default {
       return isJPG && isLt2M;
     },
     handleOrder() {
-      // console.log(this.qrImg);
       let data = {
         addId: this.itemAddress.id,
         cartList: this.goodsId,
         remarks: this.remark,
-        payType: this.payWay,
-        cardId: this.bankId,
-        imgUrl: this.imgUrl,
-        unitRemarks: this.unitRemarks
+        payType: this.payWay
       };
-      console.log(data);
-      // debugger;
-      // return;
       if (this.itemAddress.id == "") {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");
-      } else if (this.payWay == "") {
+      } else if (this.payWay == -1) {
         this.$refs.tips.toast("请选择支付方式");
       } else {
         createOrder(data).then(res => {
