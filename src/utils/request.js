@@ -50,16 +50,18 @@ service.interceptors.response.use(
         });
     },
     error => {
+        Message({
+            message: error.message,
+            type: "error",
+            duration: 3 * 1000
+        });
+
+        // if (error.message.match(/\b401\b/g)) {
+        //     removeToken();
+        //     router.replace("/login");
+        //   }
         return Promise.reject(error)
-        // console.log('err' + error); 
-        // Message({
-        //     message: error.message,
-        //     type: 'error',
-        //     duration: 5 * 1000
-        // });
-        // return new Promise((resolve, reject) => {
-        //     return reject(error);
-        // });
+
     }
 );
 

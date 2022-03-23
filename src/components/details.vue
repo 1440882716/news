@@ -13,7 +13,7 @@
         <div class="goods-right text-left">
           <div class="font24 m-b-20 bold-font">{{ goodsData.name }}</div>
           <span class="tips-color font16">{{ goodsData.description }}</span>
-          <div class="price-box flex-r">
+          <div class="price-box-de flex-r">
             <!-- <div class="font14 tips-color price-title">
               {{ goodsData.price }}
             </div> -->

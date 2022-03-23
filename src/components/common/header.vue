@@ -1,46 +1,8 @@
 <template>
   <div class="header">
     <div class="container ">
-      <!-- <div class="head-line">
-        <div class="content font12  flex-r flex-b tips-color">
-          <div class="head-line-left">
-            <span>您好，欢迎来到报刊订阅平台</span>
-            <router-link to="./login" style="text-decoration: none;">
-              <span class="m-l-20" v-if="isLogin">已登录</span>
-              <span class="m-l-20" v-else>请登录</span>
-            </router-link>
-            <router-link
-              to="./login"
-              v-if="isLogin"
-              style="text-decoration: none;"
-            >
-              <span class="m-l-20">退出</span>
-            </router-link>
-            <router-link to="./regist" v-else style="text-decoration: none;">
-              <span class="m-l-20">快速注册</span>
-            </router-link>
-            <router-link to="/" style="text-decoration: none;">
-              <span class="m-l-20">首页</span>
-            </router-link>
-          </div>
-          <div class="head-line-right">
-            <ul class="flex-r flex-e head-ul-list pointer">
-              <li @click="toMypage(0)">
-                个人中心
-              </li>
-              <li @click="toMypage(5)">我的订单</li>
-              <li>
-                <router-link to="./cart" style="text-decoration: none;"
-                  >购物车</router-link
-                >
-              </li>
-              <li>帮助中心</li>
-            </ul>
-          </div>
-        </div>
-      </div> -->
       <div class="v1-head-box">
-        <div class="content font16 fff-font  flex-r flex-b tips-color">
+        <div class=" font16 fff-font  flex-r flex-b tips-color">
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
           </div>
@@ -78,9 +40,6 @@
             <router-link to="./regist" v-else style="text-decoration: none;">
               <span class="m-l-20">快速注册</span>
             </router-link>
-            <!-- <router-link to="/" style="text-decoration: none;">
-              <span>首页</span>
-            </router-link> -->
           </div>
         </div>
       </div>
@@ -160,9 +119,11 @@ router-link {
 
 /* ============================================最终版 */
 .v1-head-box {
-  width: 100%;
+  /* width: 100%; */
   height: 80px;
   line-height: 80px;
+  padding-left: 100px;
+  padding-right: 100px;
   background-color: #37312b;
 }
 </style>

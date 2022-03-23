@@ -189,6 +189,13 @@
           </div>
         </div>
       </el-dialog>
+      <div class="invoice-tips-box text-left">
+        <p>提示</p>
+        <p>
+          1. 每张发票上限金额为1万元，若开票总金额超过1万元，将开具多张发票。
+        </p>
+        <p>2. 两种报刊类型将分开开具发票。</p>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="invoiceDialog = false">取 消</el-button>
         <el-button type="primary" @click="getInvoice">确 定</el-button>
@@ -442,17 +449,12 @@ export default {
     },
     // 发票信息
     chooseInvoiceFun() {
-      // this.isOver = true;
-      // this.invoiceOrder
       let goodsCount = 0;
       let idArr = [];
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         idArr.push(this.invoiceOrder[i].id);
       }
-      // console.log(idArr);
-      // debugger;
-      // return;
       if (this.invoiceOrder.length != 0) {
         this.invoiceDialog = true;
         pageData().then(res => {
@@ -481,8 +483,6 @@ export default {
       } else {
         this.$refs.tips.toast("请选择要开发票的订单");
       }
-
-      // debugger;
     },
     // 重新选择发票信息
     chooseInvoiceItem(info) {
@@ -793,5 +793,10 @@ export default {
   height: 100%;
   text-align: center;
   /* background-color: darkgoldenrod; */
+}
+.invoice-tips-box {
+  /* width: 100%; */
+  padding: 10px 20px;
+  background-color: antiquewhite;
 }
 </style>
