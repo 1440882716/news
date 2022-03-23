@@ -10,8 +10,10 @@ const userApi = {
     delInvoiceList: '/client/receipt/del',
     query: '/client/receipt/query',
     reopen: '/client/receipt/reopen',
-    toEmail: '/client/receipt/email'
+    toEmail: '/client/receipt/email',
+
 }
+
 export function toEmail(data) {
     return request({
         url: userApi.toEmail,

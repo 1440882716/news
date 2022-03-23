@@ -201,6 +201,19 @@
         <el-button type="primary" @click="getInvoice">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 退订信息 -->
+    <!-- <el-dialog
+  title="提示"
+  :visible.sync="backOrder"
+  width="30%"
+  :before-close="handleClose">
+  <span>这是一段信息</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+</el-dialog> -->
+
     <div class="info-content">
       <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
         <el-tab-pane
@@ -265,7 +278,7 @@
               </div>
               <div
                 class="handle-btn pointer"
-                @click="backNews(item.id)"
+                @click="backNews(item.id, item.goods.paperId)"
                 v-if="item.orderStatus == 4"
               >
                 退订
@@ -308,16 +321,16 @@
               ]"
               >是否开发票</i
             >
-            <span v-if="item.isBill == true && statusNum == '4'"
+            <span class="f999" v-if="item.isBill == true && statusNum == '4'"
               >已开具发票</span
             >
           </div>
-          <div
-            class="flex-r flex-b order-goods-item-box"
-            v-for="info in item.goods"
-          >
+          <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
-              <div class="order-img-box pointer" @click="toGoodsInfo(info)">
+              <div
+                class="order-img-box pointer"
+                @click="toGoodsInfo(item.goods.paperId)"
+              >
                 <img
                   class="order-goods-img"
                   src="../../assets/img/mzfz.png"
@@ -326,25 +339,27 @@
               </div>
               <div class="flex-r pointer" @click="orderDetailFun(item)">
                 <div class="font14 f999 flex-c">
-                  <p class="font16  main-color">{{ info.name }}</p>
+                  <p class="font16  main-color">{{ item.goods.name }}</p>
                   <p style="text-align: left;">
                     <span class="justify">起止日期：</span>
-                    <span>{{ info.startDate }}~{{ info.endDate }}</span>
+                    <span
+                      >{{ item.goods.startDate }}~{{ item.goods.endDate }}</span
+                    >
                   </p>
                   <p style="text-align: left;">
                     <span class="justify">期数：</span>
-                    <span>{{ info.cycleNum }}</span>
+                    <span>{{ item.goods.cycleNum }}</span>
                   </p>
                   <p style="text-align: left;">
                     <span class="justify">数量：</span>
-                    <span>{{ info.number }}</span>
+                    <span>{{ item.goods.number }}</span>
                   </p>
                 </div>
               </div>
             </div>
             <div>
               金额：<span class="price-main font16 bold-font">{{
-                (info.realPrice * info.number).toFixed(2)
+                (item.goods.realPrice * item.goods.number).toFixed(2)
               }}</span>
             </div>
           </div>
@@ -354,6 +369,7 @@
           background
           layout="prev, pager, next"
           :total="orderCount"
+          :page-size="size"
           :current-page="currentPage"
           @current-change="handleCurrentChange"
         >
@@ -363,7 +379,13 @@
   </div>
 </template>
 <script>
-import { orderList, orderDetail, orderCancel, orderDel } from "@/api/order";
+import {
+  orderList,
+  orderCancel,
+  orderDel,
+  reckonOther,
+  applyRefund
+} from "@/api/order";
 import { pageData, handupInvoice } from "@/api/invoice";
 import { cardList } from "@/api/card";
 import msgBox from "./msg.vue";
@@ -436,7 +458,9 @@ export default {
       invoiceItem: {},
       currentTime: 0,
       startTime: 1646977570000,
-      endTime: "1647315805"
+      endTime: "1647315805",
+      size: 10,
+      idArr: []
     };
   },
   created() {
@@ -456,8 +480,11 @@ export default {
       let idArr = [];
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
-        idArr.push(this.invoiceOrder[i].id);
+        this.idArr.push(this.invoiceOrder[i].id);
       }
+      console.log(this.idArr);
+      // debugger;
+      // return;
       if (this.invoiceOrder.length != 0) {
         this.invoiceDialog = true;
         pageData().then(res => {
@@ -528,7 +555,8 @@ export default {
     getData() {
       let data = {
         current: this.currentPage,
-        status: this.statusNum
+        status: this.statusNum,
+        size: this.size
       };
       orderList(data).then(res => {
         if (res.code == 200) {
@@ -584,6 +612,7 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
+      // console.log(this.idArr);
     },
     // getInvoiceList() {
     //   cardList().then(res => {
@@ -640,7 +669,12 @@ export default {
       });
     },
     // 退订
-    backNews(id) {},
+    backNews(id, newsId) {
+      reckonOther({ orderId: id, newspaperId: newsId }).then(res => {
+        if (res.code == 200) {
+        }
+      });
+    },
     // 删除订单
     delFun(id) {
       if (id != "" && id != undefined) {

@@ -1,12 +1,7 @@
 <template>
   <div class="my-info">
     <msgBox ref="tips"></msgBox>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <div class="m-b-20 text-center">查询发票成功!</div>
       <el-form label-width="100px" :model="form" ref="form">
         <el-form-item
@@ -31,7 +26,7 @@
       </span>
     </el-dialog>
     <div class="info-content">
-      <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
+      <el-tabs v-model="editableTabsValue">
         <el-tab-pane
           v-for="(item, index) in editableTabs"
           :key="item.name"

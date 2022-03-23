@@ -49,24 +49,25 @@
             <div class="de-title2">数量</div>
             <div class="de-title2">小计</div>
           </div>
-          <div
-            class="flex-r de-goods-item flex-b text-center m-b-10"
-            v-for="item in goodsInfo"
-          >
+          <div class="flex-r de-goods-item flex-b text-center m-b-10">
             <div class="de-title1 flex-r">
               <div class="de-img-box m-l-20 p-b-10 p-t-10">
                 <img class="de-img" src="../assets/img/mzfz.png" alt="" />
               </div>
               <div class="flex-c font12 m-l-20 m-t-10 text-left">
-                <span class="font14">{{ item.name }}</span>
-                <span>起止日期：{{ item.startDate }}~{{ item.endDate }}</span>
-                <span>期数：{{ item.cycleNum }}</span>
+                <span class="font14">{{ goodsInfo.name }}</span>
+                <span
+                  >起止日期：{{ goodsInfo.startDate }}~{{
+                    goodsInfo.endDate
+                  }}</span
+                >
+                <span>期数：{{ goodsInfo.cycleNum }}</span>
               </div>
             </div>
-            <div class="de-title2 font12 m-t-20">{{ item.realPrice }}</div>
-            <div class="de-title2 font12 m-t-20">{{ item.number }}</div>
+            <div class="de-title2 font12 m-t-20">{{ goodsInfo.realPrice }}</div>
+            <div class="de-title2 font12 m-t-20">{{ goodsInfo.number }}</div>
             <div class="de-title2 font12 m-t-20">
-              {{ (item.realPrice * item.number).toFixed(2) }}
+              {{ (goodsInfo.realPrice * goodsInfo.number).toFixed(2) }}
             </div>
           </div>
           <div class="m-l-10 m-b-10 font14">订单备注：请尽快送达</div>

@@ -5,6 +5,30 @@ const userApi = {
     orderDetail: '/client/order/details',
     orderCancel: '/client/order/cancel',
     orderDel: '/client/order/del',
+    reckonOther: '/client/orderBack/reckonOther',
+    applyRefund: '/client/orderBack/applyRefund',
+    refundList: '/client/orderBack/page'
+}
+export function refundList(data) {
+    return request({
+        url: userApi.refundList,
+        method: 'get',
+        params: data
+    })
+}
+export function applyRefund(data) {
+    return request({
+        url: userApi.applyRefund,
+        method: 'get',
+        params: data
+    })
+}
+export function reckonOther(data) {
+    return request({
+        url: userApi.reckonOther,
+        method: 'get',
+        params: data
+    })
 }
 export function orderList(data) {
     return request({
