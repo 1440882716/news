@@ -8,7 +8,9 @@
       <div class="flex-r flex-b order-step m-t-20">
         <div class="order-step-left font12 main-color">
           <span>订单号：{{ orderId }}</span>
-          <div class="font20 bold-font deep-blue m-t-20">已取消</div>
+          <div class="font20 bold-font deep-blue m-t-20">
+            {{ orderInfo.orderStatusName }}
+          </div>
         </div>
         <div class="order-step-right flex-r flex-b font14">
           <div class="flex-c font12 buyer-info">

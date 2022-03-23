@@ -308,6 +308,9 @@
               ]"
               >是否开发票</i
             >
+            <span v-if="item.isBill == true && statusNum == '4'"
+              >已开具发票</span
+            >
           </div>
           <div
             class="flex-r flex-b order-goods-item-box"
