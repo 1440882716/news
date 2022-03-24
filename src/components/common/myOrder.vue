@@ -202,17 +202,39 @@
       </span>
     </el-dialog>
     <!-- 退订信息 -->
-    <!-- <el-dialog
-  title="提示"
-  :visible.sync="backOrder"
-  width="30%"
-  :before-close="handleClose">
-  <span>这是一段信息</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
-</el-dialog> -->
+    <el-dialog
+      title="退订信息"
+      :visible.sync="backOrder"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <!-- <div class="text-center">退订信息</div> -->
+      <div class="flex-r">
+        <img class="back-img-size" :src="backInfo.pics" alt="" />
+        <div class="text-left m-l-30">
+          <div>报刊名称：{{ backInfo.name }}</div>
+          <div>已订期数：{{ backInfo.backDate }}</div>
+          <div>每期数量：{{ backInfo.backNumber }}</div>
+          <div>退订期数：{{ backInfo.backCycleName }}</div>
+          <div>退订时间：{{ backInfo.backDate }}</div>
+          <div>可退金额：{{ backInfo.backPrice }}</div>
+        </div>
+      </div>
+
+      <div class="flex-r m-t-30">
+        <div class="backreason-title">退订原因：</div>
+        <el-input
+          v-model="backReason"
+          type="textarea"
+          placeholder="请输入退订原因"
+        ></el-input>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="backOrder = false">取 消</el-button>
+        <el-button type="primary" @click="backFun">确 定</el-button>
+      </span>
+    </el-dialog>
 
     <div class="info-content">
       <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
@@ -306,24 +328,31 @@
             </div>
           </div>
           <div class="flex-r flex-b order-count font12">
-            <div>
-              <span class="m-r-20">订单号：{{ item.id }}</span>
-              <span>订单总额：{{ item.totalPrice }}</span>
+            <div class="flex-r flex-b box100">
+              <div>
+                <span class="m-r-20">订单号：{{ item.id }}</span>
+                <span>订单总额：{{ item.totalPrice }}</span>
+              </div>
+              <div>
+                <span>{{ item.orderStatusName }}</span>
+                <i
+                  @click="chooseOrder(item)"
+                  v-if="item.isBill == false && statusNum == '4'"
+                  :class="[
+                    'el-icon-success',
+                    'font18',
+                    'pointer',
+                    item.select ? 'price-color' : 'f999'
+                  ]"
+                  >是否开发票</i
+                >
+                <span
+                  class="f999"
+                  v-if="item.isBill == true && statusNum == '4'"
+                  >已开具发票</span
+                >
+              </div>
             </div>
-            <i
-              @click="chooseOrder(item)"
-              v-if="item.isBill == false && statusNum == '4'"
-              :class="[
-                'el-icon-success',
-                'font18',
-                'pointer',
-                item.select ? 'price-color' : 'f999'
-              ]"
-              >是否开发票</i
-            >
-            <span class="f999" v-if="item.isBill == true && statusNum == '4'"
-              >已开具发票</span
-            >
           </div>
           <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
@@ -331,11 +360,7 @@
                 class="order-img-box pointer"
                 @click="toGoodsInfo(item.goods.paperId)"
               >
-                <img
-                  class="order-goods-img"
-                  src="../../assets/img/mzfz.png"
-                  alt=""
-                />
+                <img class="order-goods-img" :src="item.goods.pics" alt="" />
               </div>
               <div class="flex-r pointer" @click="orderDetailFun(item)">
                 <div class="font14 f999 flex-c">
@@ -403,6 +428,11 @@ export default {
       dialogVisible: false,
       invoiceDialog: false,
       innerVisible: false, //内层嵌套的dialog
+      backOrder: false, //退订信息的弹框
+      backInfo: {}, //退订期数信息
+      backReason: "", //退订原因
+      backOrderId: "",
+      backNewsId: "",
       statusNum: "0",
       orderNum: "",
       currentPage: 1,
@@ -668,10 +698,32 @@ export default {
         }
       });
     },
-    // 退订
+    // 退订信息
     backNews(id, newsId) {
+      this.backOrderId = id;
+      this.backNewsId = newsId;
       reckonOther({ orderId: id, newspaperId: newsId }).then(res => {
         if (res.code == 200) {
+          this.backInfo = res.data;
+          this.backOrder = true;
+        } else {
+          this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
+    // 退订
+    backFun() {
+      applyRefund({
+        orderId: this.backOrderId,
+        newspaperId: this.backNewsId,
+        reason: this.backReason
+      }).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          this.backOrder = false;
+          this.getData();
+        } else {
+          this.$refs.tips.toast(res.msg);
         }
       });
     },
@@ -682,6 +734,8 @@ export default {
           if (res.code == 200) {
             this.$refs.tips.toast(res.msg);
             this.getData();
+          } else {
+            this.$refs.tips.toast(res.msg);
           }
         });
       }
@@ -835,5 +889,13 @@ export default {
   /* width: 100%; */
   padding: 10px 20px;
   background-color: antiquewhite;
+}
+.back-img-size {
+  width: 80px;
+  height: 100px;
+}
+.backreason-title {
+  width: 100px;
+  /* margin-top: 40px; */
 }
 </style>

@@ -4,57 +4,73 @@
     <div class="info-content text-left">
       <div class="title-box flex-r flex-b">
         <div class="my-info-title">
-          我的售后
+          退订订单
         </div>
       </div>
       <div class="info-content">
-        <div class="order-item-box font14 m-b-20 m-t-10">
+        <div
+          class="order-item-box font14 m-b-20 m-t-10"
+          v-for="item in backList"
+        >
           <div class="flex-r flex-b order-head-box">
             <div>
-              <span>2022-03-16 10:15:23</span>
-              <span class="m-l-10">收货人：7777</span>
+              <span>申请时间:{{ item.createTime }}</span>
+              <!-- <span class="m-l-10">收货人：7777</span> -->
             </div>
             <div class="flex-r">
-              <div class="handle-btn pointer" @click="cancelFun(item.id)">
+              <div
+                class="handle-btn pointer"
+                v-if="item.status == 6"
+                @click="cancelFun(item.id)"
+              >
                 取消退订
+              </div>
+              <div
+                class="handle-btn pointer"
+                v-if="item.status == 7"
+                @click="cancelFun(item.id)"
+              >
+                删除
               </div>
             </div>
           </div>
           <div class="flex-r flex-b order-count font12">
-            <div>
-              <span class="m-r-20">订单号：12413514623</span>
-              <span>订单总额：12.34</span>
+            <div class="flex-r flex-b back-status">
+              <div class="m-r-20">退订单号：{{ item.backOrderId }}</div>
+              <div>{{ item.statusName }}</div>
             </div>
           </div>
           <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
               <div class="order-img-box pointer" @click="toGoodsInfo(item)">
-                <img
-                  class="order-goods-img"
-                  src="../../assets/img/mzfz.png"
-                  alt=""
-                />
+                <img class="order-goods-img" :src="item.pics" alt="" />
               </div>
               <div class="flex-r pointer" @click="orderDetailFun(item)">
                 <div class="font14 f999 flex-c">
-                  <p class="font16  main-color">人民日报</p>
+                  <p class="font16  main-color">{{ item.name }}</p>
                   <p style="text-align: left;">
-                    <span class="justify">起止日期：</span>
-                    <span>2022-03-16 10:15:23~2022-03-16 10:15:23</span>
+                    <span class="justify">退订日期：</span>
+                    <span>{{ item.backDate }}</span>
                   </p>
                   <p style="text-align: left;">
-                    <span class="justify">期数：</span>
-                    <span>6</span>
+                    <span class="justify">报刊单价：</span>
+                    <span>{{ item.originalPrice }}</span>
                   </p>
                   <p style="text-align: left;">
-                    <span class="justify">数量：</span>
-                    <span>2</span>
+                    <span class="justify">每期数量：</span>
+                    <span>{{ item.backNumber }}</span>
+                  </p>
+                  <p style="text-align: left;">
+                    <span class="justify">退订期数：</span>
+                    <span>{{ item.backCycleNum }}</span>
                   </p>
                 </div>
               </div>
             </div>
             <div>
-              金额：<span class="price-main font16 bold-font">12.38</span>
+              退订金额：<span class="price-main font16 bold-font">{{
+                item.backPrice.toFixed(2)
+              }}</span>
             </div>
           </div>
           <!-- <el-divider></el-divider> -->
@@ -72,7 +88,9 @@ export default {
     msgBox
   },
   data() {
-    return {};
+    return {
+      backList: []
+    };
   },
   created() {
     this.getData();
@@ -83,9 +101,9 @@ export default {
         // page: this.page,
         // limit: this.limit
       };
-      pageData(data).then(res => {
+      refundList(data).then(res => {
         if (res.code == 200) {
-          //   this.invoiceList = res.data;
+          this.backList = res.data.records;
         }
       });
     },
@@ -158,5 +176,8 @@ export default {
 .order-goods-img {
   width: 80px;
   height: 100px;
+}
+.back-status {
+  width: 100%;
 }
 </style>
