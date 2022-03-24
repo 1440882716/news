@@ -7,15 +7,19 @@
             <span>您好，欢迎来到报刊订阅平台</span>
             <router-link to="/" style="text-decoration: none;">
               <span class="m-l-20">返回首页</span>
+              <span>|</span>
             </router-link>
-            <span class="m-l-20">帮助中心</span>
+            <router-link to="./help" style="text-decoration: none;color: white;"
+              >帮助中心</router-link
+            >
+            <!-- <span class="m-l-20">帮助中心</span> -->
           </div>
           <div class="head-line-right">
             <ul class="flex-r flex-e head-ul-list">
               <li>
-                <router-link to="/login" style="text-decoration: none;">
-                  <span>请登录</span>
-                </router-link>
+                <!-- <router-link to="/login" style="text-decoration: none;"> -->
+                <span>请登录</span>
+                <!-- </router-link> -->
               </li>
               <li>|</li>
               <li>

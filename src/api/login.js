@@ -3,7 +3,15 @@ import request from '@/utils/request'
 const userApi = {
     loginSmsCode: '/client/loginSmsCode',
     loginPwd: '/client/loginPwd',
-    forgetPwd: '/client/forgetPwd'
+    forgetPwd: '/client/forgetPwd',
+    logout: '/client/user/logout'
+}
+export function logout(data) {
+    return request({
+        url: userApi.logout,
+        method: 'get',
+        params: data
+    })
 }
 export function loginSmsCode(data) {
     return request({

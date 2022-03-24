@@ -30,13 +30,21 @@
               <span class="m-l-20" v-if="isLogin">已登录</span>
               <span class="m-l-20" v-else>请登录</span>
             </router-link>
-            <router-link
+            <!-- <router-link
               to="./login"
               v-if="isLogin"
               style="text-decoration: none;"
+              @click="logoutFun"
+            > -->
+            <span
+              v-if="isLogin"
+              @click="logoutFun"
+              style="text-decoration: none;"
+              class="m-l-20 pointer"
+              >退出</span
             >
-              <span class="m-l-20">退出</span>
-            </router-link>
+            <!-- </router-link> -->
+
             <router-link to="./regist" v-else style="text-decoration: none;">
               <span class="m-l-20">快速注册</span>
             </router-link>
@@ -49,6 +57,7 @@
 
 <script>
 import { getToken, getLogin, removeToken, removeLogin } from "@/utils/auth";
+import { logout } from "@/api/login";
 export default {
   name: "index",
   data() {
@@ -81,6 +90,23 @@ export default {
         name: "My",
         query: {
           orderPage: num
+        }
+      });
+    },
+    // 推出登录
+    logoutFun() {
+      console.log(6666);
+      // debugger;
+      // return;
+      logout().then(res => {
+        if (res.code == 200) {
+          removeToken();
+          removeLogin();
+          this.$router.push({
+            path: "/login",
+            name: "login"
+          });
+        } else {
         }
       });
     }
