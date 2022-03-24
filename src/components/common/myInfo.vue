@@ -155,7 +155,7 @@
 <script>
 import region from "../../assets/data/area_format_user.json";
 import msgBox from "./msg.vue";
-import { getToken } from "@/utils/auth";
+import { getToken, removeLogin } from "@/utils/auth";
 import { userInfo, updPersonalData, updAvatar } from "@/api/user";
 export default {
   name: "info",
@@ -212,6 +212,8 @@ export default {
 
           // console.log(this.imgApi);
           // debugger;
+        } else {
+          // removeLogin()
         }
       });
     },

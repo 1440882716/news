@@ -451,14 +451,14 @@ export default {
           title: "全部订单",
           name: "0"
         },
-        {
-          title: "待付款",
-          name: "1"
-        },
-        {
-          title: "待发货",
-          name: "2"
-        },
+        // {
+        //   title: "待付款",
+        //   name: "1"
+        // },
+        // {
+        //   title: "待发货",
+        //   name: "2"
+        // },
         {
           title: "订阅中",
           name: "3"
@@ -466,11 +466,11 @@ export default {
         {
           title: "已完成",
           name: "4"
-        },
-        {
-          title: "已取消",
-          name: "5"
         }
+        // {
+        //   title: "已取消",
+        //   name: "5"
+        // }
       ],
       invoiceForm: {
         status: "",
@@ -592,13 +592,16 @@ export default {
         if (res.code == 200) {
           this.orderData = res.data.records;
           this.orderCount = res.data.total;
-          this.orderData.map(item => {
-            let start = this.getTimestamp(item.createTime);
-            let lastTime = (start + 24 * 60 * 60 * 1000) / 1000;
-            lastTime = String(lastTime);
-            this.$set(item, "end_time", lastTime);
-            // this.$set(item, "goodsC", lastTime);
-          });
+          if (this.statusNum == "0" || this.statusNum == "1") {
+            this.orderData.map(item => {
+              let start = this.getTimestamp(item.createTime);
+              let lastTime = (start + 24 * 60 * 60 * 1000) / 1000;
+              lastTime = String(lastTime);
+              this.$set(item, "end_time", lastTime);
+              // this.$set(item, "goodsC", lastTime);
+            });
+          }
+
           if (this.statusNum == "4") {
             this.orderData.map(item => {
               this.$set(item, "select", false);

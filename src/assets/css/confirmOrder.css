@@ -203,3 +203,7 @@ body {
   height: 178px;
   display: block;
 }
+.unitRemarks-title {
+  line-height: 30px;
+  width: 80px;
+}

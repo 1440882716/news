@@ -2,6 +2,7 @@ import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
 import { getToken } from "@/utils/auth";
 import qs from "qs";
+import router from "@/router";
 
 // create an axios instance
 const service = axios.create({
@@ -50,16 +51,15 @@ service.interceptors.response.use(
         });
     },
     error => {
-        Message({
-            message: error.message,
-            type: "error",
-            duration: 3 * 1000
-        });
+        // Message({
+        //     message: error.message,
+        //     type: "error",
+        //     duration: 3 * 1000
+        // });
 
-        // if (error.message.match(/\b401\b/g)) {
-        //     removeToken();
-        //     router.replace("/login");
-        //   }
+        if (error.response.status == 401) {
+            router.replace("/login");
+        }
         return Promise.reject(error)
 
     }

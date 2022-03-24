@@ -2,7 +2,7 @@
   <div class="header">
     <div class="container ">
       <div class="v1-head-box">
-        <div class=" font16 fff-font  flex-r flex-b tips-color">
+        <div class=" font16 fff-font content flex-r flex-b tips-color">
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
           </div>

@@ -134,8 +134,30 @@
               </el-input>
             </div>
             <div>
-              <span class="bold-font">支付方式</span>
-              <div class="flex-r ">
+              <span class="bold-font">上传线下支付凭证</span>
+              <!-- <div class="flex-r"> -->
+              <el-upload
+                class="avatar-uploader m-t-20"
+                :headers="{ Authorization: token }"
+                action="http://192.168.31.105:8080/client/order/upload"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img v-if="voucherImg" :src="voucherImg" class="avatar" />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+              <div class="flex-r m-t-30 m-b-20">
+                <div class="unitRemarks-title">单位备注：</div>
+                <el-input
+                  class="remark-inp-order"
+                  v-model="unitRemarks"
+                  placeholder="请输入内容"
+                ></el-input>
+              </div>
+              <!-- </div> -->
+
+              <!-- <div class="flex-r ">
                 <div class="pointer m-r-20 text-center" @click="payWay = 1">
                   <img
                     v-if="payWay == 1"
@@ -196,7 +218,7 @@
                   />
                   <p>上传凭证</p>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -239,6 +261,7 @@ import addAddress from "./common/addAddress.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "./common/msg.vue";
 import { addList, delAdd } from "@/api/address";
+import { getToken } from "@/utils/auth";
 import { confirmUrl, createOrder, approve } from "@/api/cart";
 import { cardList } from "@/api/card";
 export default {
@@ -258,19 +281,21 @@ export default {
       goodsId: "",
       goodsCount: 0,
       remark: "",
+      token: "",
       payWay: -1,
       cardId: "",
       imgUrl: "",
-      unitRemarks: "",
       itemAddress: {},
       addressList: [],
       goodsList: [],
       cardData: [],
       qrImg: "",
-      voucherImg: ""
+      voucherImg: "",
+      unitRemarks: ""
     };
   },
   created() {
+    this.token = getToken();
     this.goodsId = this.$route.query.goodsId;
     this.getAddress();
     if (this.goodsId != "0") {
@@ -361,9 +386,13 @@ export default {
     },
     // 上传凭证图片
     handleAvatarSuccess(res, file) {
-      this.voucherImg = URL.createObjectURL(file.raw);
-      console.log(res.data);
-      this.$refs.tips.toast(res.msg);
+      if (res.code == 200) {
+        // debugger;
+        this.voucherImg = URL.createObjectURL(file.raw);
+        this.voucherImg = res.location;
+      } else {
+        this.$refs.tips.toast(res.msg);
+      }
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg" || "image/png";
@@ -381,36 +410,35 @@ export default {
         addId: this.itemAddress.id,
         cartList: this.goodsId,
         remarks: this.remark,
-        payType: this.payWay
+        imgUrl: this.voucherImg,
+        unitRemarks: this.unitRemarks
       };
       if (this.itemAddress.id == "") {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");
-      } else if (this.payWay == -1) {
-        this.$refs.tips.toast("请选择支付方式");
+      } else if (this.voucherImg == "") {
+        this.$refs.tips.toast("请上传支付凭证");
+      } else if (this.unitRemarks == "") {
+        this.$refs.tips.toast("请输入单位备注");
       } else {
         createOrder(data).then(res => {
           if (res.code == 200) {
             this.$router.push({
-              path: "/pay",
-              name: "pay",
+              path: "/My",
+              name: "My",
               query: {
-                orderId: res.data,
-                payWay: this.payWay
+                orderPage: 5
               }
             });
-            // if (this.payWay == 1 || this.payWay == 2 || this.payWay == 3) {
-            //   // 将返回的支付宝地址存下来，在支付页面使用
-            //   this.$router.push({
-            //     path: "/pay",
-            //     name: "pay",
-            //     query: {
-            //       orderId: res.data,
-            //       payWay: this.payWay
-            //     }
-            //   });
-            // }
+            // this.$router.push({
+            //   path: "/pay",
+            //   name: "pay",
+            //   query: {
+            //     orderId: res.data,
+            //     payWay: this.payWay
+            //   }
+            // });
           } else {
             this.$refs.tips.toast(res.msg);
           }
