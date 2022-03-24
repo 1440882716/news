@@ -11,7 +11,15 @@ const userApi = {
     wxPay: '/client/wxPay/scanCode',
     unionPay: '/client/unionPay',
     directBuy: '/client/cart/direct',
-    approve: '/client/cart/approve'
+    approve: '/client/cart/approve',
+    payQuery: '/client/pay/query'
+}
+export function payQuery(data) {
+    return request({
+        url: userApi.payQuery,
+        method: 'get',
+        params: data
+    })
 }
 export function approve(data) {
     return request({

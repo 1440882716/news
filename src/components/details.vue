@@ -184,17 +184,7 @@ export default {
       dateEnd: "",
       goodsNum: 1,
       yearPrice: 0,
-      imgList: [
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094511228_3_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094515217_1_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094519332_2_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094511228_3_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094515217_1_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094519332_2_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094511228_3_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094515217_1_share.jpg.webp",
-        "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094519332_2_share.jpg.webp"
-      ]
+      imgList: []
     };
   },
   computed: {
@@ -236,6 +226,7 @@ export default {
       goodsDetails({ id: this.goodsId }).then(res => {
         if (res.code == 200) {
           this.goodsData = res.data;
+          this.imgList = res.data.pictures;
           this.yearPrice = (
             this.goodsData.price * this.goodsData.totalNum
           ).toFixed(2);

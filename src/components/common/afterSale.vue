@@ -21,14 +21,14 @@
               <div
                 class="handle-btn pointer"
                 v-if="item.status == 6"
-                @click="cancelFun(item.id)"
+                @click="cancelFun(item.backOrderId)"
               >
                 取消退订
               </div>
               <div
                 class="handle-btn pointer"
                 v-if="item.status == 7"
-                @click="cancelFun(item.id)"
+                @click="delFun(item.backOrderId)"
               >
                 删除
               </div>
@@ -80,7 +80,7 @@
   </div>
 </template>
 <script>
-import { reckonOther, applyRefund, refundList } from "@/api/order";
+import { refundList, cancelBack, delBack } from "@/api/order";
 import msgBox from "./msg.vue";
 export default {
   name: "mycard",
@@ -113,6 +113,24 @@ export default {
         name: "orderDetail",
         query: {
           orderId: info.id
+        }
+      });
+    },
+    cancelFun(id) {
+      cancelBack({ backOrderId: id }).then(res => {
+        if (res.code == 200) {
+          this.getData();
+        } else {
+          this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
+    delFun(id) {
+      delBack({ backOrderId: id }).then(res => {
+        if (res.code == 200) {
+          this.getData();
+        } else {
+          this.$refs.tips.toast(res.msg);
         }
       });
     }

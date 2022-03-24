@@ -93,7 +93,7 @@
 </template>
 <script>
 import QRCode from "qrcodejs2";
-import { orderPay, wxPay, unionPay } from "@/api/cart";
+import { orderPay, wxPay, unionPay, payQuery } from "@/api/cart";
 import msgBox from "./common/msg.vue";
 import { getToken } from "@/utils/auth";
 export default {
@@ -133,6 +133,7 @@ export default {
             this.zfbUrl = res.data;
             this.getQR();
             this.countDown();
+            this.getResult();
             // }
           }
         });
@@ -224,6 +225,24 @@ export default {
       this.$nextTick(function() {
         this.qrcode();
       });
+    },
+    // queryPay() {
+    //   payQuery({ orderId: this.orderId }).then(res => {
+    //     if (res.code == 200) {
+    //     } else {
+    //     }
+    //   });
+    // },
+    getResult() {
+      let timer = setInterval(() => {
+        payQuery({ orderId: this.orderId }).then(res => {
+          if (res.code == 200) {
+            clearInterval(timer);
+          } else {
+            clearInterval(timer);
+          }
+        });
+      }, 2000);
     }
   }
 };

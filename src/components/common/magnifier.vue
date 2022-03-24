@@ -71,30 +71,30 @@ export default {
   data() {
     return {
       pictureList: [
-        {
-          url:
-            "http://mp.ofweek.com/Upload/News/Img/member645/201711/17170046839337.jpg"
-        },
-        {
-          url:
-            "http://image.buy.ccb.com/merchant/201703/904919627/1522929521661_4.jpg"
-        },
-        {
-          url:
-            "http://image5.suning.cn/uimg/b2c/newcatentries/0070130691-000000000826244625_5_800x800.jpg"
-        },
-        {
-          url:
-            "http://img12.360buyimg.com/n5/s450x450_jfs/t9952/98/2269407420/279171/6137fe2f/59f28b2bN6959e086.jpg"
-        },
-        {
-          url:
-            "http://d.ifengimg.com/w600/p0.ifengimg.com/pmop/2017/1213/A4037864F6728F006B67AAEC51EC8A485F320FD2_size93_w1024_h734.jpeg"
-        },
-        {
-          url:
-            "http://d.ifengimg.com/w600/p0.ifengimg.com/pmop/2017/1213/A4037864F6728F006B67AAEC51EC8A485F320FD2_size93_w1024_h734.jpeg"
-        }
+        // {
+        //   url:
+        //     "http://mp.ofweek.com/Upload/News/Img/member645/201711/17170046839337.jpg"
+        // },
+        // {
+        //   url:
+        //     "http://image.buy.ccb.com/merchant/201703/904919627/1522929521661_4.jpg"
+        // },
+        // {
+        //   url:
+        //     "http://image5.suning.cn/uimg/b2c/newcatentries/0070130691-000000000826244625_5_800x800.jpg"
+        // },
+        // {
+        //   url:
+        //     "http://img12.360buyimg.com/n5/s450x450_jfs/t9952/98/2269407420/279171/6137fe2f/59f28b2bN6959e086.jpg"
+        // },
+        // {
+        //   url:
+        //     "http://d.ifengimg.com/w600/p0.ifengimg.com/pmop/2017/1213/A4037864F6728F006B67AAEC51EC8A485F320FD2_size93_w1024_h734.jpeg"
+        // },
+        // {
+        //   url:
+        //     "http://d.ifengimg.com/w600/p0.ifengimg.com/pmop/2017/1213/A4037864F6728F006B67AAEC51EC8A485F320FD2_size93_w1024_h734.jpeg"
+        // }
       ],
       middleImg: "", // 中图图片地址
       bigImg: "", // 大图图片地址
@@ -115,6 +115,12 @@ export default {
     this.middleImg = this.pictureList[0];
     // 计算缩略图的宽度,默认是显示4张图片,两边箭头的宽度和为50
     this.itemWidth = (this.middleImgWidth - 50) / 4;
+  },
+  watch: {
+    imgList() {
+      this.pictureList = this.imgList;
+      this.middleImg = this.pictureList[0];
+    }
   },
   mounted() {
     this.$nextTick(() => {

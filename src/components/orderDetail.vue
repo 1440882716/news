@@ -52,7 +52,7 @@
           <div class="flex-r de-goods-item flex-b text-center m-b-10">
             <div class="de-title1 flex-r">
               <div class="de-img-box m-l-20 p-b-10 p-t-10">
-                <img class="de-img" src="../assets/img/mzfz.png" alt="" />
+                <img class="de-img" :src="goodsInfo.pics" alt="" />
               </div>
               <div class="flex-c font12 m-l-20 m-t-10 text-left">
                 <span class="font14">{{ goodsInfo.name }}</span>

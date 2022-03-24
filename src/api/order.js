@@ -7,7 +7,23 @@ const userApi = {
     orderDel: '/client/order/del',
     reckonOther: '/client/orderBack/reckonOther',
     applyRefund: '/client/orderBack/applyRefund',
-    refundList: '/client/orderBack/page'
+    refundList: '/client/orderBack/page',
+    cancelBack: '/client/orderBack/cancelBack',
+    delBack: '/client/orderBack/del'
+}
+export function delBack(data) {
+    return request({
+        url: userApi.delBack,
+        method: 'get',
+        params: data
+    })
+}
+export function cancelBack(data) {
+    return request({
+        url: userApi.cancelBack,
+        method: 'get',
+        params: data
+    })
 }
 export function refundList(data) {
     return request({

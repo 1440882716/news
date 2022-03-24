@@ -629,12 +629,12 @@ export default {
       // debugger;
     },
     // 去商品详情
-    toGoodsInfo(info) {
+    toGoodsInfo(id) {
       this.$router.push({
         path: "/details",
         name: "details",
         query: {
-          goodsId: info.paperId
+          goodsId: id
         }
       });
     },
