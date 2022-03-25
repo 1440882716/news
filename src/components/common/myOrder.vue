@@ -509,14 +509,17 @@ export default {
     chooseInvoiceFun() {
       let goodsCount = 0;
       // getOrList();
+      // debugger;
+      // this.idArr = sessionStorage.getItem("listArr");
       let idArr = [];
-
+      console.log(this.idArr);
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      console.log(idArr);
-      // setOrList(idArr);
+
+      // sessionStorage.setItem("listArr", this.idArr);
+      console.log(this.idArr);
       debugger;
       return;
       if (this.invoiceOrder.length != 0) {
