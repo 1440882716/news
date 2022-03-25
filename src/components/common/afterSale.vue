@@ -42,7 +42,7 @@
           </div>
           <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
-              <div class="order-img-box pointer" @click="toGoodsInfo(item)">
+              <div class="order-img-box pointer" @click="toGoodsInfo(item.id)">
                 <img class="order-goods-img" :src="item.pics" alt="" />
               </div>
               <div class="flex-r pointer" @click="orderDetailFun(item)">
@@ -131,6 +131,16 @@ export default {
           this.getData();
         } else {
           this.$refs.tips.toast(res.msg);
+        }
+      });
+    },
+    // 去商品详情
+    toGoodsInfo(id) {
+      this.$router.push({
+        path: "/details",
+        name: "details",
+        query: {
+          goodsId: id
         }
       });
     }

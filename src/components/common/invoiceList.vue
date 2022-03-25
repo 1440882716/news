@@ -91,9 +91,13 @@
             </div>
           </div>
           <div class="flex-r flex-b order-count font12">
-            <div>
+            <div class="flex-r">
               <span class="m-r-20">订单号：{{ item.id }}</span>
-              <span>订单总额：{{ item.totalPrices }}</span>
+              <div>
+                订单总额：<span class="font14 price-color">{{
+                  item.totalPrices
+                }}</span>
+              </div>
             </div>
             <div v-if="item.status == 1">开票中</div>
             <div v-if="item.status == 2">开票完成</div>
