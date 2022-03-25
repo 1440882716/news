@@ -413,6 +413,7 @@ import {
 } from "@/api/order";
 import { pageData, handupInvoice } from "@/api/invoice";
 import { cardList } from "@/api/card";
+import { setOrList, getOrList } from "@/utils/auth";
 import msgBox from "./msg.vue";
 // import CountDown from "vue2-countdown";
 import CountDown from "./countDown.vue";
@@ -489,7 +490,7 @@ export default {
       currentTime: 0,
       startTime: 1646977570000,
       endTime: "1647315805",
-      size: 10,
+      size: 2,
       idArr: []
     };
   },
@@ -507,14 +508,17 @@ export default {
     // 发票信息
     chooseInvoiceFun() {
       let goodsCount = 0;
+      // getOrList();
       let idArr = [];
+
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      console.log(this.idArr);
-      // debugger;
-      // return;
+      console.log(idArr);
+      // setOrList(idArr);
+      debugger;
+      return;
       if (this.invoiceOrder.length != 0) {
         this.invoiceDialog = true;
         pageData().then(res => {

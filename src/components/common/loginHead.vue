@@ -16,12 +16,10 @@
           </div>
           <div class="head-line-right">
             <ul class="flex-r flex-e head-ul-list">
-              <li>
-                <!-- <router-link to="/login" style="text-decoration: none;"> -->
+              <!-- <li>
                 <span>请登录</span>
-                <!-- </router-link> -->
               </li>
-              <li>|</li>
+              <li>|</li> -->
               <li>
                 <router-link to="/regist" style="text-decoration: none;">
                   <span>快速注册</span>
