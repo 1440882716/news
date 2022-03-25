@@ -8,12 +8,12 @@
             <router-link to="/" style="text-decoration: none;color: white;">
               <span class="m-l-20">返回首页</span>
             </router-link>
-            <router-link
+            <!-- <router-link
               to="./login"
               style="text-decoration: none;color: white;"
             >
               <span class="m-l-20">请登录</span>
-            </router-link>
+            </router-link> -->
             <router-link
               to="./regist"
               style="text-decoration: none;color: white;"

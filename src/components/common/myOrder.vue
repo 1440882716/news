@@ -508,20 +508,14 @@ export default {
     // 发票信息
     chooseInvoiceFun() {
       let goodsCount = 0;
-      // getOrList();
-      // debugger;
-      // this.idArr = sessionStorage.getItem("listArr");
-      let idArr = [];
-      console.log(this.idArr);
+
+      // let idArr = [];
+      // console.log(this.idArr);
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-
-      // sessionStorage.setItem("listArr", this.idArr);
-      console.log(this.idArr);
-      debugger;
-      return;
+      // console.log(this.idArr);
       if (this.invoiceOrder.length != 0) {
         this.invoiceDialog = true;
         pageData().then(res => {
