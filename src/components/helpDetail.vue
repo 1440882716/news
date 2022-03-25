@@ -14,8 +14,18 @@
             {{ heleData.title }}
           </div>
           <div v-html="heleData.content"></div>
-          <div class="text-right m-t-20">{{ heleData.creatorName }}</div>
-          <div class="text-right">{{ heleData.crtTime }}</div>
+          <div
+            class="font14 bold-font main-color m-t-20 text-right pointer"
+            @click="downFile(heleData.fileUrl)"
+          >
+            下载附件
+          </div>
+          <div class="font14 bold-font text-right m-t-20">
+            {{ heleData.creatorName }}
+          </div>
+          <div class="font14 bold-font text-right m-t-20">
+            {{ heleData.crtTime }}
+          </div>
         </div>
       </div>
     </div>
@@ -50,6 +60,17 @@ export default {
           this.heleData = res.data;
         }
       });
+    },
+    // 下载附件
+    downFile(url) {
+      let link = document.createElement("a");
+      link.style.display = "none";
+      link.href = url;
+      link.setAttribute("download", "附件");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(this.fileUrl);
     }
   }
 };

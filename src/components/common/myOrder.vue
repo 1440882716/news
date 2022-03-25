@@ -490,7 +490,7 @@ export default {
       currentTime: 0,
       startTime: 1646977570000,
       endTime: "1647315805",
-      size: 2,
+      size: 10,
       idArr: []
     };
   },

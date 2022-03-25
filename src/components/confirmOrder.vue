@@ -139,9 +139,10 @@
               <el-upload
                 class="avatar-uploader m-t-20"
                 :headers="{ Authorization: token }"
-                action="http://192.168.31.105:8080/client/order/upload"
+                action="http://192.168.31.23:8080/client/order/upload"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
+                :on-error="uploadError"
                 :before-upload="beforeAvatarUpload"
               >
                 <img v-if="voucherImg" :src="voucherImg" class="avatar" />
@@ -392,6 +393,16 @@ export default {
         this.voucherImg = res.location;
       } else {
         this.$refs.tips.toast(res.msg);
+      }
+    },
+    uploadError(error, file, fileList) {
+      let errorMsg = JSON.parse(error.message);
+      // console.log(errorMsg);
+      if (errorMsg.code == 401) {
+        this.$router.push({
+          path: "/login",
+          name: "login"
+        });
       }
     },
     beforeAvatarUpload(file) {

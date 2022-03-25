@@ -8,15 +8,8 @@
       <div class="text-left" v-html="content"></div>
       <div class="text-left m-t-20 m-b-20">备注：{{ remarks }}</div>
       <div class="flex-r">
-        <span>附件：</span>
-        <img :src="fileUrl" alt="" />
-      </div>
-
-      <div class="font14 bold-font text-right m-t-20">
-        发布者：{{ creatorName }}
-      </div>
-      <div class="font14 bold-font text-right m-t-20">
-        发布时间：{{ createTime }}
+        <!-- <span>附件地址：{{ fileUrl }}</span> -->
+        <!-- <img :src="fileUrl" alt="" /> -->
       </div>
       <div
         class="font14 bold-font main-color m-t-20 text-right pointer"
@@ -24,6 +17,13 @@
       >
         下载附件
       </div>
+      <div class="font14 bold-font text-right m-t-20">
+        发布者：{{ creatorName }}
+      </div>
+      <div class="font14 bold-font text-right m-t-20">
+        发布时间：{{ createTime }}
+      </div>
+      <!-- <a :href="fileUrl">下载附件</a> -->
     </div>
     <Footer></Footer>
   </div>
@@ -67,23 +67,33 @@ export default {
           this.time = res.data.createTime;
           this.remarks = res.data.remarks;
           this.createTime = res.data.createTime;
-          this.fileUrl = "http://192.168.31.23:8080" + res.data.fileUrl;
+          this.fileUrl = res.data.fileUrl;
         }
       });
     },
     // 下载附件
     downFile() {
-      noticeDown({ fileUrl: this.fileUrl }).then(res => {
-        const data = res;
-        let url = window.URL.createObjectURL(new Blob([data]));
-        let link = document.createElement("a");
-        link.style.display = "none";
-        link.href = url;
-        link.setAttribute("download", this.downloadQr + ".jpg");
-        document.body.appendChild(link);
-        link.click();
-      });
+      let link = document.createElement("a");
+      link.style.display = "none";
+      link.href = this.fileUrl;
+      link.setAttribute("download", "附件");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(this.fileUrl);
     }
+    // back() {
+    //   debugger;
+    //   if (window.history.length <= 1) {
+    //     this.$router.push({ path: "/" });
+    //     return false;
+    //   } else {
+    //     this.$router.go(-1);
+    //   }
+    // }
+  },
+  destroyed() {
+    this.noticeId = "";
   }
 };
 </script>

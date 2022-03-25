@@ -129,6 +129,7 @@
             action="http://192.168.31.23:8080/client/user/updAvatar"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
+            :on-error="uploadError"
             :before-upload="beforeAvatarUpload"
           >
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
@@ -252,6 +253,16 @@ export default {
       if (res.code == 200) {
         this.getData();
         this.$refs.tips.toast(res.msg);
+      }
+    },
+    uploadError(error, file, fileList) {
+      let errorMsg = JSON.parse(error.message);
+      // console.log(errorMsg);
+      if (errorMsg.code == 401) {
+        this.$router.push({
+          path: "/login",
+          name: "login"
+        });
       }
     },
     beforeAvatarUpload(file) {

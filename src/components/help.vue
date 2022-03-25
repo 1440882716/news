@@ -10,12 +10,12 @@
       <div class="line-box"></div>
       <div class="news-list-box text-left">
         <div
-          class="help-data-box"
+          class="help-data-box m-b-10 pointer"
           v-for="item in newData"
           @click="helpDatail(item.id)"
         >
           <div class="font16 bold-font m-b-10">{{ item.title }}</div>
-          <div v-html="item.content" class="pointer"></div>
+          <!-- <div v-html="item.content" class="pointer"></div> -->
         </div>
       </div>
 
@@ -70,13 +70,19 @@ export default {
       });
     },
     helpDatail(id) {
-      this.$router.push({
+      // this.$router.push({
+      //   path: "/helpDetail",
+      //   name: "helpDetail",
+      //   query: {
+      //     helpId: id
+      //   }
+      // });
+
+      let rotuetURl = this.$router.resolve({
         path: "/helpDetail",
-        name: "helpDetail",
-        query: {
-          helpId: id
-        }
+        query: { helpId: id }
       });
+      window.open(rotuetURl.href, "_blank");
     }
   }
 };

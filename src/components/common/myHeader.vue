@@ -2,7 +2,7 @@
   <div class="header">
     <div class="container-my">
       <div class="head-line">
-        <div class=" font12  flex-r flex-b fff-font">
+        <div class=" font14  flex-r flex-b fff-font">
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
             <router-link to="/" style="text-decoration: none;color: white;">
@@ -88,14 +88,15 @@ router-link {
 }
 .header {
   width: 100%;
-  background-image: linear-gradient(
+  background-color: #37312b;
+  /* background-image: linear-gradient(
     90deg,
     #a30202 0%,
     #b60202 23%,
     #cb0303 56%,
     #e01313 85%,
     #f32626 100%
-  );
+  ); */
 }
 .container-my {
   width: 980px;
@@ -103,8 +104,8 @@ router-link {
 }
 .head-line {
   width: 100%;
-  height: 30px;
-  line-height: 30px;
+  height: 80px;
+  line-height: 80px;
   /* background-color: #f6f6fa; */
 }
 .head-line-left {

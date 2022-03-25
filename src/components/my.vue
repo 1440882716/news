@@ -2,11 +2,11 @@
   <div id="container">
     <myHeader></myHeader>
     <div class="content980 p-b-80">
-      <div class="logo-box text-left flex-r">
+      <!-- <div class="logo-box text-left flex-r">
         <img class="logo-img m-r-20" src="../assets/img/logo.png" alt="" />
         <h2 class="font18">个人中心</h2>
-      </div>
-      <div class="font14 text-left">账户设置</div>
+      </div> -->
+      <div class="font14 text-left m-t-20">账户设置</div>
       <div class="user-content flex-r flex-b">
         <div class="my-nav-left font14 tips-color">
           <ul class="text-left nav-ul pointer">

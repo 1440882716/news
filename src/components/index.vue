@@ -61,7 +61,7 @@
       <!-- 民主法制建设 -->
       <div class="home-goods-two flex-r fff-font">
         <div class="two-goods-img">
-          <img class="goods-img-size" src="../assets/img/mzfz.png" alt="" />
+          <img class="goods-img-size" :src="newsFirst.pics" alt="" />
         </div>
         <div class="goods-des-box text-left">
           <p class="font48">{{ newsFirst.name }}</p>
@@ -99,11 +99,7 @@
           </div>
         </div>
         <div class="two-goods-img text-left">
-          <img
-            class="goods-img-size-second"
-            src="../assets/img/mzfz.png"
-            alt=""
-          />
+          <img class="goods-img-size-second" :src="newsSecond.pics" alt="" />
         </div>
       </div>
     </div>
@@ -279,16 +275,12 @@ export default {
       });
     },
     toNotice(id) {
-      console.log(id);
-      if (id != "" && id != undefined) {
-        this.$router.push({
-          path: "/noticeDetail",
-          name: "noticeDetail",
-          query: {
-            noticeId: id
-          }
-        });
-      }
+      // console.log(id);
+      let rotuetURl = this.$router.resolve({
+        path: "/noticeDetail",
+        query: { noticeId: id }
+      });
+      window.open(rotuetURl.href, "_blank");
     },
     toDetail(id) {
       this.$router.push({
