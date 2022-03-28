@@ -14,12 +14,12 @@
             >
               <span class="m-l-20">请登录</span>
             </router-link> -->
-            <router-link
+            <!-- <router-link
               to="./regist"
               style="text-decoration: none;color: white;"
             >
               <span class="m-l-20">快速注册</span>
-            </router-link>
+            </router-link> -->
           </div>
           <div class="head-line-right pointer">
             <ul class="flex-r flex-e head-ul-list">

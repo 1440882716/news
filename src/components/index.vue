@@ -21,7 +21,7 @@
       </div>
     </div> -->
     <!-- 轮播、商品模块 -->
-    <div class="full-container gray-bgc p-b-80">
+    <div class="full-container gray-bgc ">
       <!-- 分类和广告 -->
       <div class="bannar-center-box flex-r flex-b">
         <!-- 轮播图 -->
