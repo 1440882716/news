@@ -3,7 +3,7 @@
     <msgBox ref="tips"></msgBox>
     <Header></Header>
     <!-- 购物车不为空 -->
-    <div class="content p-b-80" v-if="hasGoods">
+    <div class="content p-b-80" v-if="goodsList.length != 0">
       <div class="cart-box">
         <div class="cart-head flex-r flex-b">
           <div class="font18 main-color">
@@ -174,6 +174,21 @@
             <div class="headline5 price-color font16 bold600">
               {{ item.count }}
             </div>
+            <!-- <div class="headline6">
+              <el-popover placement="right" width="160" v-model="visible">
+                <p>这是一段内容这是一段内容确定删除吗？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini" type="text" @click="visible = false"
+                    >取消</el-button
+                  >
+                  <el-button type="primary" size="mini" @click="visible = false"
+                    >确定</el-button
+                  >
+                </div>
+                <el-button slot="reference">删除</el-button>
+              </el-popover>
+            </div> -->
+
             <div class="headline6 pointer" @click="delItem(item)">删除</div>
           </div>
           <!-- count -->
@@ -216,9 +231,11 @@
       </div>
     </div>
     <!-- 空页面 -->
-    <div class="empty" v-else>
-      <div class="font18 bold-font">您的购物车是空的！快去挑选几件吧</div>
-      <div class="font14 go-home m-t-30">去逛逛</div>
+    <div class="empty empty-cart m-t-30 m-b-80" v-else>
+      <el-empty>
+        <!-- <el-button type="primary">按钮</el-button> -->
+        <div class="font14 go-home m-t-30 pointer">去逛逛</div>
+      </el-empty>
     </div>
     <Footer></Footer>
   </div>
@@ -239,54 +256,11 @@ export default {
   },
   data() {
     return {
-      // countNum: 0,
-      // countPrice: 0,
       hasGoods: true,
       visible: false,
       selectAll: false,
       allPrice: 0,
-      goodsList: [
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-83/20151106152915_1.jpg",
-          name: "人民日报海外版2022自选定期",
-          price: 123.2,
-          // count: 123.2,
-          num: 1,
-          dateStart: "",
-          dateEnd: ""
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
-          name: "人民日报海外版2022自选定期",
-          price: 123.2,
-          // count: 123.2,
-          num: 1,
-          dateStart: "",
-          dateEnd: ""
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-pub/zxptpub/bk_bucket/20220214094511228_3_small.jpg.webp",
-          name: "人民日报海外版2022自选定期",
-          price: 123.2,
-          // count: 123.2,
-          num: 2,
-          dateStart: "",
-          dateEnd: ""
-        },
-        {
-          img:
-            "https://bic.11185.cn/zxpt-sc-cnt/upload/1/1-96/20120828200025_1.jpg",
-          name: "人民日报海外版2022自选定期",
-          price: 123.2,
-          // count: 123.2,
-          num: 1,
-          dateStart: "",
-          dateEnd: ""
-        }
-      ]
+      goodsList: []
     };
   },
   computed: {
@@ -486,14 +460,33 @@ export default {
     },
     // 删除
     delItem(info) {
-      delCart({ id: info.id }).then(res => {
-        if (res.code == 200) {
-          this.$refs.tips.toast(res.msg);
-          this.getData();
-        } else {
-          this.$refs.tips.toast(res.msg);
-        }
-      });
+      //  open() {
+      this.$confirm("您确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delCart({ id: info.id }).then(res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.getData();
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
+          // this.$message({
+          //   type: 'success',
+          //   message: '删除成功!'
+          // });
+        })
+        .catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });
+        });
+      // }
     },
     // 商品详情
     toDetail(id) {

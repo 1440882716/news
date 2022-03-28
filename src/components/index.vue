@@ -65,7 +65,10 @@
         </div>
         <div class="goods-des-box text-left">
           <p class="font48">{{ newsFirst.name }}</p>
-          <p class="font28 m-t-40">{{ newsFirst.description }}</p>
+          <p class="font28 m-t-40 goods-des-text">
+            {{ newsFirst.description }}
+          </p>
+
           <div class="font20 m-t-40 home-price-text">
             ￥<span class="font48">{{
               (newsFirst.price * newsFirst.totalNum).toFixed(2)

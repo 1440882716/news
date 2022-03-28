@@ -1,55 +1,56 @@
 <template>
   <div class="footer">
-    <div class="flex-r footer-box">
+    <div class="flex-r footer-box fff-font">
       <div class="our-style">
         <ul class="flex-r flex-a footer-ul">
           <li class="flex-r">
             <img
               class="footer-img"
-              src="../../assets/img/footer-icon.png"
+              src="../../assets/img/brand-footer.png"
               alt=""
             />
             <div class="flex-c text-left m-l-10 m-t-5">
               <span class="font18 bold600">品质保证</span>
-              <span class="font14 tips-color">邮政优选</span>
+              <span class="font14 ">邮政优选</span>
             </div>
           </li>
           <li class="flex-r">
             <img
               class="footer-img"
-              src="../../assets/img/footer-icon.png"
+              src="../../assets/img/brand-footer.png"
               alt=""
             />
             <div class="flex-c text-left m-l-10 m-t-5">
               <span class="font18 bold600">特色服务</span>
-              <span class="font14 tips-color">不一样的感受</span>
+              <span class="font14 ">不一样的感受</span>
             </div>
           </li>
           <li class="flex-r">
             <img
               class="footer-img"
-              src="../../assets/img/footer-icon.png"
+              src="../../assets/img/brand-footer.png"
               alt=""
             />
             <div class="flex-c text-left m-l-10 m-t-5">
               <span class="font18 bold600">集团文化</span>
-              <span class="font14 tips-color">正品权威</span>
+              <span class="font14 ">正品权威</span>
             </div>
           </li>
           <li class="flex-r">
             <img
               class="footer-img"
-              src="../../assets/img/footer-icon.png"
+              src="../../assets/img/brand-footer.png"
               alt=""
             />
             <div class="flex-c text-left m-l-10 m-t-5">
               <span class="font18 bold600">覆盖全乡</span>
-              <span class="font14 tips-color">安全送达</span>
+              <span class="font14 ">安全送达</span>
             </div>
           </li>
         </ul>
-        <div class="des-footer font14 tips-color">
-          <div class="des-line-box">
+        <div class="des-footer font14 tips-color text-center">
+          <span>周一至周日 9:00~23:00 客服不受理商务合作</span>
+          <!-- <div class="des-line-box">
             <span>客服电话：11111111</span>
             <span>|</span>
             <span>配送方式</span>
@@ -62,7 +63,6 @@
           </div>
           <div class="des-line-box">
             <span>友情链接：</span>
-            <!-- <span>|</span> -->
             <span>中国邮政集团官网</span>
             <span>|</span>
             <span>中国邮政储蓄银行</span>
@@ -70,7 +70,7 @@
             <span>EMS</span>
             <span>|</span>
             <span>中国邮政广告网</span>
-          </div>
+          </div> -->
         </div>
         <img
           class="footer-logo"
@@ -87,7 +87,8 @@
 .footer {
   width: 100%;
   height: auto;
-  border-top: 5px solid #a30202;
+  /* border-top: 5px solid #a30202; */
+  background-color: #333333;
   /* margin-top: 40px; */
 }
 .footer-box {
@@ -104,7 +105,7 @@
   width: 100%;
   padding-bottom: 30px;
   /* height: 100%; */
-  border-bottom: 1px solid #ececf0;
+  border-bottom: 2px solid #cccccc;
 }
 .style-item {
   /* width: 25%; */

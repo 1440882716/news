@@ -166,7 +166,11 @@
   top: 240px;
   left: 200px;
 }
-
-/* ::-webkit-scrollbar {
-  display: none;
-} */
+.goods-des-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
