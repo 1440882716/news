@@ -64,19 +64,16 @@ export default {
       this.zoom = this.zoom;
     },
     getClickInfo(e) {
-      console.log(e.point.lng);
-      console.log(e.point.lat);
-      //   debugger;
-      //   this.center.lng = e.point.lng;
-      //   this.center.lat = e.point.lat;
-      this.markerPo.lng = e.point.lng;
-      this.markerPo.lat = e.point.lat;
+      let that = this;
       let geocoder = new BMap.Geocoder();
-
-      geocoder.getLocation(this.markerPo, rs => {
-        console.log(rs);
+      that.markerPo = new BMap.Point(e.point.lng, e.point.lat);
+      geocoder.getLocation(that.markerPo, res => {
+        that.address = res.address;
+        that.$emit("getAddFun", res.address);
         // debugger;
-        //   this.address = rs.address;
+        // console.log(res.address);
+        // console.log(that.address);
+        // debugger;
       });
     },
     dragend(val) {

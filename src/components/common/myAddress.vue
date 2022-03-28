@@ -44,13 +44,13 @@
               ></el-cascader>
             </el-form-item>
             <el-form-item label="详细地址" prop="address">
-              <textarea
-                class="textarea-box"
-                v-model="addressForm.address"
+              <el-input
+                type="textarea"
+                :rows="3"
                 placeholder="请输入详细地址"
-                cols="10"
-                rows="4"
-              ></textarea>
+                v-model="addressForm.address"
+              >
+              </el-input>
             </el-form-item>
             <!-- <el-form-item label="固定电话" prop="bankItem">
               <el-input
@@ -90,7 +90,8 @@
             <el-button type="primary" @click="comfirmAddress">确认</el-button>
           </div>
         </div>
-        <Map></Map>
+        <!-- 地图 -->
+        <Map @getAddFun="getMsg"></Map>
       </div>
     </el-dialog>
     <div class="info-content text-left">
@@ -206,14 +207,14 @@ export default {
         }
       ],
       addressForm: {
-        name: "温婉",
-        mobile: "15285249588",
+        name: "",
+        mobile: "",
         province: "",
         region: [],
         city: "",
         county: "",
-        address: "福州一路凉水井街泰山巷123号",
-        postCode: "678987",
+        address: "",
+        postCode: "",
         isDefault: false
       },
       accountRules: {
@@ -316,6 +317,9 @@ export default {
     getDefault() {
       this.isDefault = !this.isDefault;
       this.addressForm.isDefault = this.isDefault;
+    },
+    getMsg(data) {
+      this.addressForm.address = data;
     },
     // 新增地址
     comfirmAddress() {
