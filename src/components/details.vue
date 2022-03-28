@@ -246,7 +246,23 @@ export default {
     },
     // 改变起订日期
     changeStart(value) {
-      this.getNewsNum(this.goodsId, value, this.dateEnd);
+      let a = new Date(value).getTime();
+      let b = new Date().getTime();
+      if (a > b) {
+        this.getNewsNum(this.goodsId, value, this.dateEnd);
+      } else {
+        this.$refs.tips.toast("开始订阅的日期不能小于当前日期");
+        var nowDate = new Date();
+        var year = nowDate.getFullYear();
+        var month =
+          nowDate.getMonth() + 1 < 10
+            ? "0" + (nowDate.getMonth() + 1)
+            : nowDate.getMonth() + 1;
+        var day =
+          nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
+        var dateStr = year + "-" + month + "-" + day;
+        this.dateStart = dateStr;
+      }
     },
     // 改变订阅结束日期
     changeEnd(value) {
@@ -254,8 +270,6 @@ export default {
       console.log(this.thisYear);
       let a = Date.parse(value);
       let b = Date.parse(this.thisYear);
-      // console.log(a, b);
-      // debugger;
       if (a < b) {
         this.getNewsNum(this.goodsId, this.dateStart, value);
       } else {

@@ -508,7 +508,6 @@ export default {
     // 发票信息
     chooseInvoiceFun() {
       let goodsCount = 0;
-
       // let idArr = [];
       // console.log(this.idArr);
       for (let i = 0; i < this.invoiceOrder.length; i++) {

@@ -12,7 +12,9 @@
           </div>
           <div class="font14 flex-r">
             已选商品不含运费：<span class="price-color">¥ {{ allPrice }}</span>
-            <div class="count-btn fff-font font12">结算</div>
+            <div class="count-btn fff-font font12 pointer" @click="toConfirm">
+              结算
+            </div>
           </div>
         </div>
         <!-- 购物车列表 -->
@@ -234,7 +236,9 @@
     <div class="empty empty-cart m-t-30 m-b-80" v-else>
       <el-empty>
         <!-- <el-button type="primary">按钮</el-button> -->
-        <div class="font14 go-home m-t-30 pointer">去逛逛</div>
+        <router-link to="/" class="m-l-10" style="text-decoration: none;">
+          <div class="font14 go-home m-t-30 pointer">去逛逛</div>
+        </router-link>
       </el-empty>
     </div>
     <Footer></Footer>
