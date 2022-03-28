@@ -5,10 +5,10 @@
         <div class="content-login font14  flex-r flex-b fff-font">
           <div class="head-line-left">
             <span>您好，欢迎来到报刊订阅平台</span>
-            <router-link to="/" style="text-decoration: none;">
+            <!-- <router-link to="/" style="text-decoration: none;">
               <span class="m-l-20">返回首页</span>
               <span>|</span>
-            </router-link>
+            </router-link> -->
             <router-link to="./help" style="text-decoration: none;color: white;"
               >帮助中心</router-link
             >
@@ -20,6 +20,13 @@
                 <span>请登录</span>
               </li>
               <li>|</li> -->
+              <li>
+                <router-link to="/" style="text-decoration: none;">
+                  <span class="m-l-20">返回首页</span>
+                  <!-- <span>|</span> -->
+                </router-link>
+              </li>
+              <li>|</li>
               <li>
                 <router-link to="/regist" style="text-decoration: none;">
                   <span>快速注册</span>

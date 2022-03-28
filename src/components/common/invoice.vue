@@ -232,6 +232,7 @@ export default {
         this.accountForm.companyMobile = "";
         this.accountForm.bankName = "";
         this.accountForm.bankCard = "";
+
         this.$refs.accountForm.clearValidate();
       });
     },
@@ -251,16 +252,13 @@ export default {
         this.accountForm.companyMobile = info.companyMobile;
         this.accountForm.bankName = info.bankName;
         this.accountForm.bankCard = info.bankCard;
+        this.accountForm.isDefault = info.isDefault;
       }
       this.dialogVisible = true;
     },
     // 添加银行卡
     addFun() {
-      console.log(this.accountForm.type);
       let formType = this.accountForm.type;
-      console.log(this.accountForm);
-      // debugger;
-      // return;
       if (formType == 1) {
         //   个人发票
         this.$refs.accountForm.validateField(["name"], errMsg => {

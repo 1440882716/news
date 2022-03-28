@@ -52,13 +52,6 @@
               >
               </el-input>
             </el-form-item>
-            <!-- <el-form-item label="固定电话" prop="bankItem">
-              <el-input
-                v-model="accountForm.bankItem"
-                placeholder="请输入固定电话（格式：010-63700000）"
-                type="text"
-              ></el-input>
-            </el-form-item> -->
             <el-form-item label="邮编">
               <el-input
                 v-model="addressForm.postcode"
@@ -66,14 +59,6 @@
                 placeholder="请输入邮政编码"
               ></el-input>
             </el-form-item>
-
-            <!-- <el-form-item label="标签">
-              <el-input
-                v-model="addressForm.label"
-                placeholder="请输入标签（如：家里、公司）"
-                type="text"
-              ></el-input>
-            </el-form-item> -->
           </el-form>
           <div class="default-box text-left pointer" @click="getDefault">
             <i

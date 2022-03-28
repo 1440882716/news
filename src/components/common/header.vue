@@ -16,6 +16,7 @@
                 <router-link to="./cart" style="text-decoration: none;"
                   >购物车</router-link
                 >
+                <!-- <i class="el-icon-shopping-cart-2"></i> -->
               </li>
               <li>
                 <!-- 帮助中心 -->

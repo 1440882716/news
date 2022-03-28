@@ -3,64 +3,51 @@
     <msgBox ref="tips"></msgBox>
     <div class="login-type flex-r flex-a m-b-10 pointer">
       <div
-        :class="['login-item-head', logintype == 1 ? 'active-type' : '']"
+        :class="[
+          'login-item-head fff-font',
+          logintype == 1 ? 'active-type' : ''
+        ]"
         @click="loginType(1)"
       >
         密码登录
       </div>
       <div
-        :class="['login-item-head', logintype == 2 ? 'active-type' : '']"
+        :class="[
+          'login-item-head fff-font',
+          logintype == 2 ? 'active-type' : ''
+        ]"
         @click="loginType(2)"
       >
         短信登录
       </div>
     </div>
     <!-- 账号密码登录 -->
-    <div v-show="logintype == 1">
+    <div v-show="logintype == 1" class="fff-font">
       <div class="flex-r m-t-20">
         <img src="../../assets/img/people.png" alt="" />
-        <input
-          v-model="account"
-          class="account-inp"
-          type="text"
-          placeholder="账号"
-        />
+        <input v-model="account" class="account-inp fff-font" type="text" />
       </div>
       <div class="flex-r m-t-20">
         <img src="../../assets/img/lock.png" alt="" />
-        <input
-          v-model="pwd"
-          class="account-inp"
-          type="password"
-          placeholder="密码"
-        />
+        <input v-model="pwd" class="account-inp fff-font" type="password" />
       </div>
     </div>
     <div v-show="logintype == 2">
       <div class="flex-r m-t-20 m-b-20">
         <img src="../../assets/img/phone.png" alt="" />
-        <input
-          v-model="phone"
-          class="account-inp"
-          type="number"
-          placeholder="手机号码"
-        />
+        <!-- <el-input v-model="phone" placeholder="手机号码"></el-input> -->
+        <input v-model="phone" class="account-inp" type="number" />
       </div>
       <Slider status="status"></Slider>
       <div class="flex-r m-t-20 m-b-20">
         <img src="../../assets/img/lock.png" alt="" />
-        <input
-          v-model="msgCode"
-          class="msg-code"
-          type="password"
-          placeholder="短信验证码"
-        />
+        <input v-model="msgCode" class="msg-code" type="password" />
         <div class="code-btn font12" @click="getCode">{{ count }}</div>
         <!-- <div>{{ count }}</div> -->
       </div>
       <div class="font12 text-left">
         手机首次登录即完成注册，代表同意
-        <span style="color:#409eff">《平台会员注册与服务协议》</span>
+        <span style="color:#A30202">《平台会员注册与服务协议》</span>
       </div>
     </div>
 
@@ -205,8 +192,9 @@ router-link {
   min-height: 260px;
   padding: 15px;
   padding-top: 0;
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
+  /* background: #ffffff; */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* border: 1px solid #e5e5e5; */
   box-shadow: 0 2px 10px 0 rgb(0 0 0 / 10%);
 }
 .login-type {
@@ -218,7 +206,7 @@ router-link {
   padding: 10px 0px;
 }
 .active-type {
-  border-bottom: 3px solid #a30202;
+  border-bottom: 3px solid #ffffff;
 }
 .account-inp {
   width: calc(100% - 32px);

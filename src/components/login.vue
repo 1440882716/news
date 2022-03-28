@@ -4,7 +4,11 @@
     <div class="content">
       <!-- <div>欢迎登录</div> -->
       <div class="flex-r flex-a">
-        <img class="login-img" src="../assets/img/login-img.png" alt="" />
+        <!-- <img
+          class="login-img m-t-30"
+          src="../assets/img/login-img.png"
+          alt=""
+        /> -->
         <div class="login-box">
           <!-- <div class="login-content"></div> -->
           <loginBox></loginBox>
@@ -42,9 +46,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 @import "../assets/css/gloab.css";
+body {
+  /* background-color: #a30202; */
+}
 .login-img {
-  width: 600px;
-  height: 600px;
+  width: 400px;
+  height: 400px;
 }
 .login-box {
   width: 288px;
@@ -58,7 +65,7 @@ export default {
   background-color: #fff;
 }
 .bg-img {
-  /* background-image: url(../assets/img/login-img1.png);
-  background-size: 100% 680px; */
+  background-image: url(../assets/img/login-bgi.png);
+  background-size: 100% 785px;
 }
 </style>
