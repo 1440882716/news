@@ -190,7 +190,7 @@
                 <el-button slot="reference">删除</el-button>
               </el-popover>
             </div> -->
-
+            <!--  -->
             <div class="headline6 pointer" @click="delItem(item)">删除</div>
           </div>
           <!-- count -->

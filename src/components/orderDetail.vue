@@ -70,7 +70,9 @@
               {{ (goodsInfo.realPrice * goodsInfo.number).toFixed(2) }}
             </div>
           </div>
-          <div class="m-l-10 m-b-10 font14">订单备注：请尽快送达</div>
+          <div class="m-l-10 m-b-10 font14">
+            订单备注：{{ orderInfo.remark }}
+          </div>
         </div>
       </div>
       <div class="text-right m-b-80 font12 bold-font m-t-10">

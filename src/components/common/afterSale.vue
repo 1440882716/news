@@ -45,9 +45,9 @@
               <div class="order-img-box pointer" @click="toGoodsInfo(item.id)">
                 <img class="order-goods-img" :src="item.pics" alt="" />
               </div>
-              <div class="flex-r pointer" @click="orderDetailFun(item)">
+              <div class="flex-r">
                 <div class="font14 f999 flex-c">
-                  <p class="font16  main-color">{{ item.name }}</p>
+                  <p class="font16 main-color">{{ item.name }}</p>
                   <p style="text-align: left;">
                     <span class="justify">退订日期：</span>
                     <span>{{ item.backDate }}</span>
@@ -73,7 +73,6 @@
               }}</span>
             </div>
           </div>
-          <!-- <el-divider></el-divider> -->
         </div>
       </div>
     </div>
@@ -107,15 +106,15 @@ export default {
         }
       });
     },
-    orderDetailFun(info) {
-      this.$router.push({
-        path: "/orderDetail",
-        name: "orderDetail",
-        query: {
-          orderId: info.id
-        }
-      });
-    },
+    // orderDetailFun(info) {
+    //   this.$router.push({
+    //     path: "/orderDetail",
+    //     name: "orderDetail",
+    //     query: {
+    //       orderId: info.id
+    //     }
+    //   });
+    // },
     cancelFun(id) {
       cancelBack({ backOrderId: id }).then(res => {
         if (res.code == 200) {

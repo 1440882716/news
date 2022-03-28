@@ -621,14 +621,19 @@ export default {
     callback() {},
     // 查看订单详情
     orderDetailFun(info) {
-      // console.log(info);
-      this.$router.push({
+      // this.$router.push({
+      //   path: "/orderDetail",
+      //   name: "orderDetail",
+      //   query: {
+      //     orderId: info.id
+      //   }
+      // });
+
+      let rotuetURl = this.$router.resolve({
         path: "/orderDetail",
-        name: "orderDetail",
-        query: {
-          orderId: info.id
-        }
+        query: { orderId: info.id }
       });
+      window.open(rotuetURl.href, "_blank");
       // debugger;
     },
     // 去商品详情

@@ -266,8 +266,8 @@ export default {
     },
     // 改变订阅结束日期
     changeEnd(value) {
-      console.log(value);
-      console.log(this.thisYear);
+      // console.log(value);
+      // console.log(this.thisYear);
       let a = Date.parse(value);
       let b = Date.parse(this.thisYear);
       if (a < b) {
