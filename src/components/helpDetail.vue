@@ -50,6 +50,7 @@ export default {
     };
   },
   created() {
+    // this.helpId = this.$route.params.helpId;
     this.helpId = this.$route.query.helpId;
     this.getData();
   },

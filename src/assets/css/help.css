@@ -16,5 +16,6 @@
 }
 .news-list-box {
   width: 100%;
+  min-height: 800px;
   padding: 20px;
 }

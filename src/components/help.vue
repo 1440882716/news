@@ -19,20 +19,15 @@
         </div>
       </div>
 
-      <!-- <div class="user-content flex-r flex-b">
-        <div class="my-nav-left font14 tips-color">
-          <ul class="text-left nav-ul pointer">
-            <li
-              v-for="(item, index) in navList"
-              :key="index"
-              :class="[navNum == index ? 'main-red' : '']"
-              @click="chooseNav(index)"
-            >
-              {{ item }}
-            </li>
-          </ul>
-        </div>
-      </div> -->
+      <!-- <div
+        style="width:100px;height:100px;background-color:#ffcccc;display:none"
+      ></div>
+      <div
+        style="width:100px;height:100px;background-color:#fffccc;visibility:hidden"
+      ></div>
+      <div
+        style="width:100px;height:100px;background-color:#ffffcc;opacity:0"
+      ></div> -->
     </div>
     <Footer></Footer>
   </div>
@@ -71,13 +66,15 @@ export default {
     },
     helpDatail(id) {
       // this.$router.push({
-      //   path: "/helpDetail",
-      //   name: "helpDetail",
-      //   query: {
-      //     helpId: id
-      //   }
+      // path: "/helpDetail",
+      // query: {
+      //   helpId: id
+      // }
+      // name: "helpDetail",
+      // params: {
+      //   helpId: id
+      // }
       // });
-
       let rotuetURl = this.$router.resolve({
         path: "/helpDetail",
         query: { helpId: id }

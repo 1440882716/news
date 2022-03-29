@@ -80,7 +80,8 @@ export default new Router({
       path: '/noticeDetail',
       name: 'noticeDetail',
       component: noticeDetail
-    }
+    },
+    { path: '*', redirect: '/' }
 
 
   ]

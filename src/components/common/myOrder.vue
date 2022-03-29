@@ -598,7 +598,6 @@ export default {
               let lastTime = (start + 24 * 60 * 60 * 1000) / 1000;
               lastTime = String(lastTime);
               this.$set(item, "end_time", lastTime);
-              // this.$set(item, "goodsC", lastTime);
             });
           }
 

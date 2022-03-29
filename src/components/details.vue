@@ -304,9 +304,6 @@ export default {
         periodNum: this.goodsData.present,
         price: this.countPrice
       };
-      console.log(data);
-      // debugger;
-      // return;
       directBuy(data).then(res => {
         if (res.code == 200) {
           this.$router.push({
