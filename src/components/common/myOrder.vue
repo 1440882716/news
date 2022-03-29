@@ -488,8 +488,8 @@ export default {
       invoiceData: [],
       invoiceItem: {},
       currentTime: 0,
-      startTime: 1646977570000,
-      endTime: "1647315805",
+      startTime: 0,
+      endTime: "",
       size: 10,
       idArr: []
     };
@@ -600,7 +600,6 @@ export default {
               this.$set(item, "end_time", lastTime);
             });
           }
-
           if (this.statusNum == "4") {
             this.orderData.map(item => {
               this.$set(item, "select", false);
@@ -620,20 +619,11 @@ export default {
     callback() {},
     // 查看订单详情
     orderDetailFun(info) {
-      // this.$router.push({
-      //   path: "/orderDetail",
-      //   name: "orderDetail",
-      //   query: {
-      //     orderId: info.id
-      //   }
-      // });
-
       let rotuetURl = this.$router.resolve({
         path: "/orderDetail",
         query: { orderId: info.id }
       });
       window.open(rotuetURl.href, "_blank");
-      // debugger;
     },
     // 去商品详情
     toGoodsInfo(id) {
