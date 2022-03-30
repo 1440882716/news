@@ -69,8 +69,6 @@ export default {
       // 转成百度坐标
       that.markerPo = new BMap.Point(e.point.lng, e.point.lat);
       geocoder.getLocation(that.markerPo, res => {
-        // console.log(res);
-        // debugger;
         that.address = res.address;
         that.$emit("getAddFun", res.address);
       });
