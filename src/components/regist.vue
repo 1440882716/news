@@ -26,7 +26,7 @@
               <input
                 class="re-step-right"
                 v-model="rePhone"
-                type="number"
+                type="text"
                 placeholder="请使用实名手机号"
               />
             </div>

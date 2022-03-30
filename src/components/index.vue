@@ -61,7 +61,12 @@
       <!-- 民主法制建设 -->
       <div class="home-goods-two flex-r fff-font">
         <div class="two-goods-img">
-          <img class="goods-img-size" :src="newsFirst.pics" alt="" />
+          <img
+            class="goods-img-size pointer"
+            :src="newsFirst.pics"
+            alt=""
+            @click="toDetail(newsFirst.id)"
+          />
         </div>
         <div class="goods-des-box text-left">
           <p class="font48">{{ newsFirst.name }}</p>
@@ -102,7 +107,12 @@
           </div>
         </div>
         <div class="two-goods-img text-left">
-          <img class="goods-img-size-second" :src="newsSecond.pics" alt="" />
+          <img
+            class="goods-img-size-second"
+            :src="newsSecond.pics"
+            alt=""
+            @click="toDetail(newsSecond.id)"
+          />
         </div>
       </div>
     </div>

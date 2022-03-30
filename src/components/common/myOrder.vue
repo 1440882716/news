@@ -202,12 +202,7 @@
       </span>
     </el-dialog>
     <!-- 退订信息 -->
-    <el-dialog
-      title="退订信息"
-      :visible.sync="backOrder"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="退订信息" :visible.sync="backOrder" width="30%">
       <!-- <div class="text-center">退订信息</div> -->
       <div class="flex-r">
         <img class="back-img-size" :src="backInfo.pics" alt="" />
@@ -490,7 +485,7 @@ export default {
       currentTime: 0,
       startTime: 0,
       endTime: "",
-      size: 10,
+      size: 2,
       idArr: []
     };
   },
@@ -498,23 +493,18 @@ export default {
     this.getData();
   },
   methods: {
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
     // 发票信息
     chooseInvoiceFun() {
       let goodsCount = 0;
-      // let idArr = [];
-      // console.log(this.idArr);
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
       // console.log(this.idArr);
+      // console.log(this.invoiceOrder);
+      // debugger;
+      // return;
+      // 选中发票开具发票
       if (this.invoiceOrder.length != 0) {
         this.invoiceDialog = true;
         pageData().then(res => {
@@ -727,14 +717,22 @@ export default {
     // 删除订单
     delFun(id) {
       if (id != "" && id != undefined) {
-        orderDel({ id: id }).then(res => {
-          if (res.code == 200) {
-            this.$refs.tips.toast(res.msg);
-            this.getData();
-          } else {
-            this.$refs.tips.toast(res.msg);
-          }
-        });
+        this.$confirm("您确定要删除订单吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            orderDel({ id: id }).then(res => {
+              if (res.code == 200) {
+                this.$refs.tips.toast(res.msg);
+                this.getData();
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+            });
+          })
+          .catch(() => {});
       }
     },
     // 选择订单

@@ -126,7 +126,7 @@
           <el-upload
             class="avatar-uploader"
             :headers="{ Authorization: token }"
-            action="http://192.168.31.23:8080/client/user/updAvatar"
+            action="https://admin.cdzkzs.top/client/order/upload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :on-error="uploadError"

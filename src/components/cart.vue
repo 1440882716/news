@@ -479,17 +479,8 @@ export default {
               this.$refs.tips.toast(res.msg);
             }
           });
-          // this.$message({
-          //   type: 'success',
-          //   message: '删除成功!'
-          // });
         })
-        .catch(() => {
-          // this.$message({
-          //   type: 'info',
-          //   message: '已取消删除'
-          // });
-        });
+        .catch(() => {});
       // }
     },
     // 商品详情
