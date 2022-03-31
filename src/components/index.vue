@@ -62,7 +62,7 @@
       <div class="home-goods-two flex-r fff-font">
         <div class="two-goods-img">
           <img
-            class="goods-img-size pointer"
+            class="goods-img-size"
             :src="newsFirst.pics"
             alt=""
             @click="toDetail(newsFirst.id)"

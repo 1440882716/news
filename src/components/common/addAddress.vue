@@ -84,7 +84,7 @@
             <el-button type="primary" @click="comfirmAddress">确认</el-button>
           </div>
         </div>
-        <Map></Map>
+        <Map @getAddFun="getMsg"></Map>
       </div>
     </el-dialog>
   </div>
@@ -174,8 +174,11 @@ export default {
         this.addressForm.region[1] = this.upData.city;
         this.addressForm.region[2] = this.upData.county;
       }
-      console.log(this.addressForm);
+      // console.log(this.addressForm);
       //   debugger;
+    },
+    getMsg(data) {
+      this.addressForm.address = data;
     },
     // 打开弹窗
     openDialog() {
@@ -194,22 +197,7 @@ export default {
     comfirmAddress() {
       this.$refs.addressForm.validate(valid => {
         if (valid) {
-          console.log(this.addressForm);
-          //   this.addressForm.province = this.addressForm.region[0];
-          //   this.addressForm.city = this.addressForm.region[1];
-          //   this.addressForm.county = this.addressForm.region[2];
-          //   if (this.upData.hasOwnProperty("id")) {
-          //     updateAdd(this.addressForm).then(res => {
-          //       if (res.code == 200) {
-          //         addList().then(res => {
-          //           if (res.code == 200) {
-          //             this.$emit("changeData", res.data);
-          //             this.dialogVisible = false;
-          //           }
-          //         });
-          //       }
-          //     });
-          //   } else {
+          // console.log(this.addressForm);
           this.addressForm.province = this.addressForm.region[0];
           this.addressForm.city = this.addressForm.region[1];
           this.addressForm.county = this.addressForm.region[2];
@@ -223,7 +211,6 @@ export default {
               });
             }
           });
-          //   }
         }
       });
     }

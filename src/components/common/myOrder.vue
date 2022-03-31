@@ -2,12 +2,7 @@
   <div class="my-info">
     <msgBox ref="tips"></msgBox>
     <!-- 重新支付选择支付方式 -->
-    <el-dialog
-      title="支付方式"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="支付方式" :visible.sync="dialogVisible" width="30%">
       <!-- <span>支付方式的种类</span> -->
       <div class="flex-r ">
         <div class="pointer m-r-20 text-center" @click="payWay = 1">
@@ -114,12 +109,7 @@
       </span>
     </el-dialog>
     <!-- 发票信息 -->
-    <el-dialog
-      title="发票信息"
-      :visible.sync="invoiceDialog"
-      width="40%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="发票信息" :visible.sync="invoiceDialog" width="40%">
       <!-- 当前发票信息 -->
       <div class="text-right pointer" @click="innerVisible = true">
         选择其他发票
@@ -485,7 +475,7 @@ export default {
       currentTime: 0,
       startTime: 0,
       endTime: "",
-      size: 2,
+      size: 10,
       idArr: []
     };
   },
@@ -500,8 +490,7 @@ export default {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      // console.log(this.idArr);
-      // console.log(this.invoiceOrder);
+      console.log(goodsCount);
       // debugger;
       // return;
       // 选中发票开具发票
@@ -512,7 +501,8 @@ export default {
             this.invoiceData = res.data;
             for (let i = 0; i < this.invoiceData.length; i++) {
               if (this.invoiceData[i].isDefault) {
-                this.invoiceForm.ordersId = idArr.join(",");
+                // debugger;
+                this.invoiceForm.ordersId = this.idArr.join(",");
                 this.invoiceForm.status = this.invoiceData[i].type;
                 this.invoiceForm.name = this.invoiceData[i].name;
                 this.invoiceForm.taxNo = this.invoiceData[i].taxNo;

@@ -23,10 +23,10 @@
           </div>
           <div class="head-line-right pointer">
             <ul class="flex-r flex-e head-ul-list">
-              <li @click="toMypage(0)">
+              <!-- <li @click="toMypage(0)">
                 个人中心
               </li>
-              <li @click="toMypage(5)">我的订单</li>
+              <li @click="toMypage(5)">我的订单</li> -->
               <li>
                 <router-link
                   to="./cart"
@@ -41,6 +41,7 @@
                   >帮助中心</router-link
                 >
               </li>
+              <li @click="logoutFun">退出</li>
             </ul>
           </div>
         </div>
@@ -50,6 +51,7 @@
 </template>
 
 <script>
+import { logout } from "@/api/login";
 export default {
   name: "index",
   data() {
@@ -67,6 +69,23 @@ export default {
         name: "My",
         query: {
           orderPage: 0
+        }
+      });
+    },
+    // 推出登录
+    logoutFun() {
+      // console.log(6666);
+      // debugger;
+      // return;
+      logout().then(res => {
+        if (res.code == 200) {
+          removeToken();
+          removeLogin();
+          this.$router.push({
+            path: "/login",
+            name: "login"
+          });
+        } else {
         }
       });
     }
