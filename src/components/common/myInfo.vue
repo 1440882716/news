@@ -205,16 +205,12 @@ export default {
           this.ruleForm.mobile = res.data.mobile;
           this.ruleForm.region = arr;
           this.ruleForm.address = res.data.address;
-          if (res.data.avatar != "") {
+          if (res.data.avatar != "" || res.data.avatar != null) {
             this.headImg = this.imgApi + res.data.avatar;
           } else {
             this.headImg = "../../assets/img/people3.png";
           }
-
-          // console.log(this.imgApi);
-          // debugger;
         } else {
-          // removeLogin()
         }
       });
     },

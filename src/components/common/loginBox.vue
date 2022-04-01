@@ -82,8 +82,10 @@ export default {
       status: false,
       logintype: 1,
       count: "获取验证码",
-      account: "77",
-      pwd: "111aaa",
+      // account: "77",
+      // pwd: "111aaa",
+      account: "",
+      pwd: "",
       phone: "",
       msgCode: ""
     };

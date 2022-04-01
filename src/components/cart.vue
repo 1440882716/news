@@ -67,7 +67,7 @@
                 />
               </div>
               <!-- 商品图片 -->
-              <div class="cart-goods-img pointer" @click="toDetail(item.id)">
+              <div class="cart-goods-img pointer" @click="toDetail(item)">
                 <img :src="item.pics" alt="" />
               </div>
             </div>
@@ -484,12 +484,15 @@ export default {
       // }
     },
     // 商品详情
-    toDetail(id) {
+    toDetail(info) {
+      // console.log(info);
+      // debugger;
+      // return;
       this.$router.push({
         path: "/details",
         name: "details",
         query: {
-          goodsId: "1496359872988073985"
+          goodsId: info.paperId
         }
       });
     },

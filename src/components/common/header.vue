@@ -96,7 +96,7 @@ export default {
     },
     // 推出登录
     logoutFun() {
-      console.log(6666);
+      // console.log(6666);
       // debugger;
       // return;
       logout().then(res => {

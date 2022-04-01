@@ -23,7 +23,7 @@
             <span class="font16">支付信息</span>
             <div>支付状态：{{ orderInfo.payStatusName }}</div>
             <div>支付方式：{{ orderInfo.payName }}</div>
-            <div>应付金额：￥{{ orderInfo.totalPrice }}</div>
+            <div>应付金额：￥{{ orderInfo.totalPrice.toFixed(2) }}</div>
           </div>
         </div>
       </div>
@@ -51,7 +51,10 @@
           </div>
           <div class="flex-r de-goods-item flex-b text-center m-b-10">
             <div class="de-title1 flex-r">
-              <div class="de-img-box m-l-20 p-b-10 p-t-10">
+              <div
+                class="de-img-box m-l-20 p-b-10 p-t-10"
+                @click="toDetail(goodsInfo.paperId)"
+              >
                 <img class="de-img" :src="goodsInfo.pics" alt="" />
               </div>
               <div class="flex-c font12 m-l-20 m-t-10 text-left">
@@ -64,7 +67,9 @@
                 <span>期数：{{ goodsInfo.cycleNum }}</span>
               </div>
             </div>
-            <div class="de-title2 font12 m-t-20">{{ goodsInfo.realPrice }}</div>
+            <div class="de-title2 font12 m-t-20">
+              {{ goodsInfo.realPrice.toFixed(2) }}
+            </div>
             <div class="de-title2 font12 m-t-20">{{ goodsInfo.number }}</div>
             <div class="de-title2 font12 m-t-20">
               {{ (goodsInfo.realPrice * goodsInfo.number).toFixed(2) }}
@@ -77,10 +82,10 @@
       </div>
       <div class="text-right m-b-80 font12 bold-font m-t-10">
         商品总额<span class="font16 price-color m-r-20"
-          >￥{{ orderInfo.totalPrice }}</span
+          >￥{{ orderInfo.totalPrice.toFixed(2) }}</span
         >
         应支付<span class="font16 price-color"
-          >￥{{ orderInfo.totalPrice }}</span
+          >￥{{ orderInfo.totalPrice.toFixed(2) }}</span
         >
       </div>
     </div>
@@ -124,6 +129,16 @@ export default {
           this.buyerInfo = res.data.addressInfo;
           this.goodsInfo = res.data.goods;
           this.activities = res.data.orderFlow;
+        }
+      });
+    },
+    // 商品详情
+    toDetail(id) {
+      this.$router.push({
+        path: "/details",
+        name: "details",
+        query: {
+          goodsId: id
         }
       });
     }
