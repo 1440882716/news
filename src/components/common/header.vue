@@ -27,18 +27,17 @@
                 >
               </li>
             </ul>
-            <router-link to="./login" style="text-decoration: none;">
-              <span class="m-l-20" v-if="isLogin">已登录</span>
-              <span class="m-l-20" v-else>请登录</span>
-            </router-link>
-            <!-- <router-link
+            <router-link
               to="./login"
-              v-if="isLogin"
+              v-if="isLogin == 'false'"
               style="text-decoration: none;"
-              @click="logoutFun"
-            > -->
+            >
+              <span class="m-l-20">请登录</span>
+            </router-link>
+            <span class="m-l-20" v-else>已登录</span>
+
             <span
-              v-if="isLogin"
+              v-if="isLogin != 'false'"
               @click="logoutFun"
               style="text-decoration: none;"
               class="m-l-20 pointer"
@@ -69,9 +68,9 @@ export default {
     };
   },
   created() {
-    let aaa = getToken();
+    // let aaa = getToken();
     this.isLogin = getLogin();
-    console.log(this.isLogin);
+    // console.log(this.isLogin);
     // debugger;
   },
   mounted() {},
@@ -101,8 +100,11 @@ export default {
       // return;
       logout().then(res => {
         if (res.code == 200) {
+          // this.isLogin = false;
+          // debugger;
           removeToken();
           removeLogin();
+
           this.$router.push({
             path: "/login",
             name: "login"

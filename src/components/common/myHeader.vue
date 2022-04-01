@@ -79,8 +79,8 @@ export default {
       // return;
       logout().then(res => {
         if (res.code == 200) {
-          removeToken();
-          removeLogin();
+          // removeToken();
+          // removeLogin();
           this.$router.push({
             path: "/login",
             name: "login"

@@ -19,12 +19,12 @@ export function setToken(token) {
     return Cookies.set(TokenKey, token)
 }
 
-export function setOrList(data) {
-    let idArr = []
-    idArr = getOrList()
-    idArr.push(data)
-    return Cookies.set(orderList, idArr)
-}
+// export function setOrList(data) {
+//     let idArr = []
+//     idArr = getOrList()
+//     idArr.push(data)
+//     return Cookies.set(orderList, idArr)
+// }
 export function hasLogin() {
     return Cookies.set(IsLogin, true)
 }
