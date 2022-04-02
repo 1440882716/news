@@ -37,7 +37,10 @@
               :key="index"
             >
               <div class="add-left flex-r">
-                <div class="m-r-10 font18" @click="chooseAdd(index, item)">
+                <div
+                  class="m-r-10 font18 pointer"
+                  @click="chooseAdd(index, item)"
+                >
                   <i
                     :class="[
                       'el-icon-success',
@@ -133,7 +136,9 @@
               >
               </el-input>
             </div>
+
             <div>
+              <!-- 支付凭证 -->
               <span class="bold-font">上传线下支付凭证</span>
               <!-- <div class="flex-r"> -->
               <el-upload
@@ -149,7 +154,7 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
               <div class="flex-r m-t-30 m-b-20">
-                <div class="unitRemarks-title">单位备注：</div>
+                <div class="unitRemarks-title">单位：</div>
                 <el-input
                   class="remark-inp-order"
                   v-model="unitRemarks"
@@ -428,11 +433,14 @@ export default {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");
-      } else if (this.voucherImg == "") {
-        this.$refs.tips.toast("请上传支付凭证");
-      } else if (this.unitRemarks == "") {
-        this.$refs.tips.toast("请输入单位备注");
-      } else {
+      }
+      // 支付凭证和单位备注
+      //  else if (this.voucherImg == "") {
+      //   this.$refs.tips.toast("请上传支付凭证");
+      // } else if (this.unitRemarks == "") {
+      //   this.$refs.tips.toast("请输入单位备注");
+      // }
+      else {
         createOrder(data).then(res => {
           if (res.code == 200) {
             this.$router.push({
@@ -455,6 +463,17 @@ export default {
           }
         });
       }
+    },
+    toDetail(id) {
+      // console.log(id);
+      // debugger;
+      this.$router.push({
+        path: "/details",
+        name: "details",
+        query: {
+          goodsId: id
+        }
+      });
     }
 
     // 编辑地址

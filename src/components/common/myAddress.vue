@@ -175,22 +175,7 @@ export default {
       isZfb: true,
       zfbType: false,
       yhkType: false,
-      addressList: [
-        {
-          id: 1,
-          name: "77",
-          region: "四川省成都市郫都区",
-          address: "四川省成都市郫都区龙湖时代天街",
-          phone: "17608089876"
-        },
-        {
-          id: 1,
-          name: "四月",
-          region: "四川省成都市郫都区",
-          address: "四川省成都市郫都区龙湖时代天街",
-          phone: "17608089876"
-        }
-      ],
+      addressList: [],
       addressForm: {
         name: "",
         mobile: "",

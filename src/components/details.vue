@@ -131,20 +131,21 @@
             <el-descriptions-item label="刊期">{{
               goodsData.cycleName
             }}</el-descriptions-item>
-            <el-descriptions-item label="单价">{{
-              goodsData.price
-            }}</el-descriptions-item>
-            <!-- <el-descriptions-item label="邮发代号">1-1</el-descriptions-item> -->
+            <el-descriptions-item label="单价"
+              >￥{{ goodsData.price }}</el-descriptions-item
+            >
             <el-descriptions-item label="出版日期">{{
               goodsData.createTime
             }}</el-descriptions-item>
             <el-descriptions-item label="出版社名称">{{
               goodsData.press
             }}</el-descriptions-item>
-            <!-- <el-descriptions-item label="收订种类">
-              按期
-            </el-descriptions-item> -->
-            <el-descriptions-item label="年价">288.0</el-descriptions-item>
+
+            <el-descriptions-item label="年价"
+              >￥{{
+                (goodsData.price * goodsData.totalNum).toFixed(2)
+              }}</el-descriptions-item
+            >
             <el-descriptions-item label="商品编号">{{
               goodsData.id
             }}</el-descriptions-item>
@@ -290,6 +291,10 @@ export default {
       };
       addCart(data).then(res => {
         if (res.code == 200) {
+          this.$router.push({
+            path: "/cart"
+          });
+        } else {
           this.$refs.tips.toast(res.msg);
         }
       });

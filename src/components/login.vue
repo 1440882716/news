@@ -54,7 +54,7 @@ body {
   height: 400px;
 }
 .login-box {
-  width: 288px;
+  width: 388px;
   height: 600px;
   padding-top: 100px;
   /* background-color: darkseagreen; */

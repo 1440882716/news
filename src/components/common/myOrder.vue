@@ -112,19 +112,24 @@
     <el-dialog title="发票信息" :visible.sync="invoiceDialog" width="40%">
       <!-- 当前发票信息 -->
       <div class="text-right pointer" @click="innerVisible = true">
-        选择其他发票
+        选择发票抬头
       </div>
-      <el-form ref="invoiceForm" :model="invoiceForm" label-width="100px">
+      <el-form
+        ref="invoiceForm"
+        :model="invoiceForm"
+        :rules="invoiceRule"
+        label-width="120px"
+      >
         <el-form-item label="开票类型" style="text-align: left;">
           <el-radio-group v-model="invoiceForm.status">
-            <el-radio disabled :label="1">个人</el-radio>
-            <el-radio disabled :label="2">公司</el-radio>
+            <el-radio :label="1">个人</el-radio>
+            <el-radio :label="2">公司</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="公司/个人名称">
+        <el-form-item label="公司/个人名称" prop="name">
           <el-input v-model="invoiceForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="税号" v-if="invoiceForm.status == 2">
+        <el-form-item label="税号" prop="taxNo" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.taxNo"></el-input>
         </el-form-item>
         <el-form-item label="金额">
@@ -149,7 +154,7 @@
       <!-- 内层嵌套的dialog -->
       <el-dialog
         width="30%"
-        title="内层 Dialog"
+        title="发票抬头"
         :visible.sync="innerVisible"
         append-to-body
       >
@@ -369,7 +374,7 @@
             </div>
             <div>
               金额：<span class="price-main font16 bold-font">{{
-                (item.goods.realPrice * item.goods.number).toFixed(2)
+                item.totalPrice.toFixed(2)
               }}</span>
             </div>
           </div>
@@ -469,6 +474,12 @@ export default {
         bankCard: "",
         email: ""
       },
+      invoiceRule: {
+        name: [
+          { required: true, message: "请输入公司/个人名称", trigger: "blur" }
+        ],
+        taxNo: [{ required: true, message: "请输入公司税号", trigger: "blur" }]
+      },
       orderData: [],
       invoiceData: [],
       invoiceItem: {},
@@ -490,7 +501,8 @@ export default {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      console.log(goodsCount);
+      // console.log(goodsCount);
+      // console.log(this.idArr);
       // debugger;
       // return;
       // 选中发票开具发票
@@ -515,7 +527,6 @@ export default {
                 ].companyMobile;
                 this.invoiceForm.bankName = this.invoiceData[i].bankName;
                 this.invoiceForm.bankCard = this.invoiceData[i].bankCard;
-                // this.invoiceForm.email = ""
               }
             }
           }
@@ -538,24 +549,15 @@ export default {
     },
     // 提交发票信息
     getInvoice() {
-      console.log(this.invoiceForm);
-      // debugger;
-      // return;
       handupInvoice(this.invoiceForm).then(res => {
         if (res.code == 200) {
-          this.$refs.tips.toast(res.msg);
+          this.$refs.tips.toast("发票已开具成功");
+          this.getData();
         } else {
           this.$refs.tips.toast(res.msg);
         }
         this.invoiceDialog = false;
       });
-      // debugger;
-
-      // if (this.invoiceForm.status == 1) {
-      //   // 开个人发票
-      // } else if (this.invoiceForm.status == 2) {
-      //   // 开公司发票
-      // }
     },
     //把时间日期转成时间戳
     getTimestamp(time) {
@@ -727,12 +729,12 @@ export default {
     },
     // 选择订单
     chooseOrder(info) {
-      console.log(info);
+      // console.log(info);
       info.select = !info.select;
       this.invoiceOrder = this.orderData.filter(item => {
         return item.select;
       });
-      console.log(this.invoiceOrder);
+      // console.log(this.invoiceOrder);
     }
   }
 };

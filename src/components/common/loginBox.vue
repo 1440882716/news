@@ -31,6 +31,11 @@
         <img src="../../assets/img/lock.png" alt="" />
         <input v-model="pwd" class="account-inp fff-font" type="password" />
       </div>
+      <!-- 图形验证码 -->
+      <!-- <div class="flex-r flex-b m-t-20">
+        <input type="text" class="account-inp-code fff-font" />
+        <img class="code-img" src="" alt="" />
+      </div> -->
     </div>
     <div v-show="logintype == 2">
       <div class="flex-r m-t-20 m-b-20">
@@ -91,7 +96,6 @@ export default {
     };
   },
 
-  mounted() {},
   methods: {
     loginType(num) {
       this.logintype = num;
@@ -192,7 +196,7 @@ router-link {
 }
 .com-login {
   min-height: 260px;
-  padding: 15px;
+  padding: 20px;
   padding-top: 0;
   /* background: #ffffff; */
   background-color: rgba(255, 255, 255, 0.2);
@@ -213,23 +217,36 @@ router-link {
 .account-inp {
   width: calc(100% - 32px);
   padding-left: 10px;
-  height: 30px;
-  line-height: 30px;
+  height: 34px;
+  line-height: 34px;
   border: 1px solid #e6e6e6;
   border-left: none;
+}
+.account-inp-code {
+  width: calc(100% - 100px);
+  padding-left: 10px;
+  height: 34px;
+  line-height: 34px;
+  border: 1px solid #e6e6e6;
+  border-right: none;
+}
+.code-img {
+  width: 100px;
+  height: 36px;
+  background-color: darkorange;
 }
 .msg-code {
   width: 122px;
   padding-left: 10px;
-  height: 30px;
-  line-height: 30px;
+  height: 34px;
+  line-height: 34px;
   border: 1px solid #e6e6e6;
   border-left: none;
 }
 .code-btn {
   width: 90px;
-  height: 30px;
-  line-height: 30px;
+  height: 34px;
+  line-height: 34px;
   color: #b3adad;
   cursor: pointer;
   background-color: #f5f5f5;
@@ -238,9 +255,9 @@ router-link {
 }
 .login-btn {
   width: 100%;
-  height: 32px;
+  height: 36px;
   text-align: center;
-  line-height: 32px;
+  line-height: 36px;
   background-color: #a30202;
   cursor: pointer;
 }

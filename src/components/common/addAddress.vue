@@ -53,7 +53,7 @@
               ></textarea>
             </el-form-item>
 
-            <el-form-item label="邮编" prop="postCode">
+            <el-form-item label="邮编">
               <el-input
                 v-model="addressForm.postCode"
                 type="text"
@@ -129,15 +129,6 @@ export default {
         ],
         address: [
           { required: true, message: "请输入详细地址", trigger: "blur" }
-        ],
-        postCode: [
-          { required: true, message: "请输入邮编", trigger: "blur" },
-          {
-            required: true,
-            pattern: /^\d{6}$/,
-            message: "请输入正确的邮编",
-            trigger: "blur"
-          }
         ]
       }
     };
