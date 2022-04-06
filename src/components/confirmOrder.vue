@@ -121,7 +121,7 @@
                 x{{ item.quantity }}
               </div>
               <div class="headline5 price-color font16 bold600 text-right">
-                {{ item.price * item.quantity }}
+                {{ (item.price * item.quantity).toFixed(2) }}
               </div>
             </div>
             <!-- 订单备注 -->
@@ -371,6 +371,10 @@ export default {
             if (this.addressList[i].is_default) {
               this.itemAddress = this.addressList[i];
               this.ind = i;
+            } else {
+              this.ind = -1;
+              this.navNum = -1;
+              this.itemAddress.id == "";
             }
           }
         }
@@ -470,7 +474,10 @@ export default {
         imgUrl: this.voucherImg,
         unitRemarks: this.unitRemarks
       };
-      if (this.itemAddress.id == "") {
+      console.log(data);
+      // debugger;
+      // return;
+      if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");

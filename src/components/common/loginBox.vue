@@ -149,6 +149,12 @@ export default {
                 path: "/",
                 name: "index"
               });
+            } else if (res.code == -5) {
+              this.$refs.tips.toast(res.msg);
+              this.getImgcodeFun();
+            } else if (res.code == -6) {
+              this.$refs.tips.toast(res.msg);
+              this.getImgcodeFun();
             } else {
               this.$refs.tips.toast(res.msg);
             }

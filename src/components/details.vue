@@ -127,7 +127,9 @@
             <el-descriptions-item label="全国统一刊号">{{
               goodsData.paperNum
             }}</el-descriptions-item>
-            <el-descriptions-item label="报刊种类">报纸</el-descriptions-item>
+            <el-descriptions-item label="报刊种类">{{
+              goodsData.typeName
+            }}</el-descriptions-item>
             <el-descriptions-item label="刊期">{{
               goodsData.cycleName
             }}</el-descriptions-item>

@@ -501,12 +501,13 @@ export default {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      // console.log(goodsCount);
+      console.log(goodsCount);
       // console.log(this.idArr);
       // debugger;
       // return;
       // 选中发票开具发票
       if (this.invoiceOrder.length != 0) {
+        this.invoiceForm.money = goodsCount.toFixed(2);
         this.invoiceDialog = true;
         pageData().then(res => {
           if (res.code == 200) {
@@ -518,7 +519,7 @@ export default {
                 this.invoiceForm.status = this.invoiceData[i].type;
                 this.invoiceForm.name = this.invoiceData[i].name;
                 this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
-                this.invoiceForm.money = goodsCount.toFixed(2);
+                // this.invoiceForm.money = goodsCount.toFixed(2);
                 this.invoiceForm.companyAddress = this.invoiceData[
                   i
                 ].companyAddress;

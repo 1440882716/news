@@ -45,9 +45,10 @@
         <div class="order-de-goods">
           <div class="flex-r font12 flex-b goods-title-de text-center">
             <div class="de-title1">商品</div>
-            <div class="de-title2">价格</div>
             <div class="de-title2">数量</div>
-            <div class="de-title2">小计</div>
+            <div class="de-title2">价格</div>
+
+            <!-- <div class="de-title2">小计</div> -->
           </div>
           <div class="flex-r de-goods-item flex-b text-center m-b-10">
             <div class="de-title1 flex-r">
@@ -67,13 +68,14 @@
                 <span>期数：{{ goodsInfo.cycleNum }}</span>
               </div>
             </div>
+            <div class="de-title2 font12 m-t-20">{{ goodsInfo.number }}</div>
             <div class="de-title2 font12 m-t-20">
               {{ goodsInfo.realPrice.toFixed(2) }}
             </div>
-            <div class="de-title2 font12 m-t-20">{{ goodsInfo.number }}</div>
-            <div class="de-title2 font12 m-t-20">
-              {{ (goodsInfo.realPrice * goodsInfo.number).toFixed(2) }}
-            </div>
+
+            <!-- <div class="de-title2 font12 m-t-20">
+              {{ goodsInfo.realPrice.toFixed(2) }}
+            </div> -->
           </div>
           <div class="m-l-10 m-b-10 font14">
             订单备注：{{ orderInfo.remark }}
@@ -117,6 +119,7 @@ export default {
   },
   created() {
     this.orderId = this.$route.query.orderId;
+    console.log(this.orderId);
     if (this.orderId != "") {
       this.getData();
     }
@@ -129,6 +132,8 @@ export default {
           this.buyerInfo = res.data.addressInfo;
           this.goodsInfo = res.data.goods;
           this.activities = res.data.orderFlow;
+          console.log(res);
+          debugger;
         }
       });
     },
