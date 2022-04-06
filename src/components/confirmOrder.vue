@@ -486,14 +486,6 @@ export default {
                 orderPage: 5
               }
             });
-            // this.$router.push({
-            //   path: "/pay",
-            //   name: "pay",
-            //   query: {
-            //     orderId: res.data,
-            //     payWay: this.payWay
-            //   }
-            // });
           } else {
             this.$refs.tips.toast(res.msg);
           }

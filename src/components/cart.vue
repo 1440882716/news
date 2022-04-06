@@ -506,13 +506,19 @@ export default {
           return item.id;
         });
         let idStr = idArr.join(",");
-        this.$router.push({
-          path: "/confirmOrder",
-          name: "confirmOrder",
-          query: {
-            goodsId: idStr
-          }
-        });
+        let a = new Date(select_goods[0].startrTime).getTime();
+        let b = new Date().getTime();
+        if (a > b) {
+          this.$router.push({
+            path: "/confirmOrder",
+            name: "confirmOrder",
+            query: {
+              goodsId: idStr
+            }
+          });
+        } else {
+          this.$refs.tips.toast("请重新选择报刊的起订时间");
+        }
       } else if (this.countNum > 1) {
         this.$refs.tips.toast("只能选择一个商品下单");
       } else {
