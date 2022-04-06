@@ -4,7 +4,15 @@ const userApi = {
     loginSmsCode: '/client/loginSmsCode',
     loginPwd: '/client/loginPwd',
     forgetPwd: '/client/forgetPwd',
-    logout: '/client/user/logout'
+    logout: '/client/user/logout',
+    getImgCode: '/client/captcha'
+}
+export function getImgCode(data) {
+    return request({
+        url: userApi.getImgCode,
+        method: 'get',
+        params: data
+    })
 }
 export function logout(data) {
     return request({

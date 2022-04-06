@@ -153,12 +153,41 @@
                 <img v-if="voucherImg" :src="voucherImg" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
-              <div class="flex-r m-t-30 m-b-20">
+              <!-- <div class="flex-r m-t-30 m-b-20">
                 <div class="unitRemarks-title">单位：</div>
                 <el-input
                   class="remark-inp-order"
                   v-model="unitRemarks"
                   placeholder="请输入内容"
+                ></el-input>
+              </div> -->
+              <!-- <div class="flex-r m-t-30 m-b-20">
+                <div class="unitRemarks-title" style="width: 10%;">
+                  单位(必填)：
+                </div>
+                <el-input style="width: 43%;"></el-input>
+              </div> -->
+              <div class="flex-r m-t-20">
+                <div class="unitRemarks-title bold-font" style="width: 10%;">
+                  单位(必填)：
+                </div>
+                <el-cascader
+                  v-model="region"
+                  :options="regionData"
+                  ref="cascaderHandle"
+                  :props="{
+                    checkStrictly: true,
+                    expandTrigger: 'hover',
+                    value: 'id',
+                    label: 'ext_name',
+                    children: 'childs'
+                  }"
+                  @change="closeCascader"
+                ></el-cascader>
+
+                <el-input
+                  style="width: 30%;margin-top: 4px"
+                  v-model="unitRemarks"
                 ></el-input>
               </div>
               <!-- </div> -->
@@ -266,6 +295,7 @@ import Header from "./common/header.vue";
 import addAddress from "./common/addAddress.vue";
 import Footer from "./common/footer.vue";
 import msgBox from "./common/msg.vue";
+import region from "../assets/data/area_format_user.json";
 import { addList, delAdd } from "@/api/address";
 import { getToken } from "@/utils/auth";
 import { confirmUrl, createOrder, approve } from "@/api/cart";
@@ -296,6 +326,8 @@ export default {
       goodsList: [],
       cardData: [],
       qrImg: "",
+      regionData: region,
+      region: "",
       voucherImg: "",
       unitRemarks: ""
     };
@@ -421,6 +453,10 @@ export default {
       }
       return isJPG && isLt2M;
     },
+    // 单位备注  选择省市区备注 关闭级联选择器
+    closeCascader() {
+      this.$refs.cascaderHandle.dropDownVisible = false;
+    },
     handleOrder() {
       let data = {
         addId: this.itemAddress.id,
@@ -429,6 +465,9 @@ export default {
         imgUrl: this.voucherImg,
         unitRemarks: this.unitRemarks
       };
+      console.log(this.region);
+      debugger;
+      return;
       if (this.itemAddress.id == "") {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
@@ -437,10 +476,10 @@ export default {
       // 支付凭证和单位备注
       //  else if (this.voucherImg == "") {
       //   this.$refs.tips.toast("请上传支付凭证");
-      // } else if (this.unitRemarks == "") {
-      //   this.$refs.tips.toast("请输入单位备注");
       // }
-      else {
+      else if (this.unitRemarks == "") {
+        this.$refs.tips.toast("请输入所在单位");
+      } else {
         createOrder(data).then(res => {
           if (res.code == 200) {
             this.$router.push({

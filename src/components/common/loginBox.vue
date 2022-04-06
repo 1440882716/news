@@ -32,10 +32,19 @@
         <input v-model="pwd" class="account-inp fff-font" type="password" />
       </div>
       <!-- 图形验证码 -->
-      <!-- <div class="flex-r flex-b m-t-20">
-        <input type="text" class="account-inp-code fff-font" />
-        <img class="code-img" src="" alt="" />
-      </div> -->
+      <div class="flex-r flex-b m-t-20">
+        <input
+          type="text"
+          v-model="captcha"
+          class="account-inp-code fff-font"
+        />
+        <el-image
+          class="code-img pointer"
+          :src="imgCode"
+          alt=""
+          @click.stop.prevent="getImgcodeFun"
+        ></el-image>
+      </div>
     </div>
     <div v-show="logintype == 2">
       <div class="flex-r m-t-20 m-b-20">
@@ -46,13 +55,13 @@
       <Slider status="status"></Slider>
       <div class="flex-r m-t-20 m-b-20">
         <img src="../../assets/img/lock.png" alt="" />
-        <input v-model="msgCode" class="msg-code" type="password" />
+        <input v-model="msgCode" class="msg-code" type="text" />
         <div class="code-btn font12" @click="getCode">{{ count }}</div>
         <!-- <div>{{ count }}</div> -->
       </div>
-      <div class="font12 text-left">
+      <div class="font12 text-left fff-font">
         手机首次登录即完成注册，代表同意
-        <span style="color:#A30202">《平台会员注册与服务协议》</span>
+        <span>《平台会员注册与服务协议》</span>
       </div>
     </div>
 
@@ -73,7 +82,7 @@
 <script>
 import msgBox from "./msg.vue";
 import Slider from "./slider.vue";
-import { loginSmsCode, loginPwd, forgetPwd } from "@/api/login";
+import { loginSmsCode, loginPwd, getImgCode } from "@/api/login";
 import { getSmsCode, checkSmsCode } from "@/api/regist";
 import { setToken, hasLogin } from "@/utils/auth";
 export default {
@@ -92,13 +101,28 @@ export default {
       account: "",
       pwd: "",
       phone: "",
-      msgCode: ""
+      msgCode: "",
+      uid: "",
+      captcha: "",
+      imgCode: ""
     };
+  },
+  created() {
+    this.getImgcodeFun();
   },
 
   methods: {
     loginType(num) {
       this.logintype = num;
+    },
+    // 获取图形验证码
+    getImgcodeFun() {
+      getImgCode().then(res => {
+        if (res.code == 0) {
+          this.imgCode = res.data.captcha;
+          this.uid = res.data.uid;
+        }
+      });
     },
     loginFun() {
       console.log(this.account);
@@ -107,9 +131,16 @@ export default {
           this.$refs.tips.toast("请输入账号");
         } else if (this.pwd == "") {
           this.$refs.tips.toast("请输入密码");
+        } else if (this.captcha == "") {
+          this.$refs.tips.toast("请输入验证码");
         } else {
           // 提交数据登录
-          loginPwd({ userName: this.account, password: this.pwd }).then(res => {
+          loginPwd({
+            userName: this.account,
+            password: this.pwd,
+            uid: this.uid,
+            captcha: this.captcha
+          }).then(res => {
             if (res.code == 200) {
               setToken(res.data);
               hasLogin();
@@ -236,12 +267,13 @@ router-link {
   background-color: darkorange;
 }
 .msg-code {
-  width: 122px;
+  width: 225px;
   padding-left: 10px;
   height: 34px;
   line-height: 34px;
   border: 1px solid #e6e6e6;
   border-left: none;
+  color: #ffffff;
 }
 .code-btn {
   width: 90px;

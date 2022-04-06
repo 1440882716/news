@@ -3,10 +3,9 @@ import request from '@/utils/request'
 const userApi = {
     paperPage: '/client/paperInfo/paperPage',
     goodsDetails: '/client/paperInfo/details',
-    reckon: '/client/periods/reckon'
-
-
+    reckon: '/client/periods/reckon',
 }
+
 export function paperPage(data) {
     return request({
         url: userApi.paperPage,

@@ -111,7 +111,8 @@ export default {
   height: 34px; /*no*/
   /* border: 1px solid #bbb; */
   margin-bottom: 20px;
-  width: 255px;
+  /* width: 255px; */
+  width: 348px;
   font-size: 14px;
 }
 .jc-range i {
