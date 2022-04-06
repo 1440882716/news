@@ -178,17 +178,14 @@
                   :props="{
                     checkStrictly: true,
                     expandTrigger: 'hover',
-                    value: 'id',
+                    value: 'ext_name',
                     label: 'ext_name',
                     children: 'childs'
                   }"
                   @change="closeCascader"
                 ></el-cascader>
 
-                <el-input
-                  style="width: 30%;margin-top: 4px"
-                  v-model="unitRemarks"
-                ></el-input>
+                <el-input style="width: 30%;" v-model="unitName"></el-input>
               </div>
               <!-- </div> -->
 
@@ -329,6 +326,7 @@ export default {
       regionData: region,
       region: "",
       voucherImg: "",
+      unitName: "",
       unitRemarks: ""
     };
   },
@@ -454,10 +452,17 @@ export default {
       return isJPG && isLt2M;
     },
     // 单位备注  选择省市区备注 关闭级联选择器
-    closeCascader() {
+    closeCascader(e) {
       this.$refs.cascaderHandle.dropDownVisible = false;
+      // console.log(e);
+      // debugger;
     },
     handleOrder() {
+      // debugger;
+      // console.log(this.region);
+      if (this.region.length != 0) {
+        this.unitRemarks = this.region.join(" ") + this.unitName;
+      }
       let data = {
         addId: this.itemAddress.id,
         cartList: this.goodsId,
@@ -465,20 +470,12 @@ export default {
         imgUrl: this.voucherImg,
         unitRemarks: this.unitRemarks
       };
-      console.log(this.region);
-      debugger;
-      return;
       if (this.itemAddress.id == "") {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");
-      }
-      // 支付凭证和单位备注
-      //  else if (this.voucherImg == "") {
-      //   this.$refs.tips.toast("请上传支付凭证");
-      // }
-      else if (this.unitRemarks == "") {
-        this.$refs.tips.toast("请输入所在单位");
+      } else if (this.region.length == 0 || this.unitName == "") {
+        this.$refs.tips.toast("请输入单位");
       } else {
         createOrder(data).then(res => {
           if (res.code == 200) {

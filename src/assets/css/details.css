@@ -64,14 +64,14 @@
   border: 1px solid #a30202;
 }
 .el-input__inner {
-  height: 32px !important;
+  /* height: 32px !important; */
 }
 .el-input-number {
-  line-height: 32px;
+  /* line-height: 32px; */
 }
 .el-input-number__decrease,
 .el-input-number__increase {
-  height: 30px !important;
+  /* height: 30px !important; */
   background-color: #fff;
 }
 .buy-box {
