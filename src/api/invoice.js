@@ -11,6 +11,7 @@ const userApi = {
     query: '/client/receipt/query',
     reopen: '/client/receipt/reopen',
     toEmail: '/client/receipt/email',
+    // :'/client/receipt/reopen'
 
 }
 
