@@ -16,7 +16,7 @@ Vue.use(BaiduMap, {
 })
 Vue.use(Element)
 Vue.prototype.rq = requests
-const imgApi = "http://192.168.31.23:8080"
+const imgApi = "http://106.13.208.177:9001"
 Vue.prototype.globleImgApi = imgApi
 
 Vue.config.productionTip = false

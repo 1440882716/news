@@ -109,6 +109,8 @@ export default {
             name: "login"
           });
         } else {
+          removeToken();
+          removeLogin();
         }
       });
     }

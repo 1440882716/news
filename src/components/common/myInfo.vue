@@ -126,7 +126,7 @@
           <el-upload
             class="avatar-uploader"
             :headers="{ Authorization: token }"
-            action="https://admin.cdzkzs.top/client/order/upload"
+            action="https://admin.cdzkzs.top/client/user/updAvatar"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :on-error="uploadError"
@@ -206,7 +206,7 @@ export default {
           this.ruleForm.region = arr;
           this.ruleForm.address = res.data.address;
           if (res.data.avatar != "" || res.data.avatar != null) {
-            this.headImg = this.imgApi + res.data.avatar;
+            this.headImg = res.data.avatar;
           } else {
             this.headImg = "../../assets/img/people3.png";
           }
