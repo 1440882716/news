@@ -298,9 +298,6 @@ export default {
       window.open(rotuetURl.href, "_blank");
     },
     toDetail(id) {
-      console.log(id);
-      debugger;
-      return;
       this.$router.push({
         path: "/details",
         name: "details",
