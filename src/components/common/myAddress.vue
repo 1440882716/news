@@ -264,6 +264,7 @@ export default {
       this.addressForm.postcode = info.postcode;
       this.addressForm.isDefault = info.is_default;
       this.addressForm.id = info.id;
+      this.isDefault = info.is_default;
       this.dialogVisible = true;
     },
     // 删除地址

@@ -578,6 +578,8 @@ export default {
       orderList(data).then(res => {
         if (res.code == 200) {
           this.orderData = res.data.records;
+          // console.log(this.orderData);
+          // debugger;
           this.orderCount = res.data.total;
           if (this.statusNum == "0" || this.statusNum == "1") {
             this.orderData.map(item => {

@@ -553,4 +553,9 @@ export default {
   text-align: center;
   /* background-color: darkgoldenrod; */
 }
+.invoice-tips-box {
+  /* width: 100%; */
+  padding: 10px 20px;
+  background-color: antiquewhite;
+}
 </style>

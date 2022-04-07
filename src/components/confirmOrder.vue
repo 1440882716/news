@@ -124,10 +124,30 @@
                 {{ (item.price * item.quantity).toFixed(2) }}
               </div>
             </div>
+            <div class="flex-r m-t-20">
+              <div class="unitRemarks-title bold-font" style="width: 10%;">
+                单位(必填)
+              </div>
+              <el-cascader
+                v-model="region"
+                :options="regionData"
+                ref="cascaderHandle"
+                :props="{
+                  checkStrictly: true,
+                  expandTrigger: 'hover',
+                  value: 'ext_name',
+                  label: 'ext_name',
+                  children: 'childs'
+                }"
+                @change="closeCascader"
+              ></el-cascader>
+              <el-input style="width: 30%;" v-model="unitName"></el-input>
+            </div>
             <!-- 订单备注 -->
-            <div class="m-b-10">
-              <span class="bold-font">订单备注</span>
+            <div class="m-b-20 flex-r m-t-20">
+              <div class="bold-font m-t-10" style="width: 10%;">订单备注</div>
               <el-input
+                style="width: 53%;"
                 class="m-t-10"
                 type="textarea"
                 :rows="4"
@@ -167,26 +187,7 @@
                 </div>
                 <el-input style="width: 43%;"></el-input>
               </div> -->
-              <div class="flex-r m-t-20">
-                <div class="unitRemarks-title bold-font" style="width: 10%;">
-                  单位(必填)：
-                </div>
-                <el-cascader
-                  v-model="region"
-                  :options="regionData"
-                  ref="cascaderHandle"
-                  :props="{
-                    checkStrictly: true,
-                    expandTrigger: 'hover',
-                    value: 'ext_name',
-                    label: 'ext_name',
-                    children: 'childs'
-                  }"
-                  @change="closeCascader"
-                ></el-cascader>
 
-                <el-input style="width: 30%;" v-model="unitName"></el-input>
-              </div>
               <!-- </div> -->
 
               <!-- <div class="flex-r ">
