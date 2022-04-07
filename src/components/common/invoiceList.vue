@@ -180,7 +180,7 @@
           </div>
           <div class="flex-r flex-b order-count font12">
             <div class="flex-r">
-              <span class="m-r-20">订单号：{{ item.id }}</span>
+              <span class="m-r-20">发票序号：{{ item.id }}</span>
               <div>
                 订单总额：<span class="font14 price-color">{{
                   item.totalPrices

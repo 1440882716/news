@@ -508,6 +508,7 @@ export default {
       // 选中发票开具发票
       if (this.invoiceOrder.length != 0) {
         this.invoiceForm.money = goodsCount.toFixed(2);
+        this.invoiceForm.ordersId = this.idArr.join(",");
         this.invoiceDialog = true;
         pageData().then(res => {
           if (res.code == 200) {
@@ -515,7 +516,7 @@ export default {
             for (let i = 0; i < this.invoiceData.length; i++) {
               if (this.invoiceData[i].isDefault) {
                 // debugger;
-                this.invoiceForm.ordersId = this.idArr.join(",");
+                // this.invoiceForm.ordersId = this.idArr.join(",");
                 this.invoiceForm.status = this.invoiceData[i].type;
                 this.invoiceForm.name = this.invoiceData[i].name;
                 this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
@@ -550,9 +551,12 @@ export default {
     },
     // 提交发票信息
     getInvoice() {
+      // console.log(this.invoiceForm);
+      // debugger;
+      // return;
       handupInvoice(this.invoiceForm).then(res => {
         if (res.code == 200) {
-          this.$refs.tips.toast("发票已开具成功");
+          this.$refs.tips.toast("发票已开成功");
           this.getData();
         } else {
           this.$refs.tips.toast(res.msg);

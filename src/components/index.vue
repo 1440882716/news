@@ -96,8 +96,8 @@
           <div class="font20 m-t-40 home-price-text">
             ￥<span class="font48">{{
               (newsSecond.price * newsSecond.totalNum).toFixed(2)
-            }}</span
-            >/年
+            }}</span>
+            /年
           </div>
           <div
             class="buy-first-home font24 m-t-30 pointer"
@@ -277,6 +277,8 @@ export default {
         if (res.code == 200) {
           this.newsFirst = res.data.records[0];
           this.newsSecond = res.data.records[1];
+          // console.log(this.newsFirst);
+          // debugger;
         }
       });
     },
@@ -296,6 +298,9 @@ export default {
       window.open(rotuetURl.href, "_blank");
     },
     toDetail(id) {
+      console.log(id);
+      debugger;
+      return;
       this.$router.push({
         path: "/details",
         name: "details",
