@@ -25,6 +25,94 @@
         <el-button type="primary" @click="postEmail">发送到邮箱</el-button>
       </span>
     </el-dialog>
+    <!-- 重新开发票  填写发票信息 -->
+    <el-dialog title="发票信息" :visible.sync="invoiceDialog" width="40%">
+      <!-- 当前发票信息 -->
+      <div class="text-right pointer" @click="getInvoiceFun">
+        选择发票抬头
+      </div>
+      <el-form
+        ref="invoiceForm"
+        :model="invoiceForm"
+        :rules="invoiceRule"
+        label-width="120px"
+      >
+        <el-form-item label="开票类型" style="text-align: left;">
+          <el-radio-group v-model="invoiceForm.status">
+            <el-radio :label="1">个人</el-radio>
+            <el-radio :label="2">公司</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="公司/个人名称" prop="name">
+          <el-input v-model="invoiceForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="税号" prop="taxNo" v-if="invoiceForm.status == 2">
+          <el-input v-model="invoiceForm.taxNo"></el-input>
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input :disabled="true" v-model="invoiceForm.money"></el-input>
+        </el-form-item>
+        <el-form-item label="公司地址" v-if="invoiceForm.status == 2">
+          <el-input v-model="invoiceForm.companyAddress"></el-input>
+        </el-form-item>
+        <el-form-item label="公司电话" v-if="invoiceForm.status == 2">
+          <el-input v-model="invoiceForm.companyMobile"></el-input>
+        </el-form-item>
+        <el-form-item label="开户行名称" v-if="invoiceForm.status == 2">
+          <el-input v-model="invoiceForm.bankName"></el-input>
+        </el-form-item>
+        <el-form-item label="开户行卡号" v-if="invoiceForm.status == 2">
+          <el-input v-model="invoiceForm.bankCard"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱">
+          <el-input v-model="invoiceForm.email"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 内层嵌套的dialog -->
+      <el-dialog
+        width="30%"
+        title="发票抬头"
+        :visible.sync="innerVisible"
+        append-to-body
+      >
+        <div>发票列表</div>
+        <div
+          class="card-item-box flex-r pointer"
+          v-for="item in invoiceData"
+          @click="chooseInvoiceItem(item)"
+        >
+          <div class="type-img-box" v-if="item.type == 1">
+            <img class="type-img" src="../../assets/img/people3.png" alt="" />
+            <div class="tips-color">个人发票</div>
+          </div>
+          <div class="type-img-box" v-if="item.type == 2">
+            <img class="type-img" src="../../assets/img/conpany.png" alt="" />
+            <div class="tips-color">公司发票</div>
+          </div>
+          <div class="card-info font12">
+            <div class="flex-r text-center m-t-20">
+              <div class="tips-color card-name-box">发票抬头：</div>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="flex-r text-center" v-if="item.type == 2">
+              <div class="tips-color card-name-box">单位税号：</div>
+              <span>{{ item.taxNo }}</span>
+            </div>
+          </div>
+        </div>
+      </el-dialog>
+      <div class="invoice-tips-box text-left">
+        <p>提示</p>
+        <p>
+          1. 每张发票上限金额为1万元，若开票总金额超过1万元，将开具多张发票。
+        </p>
+        <p>2. 两种报刊类型将分开开具发票。</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="invoiceDialog = false">取 消</el-button>
+        <el-button type="primary" @click="getInvoice">确 定</el-button>
+      </span>
+    </el-dialog>
     <div class="info-content">
       <el-tabs v-model="editableTabsValue">
         <el-tab-pane
@@ -61,7 +149,7 @@
                 删除
               </div>
               <div
-                v-if="item.status == 1"
+                v-if="item.status == 1 || item.status == 3"
                 class="handle-btn m-l-10 pointer"
                 @click="queryData(item.id)"
               >
@@ -77,7 +165,7 @@
               <div
                 v-if="item.status == 3"
                 class="handle-btn m-l-10 pointer"
-                @click="reInvoice(item.id)"
+                @click="reInvoice(item)"
               >
                 重新开票
               </div>
@@ -141,6 +229,7 @@
 <script>
 import msgBox from "./msg.vue";
 import CountDown from "./countDown.vue";
+import { pageData, handupInvoice } from "@/api/invoice";
 import {
   invoiceList,
   delInvoiceList,
@@ -174,7 +263,30 @@ export default {
       form: {
         email: ""
       },
-      getPage: ""
+      getPage: "",
+      // 重新开发票
+      invoiceDialog: false,
+      innerVisible: false, //内层嵌套的dialog
+      invoiceForm: {
+        id: "",
+        status: "",
+        name: "",
+        taxNo: "",
+        money: "",
+        companyAddress: "",
+        companyMobile: "",
+        bankName: "",
+        bankCard: "",
+        email: ""
+      },
+      invoiceRule: {
+        name: [
+          { required: true, message: "请输入公司/个人名称", trigger: "blur" }
+        ],
+        taxNo: [{ required: true, message: "请输入公司税号", trigger: "blur" }]
+      },
+      invoiceData: [],
+      invoiceItem: {}
     };
   },
   created() {
@@ -207,13 +319,56 @@ export default {
         }
       });
     },
-    // 重新开票
-    reInvoice(id) {
-      reopen({ id: id }).then(res => {
+    getInvoiceFun() {
+      pageData().then(res => {
         if (res.code == 200) {
+          this.invoiceData = res.data;
+          this.innerVisible = true;
+        }
+      });
+    },
+    // 填写发票信息
+    reInvoice(info) {
+      console.log(info);
+      this.invoiceDialog = true;
+      this.invoiceForm.money = info.totalPrices;
+      this.invoiceForm.id = info.id;
+      // debugger;
+      // return;
+
+      // reopen({ id: id }).then(res => {
+      //   if (res.code == 200) {
+      //   } else {
+      //     this.$refs.tips.toast(res.msg);
+      //   }
+      // });
+    },
+    // 重新选择发票信息
+    chooseInvoiceItem(info) {
+      // this.invoiceForm.id = info.id;
+      this.invoiceForm.status = info.type;
+      this.invoiceForm.name = info.name;
+      this.invoiceForm.taxNo = info.taxNo;
+      // this.invoiceForm.money = goodsCount.toFixed(2);
+      this.invoiceForm.companyAddress = info.companyAddress;
+      this.invoiceForm.companyMobile = info.companyMobile;
+      this.invoiceForm.bankName = info.bankName;
+      this.invoiceForm.bankCard = info.bankCard;
+      this.innerVisible = false;
+    },
+    // 提交发票信息
+    getInvoice() {
+      console.log(this.invoiceForm);
+      debugger;
+      // return;
+      reopen(this.invoiceForm).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast("发票已开具成功");
+          this.getData();
         } else {
           this.$refs.tips.toast(res.msg);
         }
+        this.invoiceDialog = false;
       });
     },
     // 查询开票结果
