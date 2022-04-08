@@ -20,7 +20,7 @@
             <div class="m-l-20">
               <div>
                 <span class="font14 price-main">¥</span>
-                <span class="price-main bold600 font28">{{ countPrice }}</span>
+                <span class="price-main bold600 font28">{{ allCount }}</span>
                 <span class="font14 tips-color"
                   >(由于休合刊等原因，实际价格以下单时的核算价为准)</span
                 >
@@ -29,6 +29,10 @@
                 <div>
                   <span>单价：</span>
                   <span class="price-main">¥{{ goodsData.price }}</span>
+                </div>
+                <div class="m-l-20">
+                  <span>期数价：</span>
+                  <span class="price-main">¥{{ countPrice }}</span>
                 </div>
                 <div class="m-l-20">
                   <span>年价：</span>
@@ -96,7 +100,6 @@
                   v-model="goodsNum"
                   @change="handleChange"
                   :min="1"
-                  :max="10"
                   label="描述文字"
                 ></el-input-number>
               </div>
@@ -194,6 +197,11 @@ export default {
     countPrice: function() {
       let count = this.goodsData.price * this.goodsData.present;
       return count.toFixed(2);
+    },
+    allCount: function() {
+      let allprice =
+        this.goodsData.price * this.goodsData.present * this.goodsNum;
+      return allprice.toFixed(2);
     }
   },
   created() {

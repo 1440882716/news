@@ -113,6 +113,8 @@
   height: 1080px;
   background-color: #a30202;
   background-image: url(../img/home-line.png);
+  background-repeat: no-repeat;
+  background-position: center 0;
 }
 .two-goods-img {
   width: 960px;
@@ -150,7 +152,8 @@
 }
 /* =============================第二个商品 */
 .goods-des-box-second {
-  width: 600px;
+  /* width: 600px; */
+  width: 35%;
   height: 600px;
   padding-top: 300px;
   padding-left: 400px;
