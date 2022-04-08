@@ -491,7 +491,7 @@ export default {
               path: "/My",
               name: "My",
               query: {
-                orderPage: 5
+                orderPage: 4
               }
             });
           } else {

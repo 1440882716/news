@@ -26,17 +26,17 @@
           <!-- 账户安全 -->
           <Account v-show="navNum == 1"></Account>
           <!-- 我的银行卡 -->
-          <myCard v-show="navNum == 2" ref="child2"></myCard>
+          <!-- <myCard v-show="navNum == 2" ref="child2"></myCard> -->
           <!-- 常用地址 -->
-          <myAddress v-show="navNum == 3" ref="child3"></myAddress>
+          <myAddress v-show="navNum == 2" ref="child3"></myAddress>
           <!-- 发票抬头 -->
-          <Invoice v-show="navNum == 4" ref="child4"></Invoice>
+          <Invoice v-show="navNum == 3" ref="child4"></Invoice>
           <!-- 我的订单 -->
-          <myOrder v-show="navNum == 5" ref="child5"></myOrder>
+          <myOrder v-show="navNum == 4" ref="child5"></myOrder>
           <!-- 我的售后 -->
-          <afterSale v-show="navNum == 6" ref="child6"></afterSale>
+          <afterSale v-show="navNum == 5" ref="child6"></afterSale>
           <!-- 发票管理 -->
-          <invoiceList v-show="navNum == 7" ref="child7"></invoiceList>
+          <invoiceList v-show="navNum == 6" ref="child7"></invoiceList>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@ export default {
       navList: [
         "个人资料",
         "账户安全",
-        "我的银行卡",
+        // "我的银行卡",
         "常用地址",
         "发票抬头",
         "我的订单",
@@ -94,17 +94,19 @@ export default {
       this.navNum = ind;
       if (ind == 0) {
         this.$refs.child1.getData();
-      } else if (ind == 2) {
-        this.$refs.child2.getData();
-      } else if (ind == 3) {
+      }
+      //  else if (ind == 2) {
+      // this.$refs.child2.getData();
+      // }
+      else if (ind == 2) {
         this.$refs.child3.getAddress();
-      } else if (ind == 4) {
+      } else if (ind == 3) {
         this.$refs.child4.getData();
-      } else if (ind == 5) {
+      } else if (ind == 4) {
         this.$refs.child5.getData();
-      } else if (ind == 6) {
+      } else if (ind == 5) {
         this.$refs.child6.getData();
-      } else if (ind == 7) {
+      } else if (ind == 6) {
         this.$refs.child7.getData();
       }
     }

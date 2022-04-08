@@ -281,6 +281,7 @@ export default {
         this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
       }
     },
+    // 加入购物车
     addGoods() {
       let data = {
         paperId: this.goodsId,
@@ -291,16 +292,26 @@ export default {
         periodNum: this.goodsData.present,
         price: this.countPrice
       };
-      addCart(data).then(res => {
-        if (res.code == 200) {
-          this.$router.push({
-            path: "/cart"
-          });
-        } else {
-          this.$refs.tips.toast(res.msg);
-        }
-      });
+      console.log(data);
+      // debugger;
+      // return;
+      if (data.periodNum == 0) {
+        this.$refs.tips.toast("订阅期数不能小于1");
+      } else {
+        addCart(data).then(res => {
+          if (res.code == 200) {
+            this.$router.push({
+              path: "/cart"
+            });
+          } else {
+            this.$refs.tips.toast(res.msg);
+          }
+        });
+      }
+      // debugger;
+      // return;
     },
+    // 立即购买
     buyFirst() {
       let data = {
         paperId: this.goodsId,
@@ -311,17 +322,21 @@ export default {
         periodNum: this.goodsData.present,
         price: this.countPrice
       };
-      directBuy(data).then(res => {
-        if (res.code == 200) {
-          this.$router.push({
-            path: "/confirmOrder",
-            name: "confirmOrder",
-            query: {
-              goodsId: "0"
-            }
-          });
-        }
-      });
+      if (data.periodNum == 0) {
+        this.$refs.tips.toast("订阅期数不能小于1");
+      } else {
+        directBuy(data).then(res => {
+          if (res.code == 200) {
+            this.$router.push({
+              path: "/confirmOrder",
+              name: "confirmOrder",
+              query: {
+                goodsId: "0"
+              }
+            });
+          }
+        });
+      }
     }
   }
 };
