@@ -494,6 +494,24 @@ export default {
                 orderPage: 4
               }
             });
+          } else if (res.code == 400) {
+            // 完善个人信息中的地址
+            // this.$refs.tips.toast(res.msg);
+            this.$confirm("请完善个人信息中地址信息！", "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "warning"
+            })
+              .then(() => {
+                this.$router.push({
+                  path: "/My",
+                  name: "My",
+                  query: {
+                    orderPage: 0
+                  }
+                });
+              })
+              .catch(() => {});
           } else {
             this.$refs.tips.toast(res.msg);
           }

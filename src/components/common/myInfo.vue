@@ -57,12 +57,13 @@
               :model="ruleForm"
               :rules="rules"
               ref="ruleForm"
-              label-width="100px"
+              label-width="120px"
               class="demo-ruleForm"
             >
               <el-form-item label="昵称">
                 <el-input
                   class=""
+                  style="width:333px"
                   v-model="ruleForm.nickname"
                   placeholder="请输入昵称"
                   width="100px"
@@ -70,6 +71,7 @@
               </el-form-item>
               <el-form-item label="真实姓名">
                 <el-input
+                  style="width:333px"
                   v-model="ruleForm.name"
                   placeholder="请输入姓名"
                 ></el-input>
@@ -84,16 +86,24 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="身份证号">
-                <el-input v-model="ruleForm.idCard"></el-input>
+                <el-input
+                  style="width:333px"
+                  v-model="ruleForm.idCard"
+                ></el-input>
               </el-form-item>
               <el-form-item label="手机号码">
-                <el-input v-model="ruleForm.mobile" :disabled="true"></el-input>
+                <el-input
+                  v-model="ruleForm.mobile"
+                  style="width:333px"
+                  :disabled="true"
+                ></el-input>
               </el-form-item>
-              <el-form-item label="所在地区">
+              <el-form-item label="所在地区" prop="region">
                 <!-- <el-input v-model="ruleForm.desc"></el-input> -->
                 <el-cascader
                   v-model="ruleForm.region"
                   :options="regionData"
+                  clearable
                   :props="{
                     expandTrigger: 'hover',
                     value: 'id',
@@ -102,8 +112,9 @@
                   }"
                 ></el-cascader>
               </el-form-item>
-              <el-form-item label="详细地址">
+              <el-form-item label="详细地址" prop="address">
                 <el-input
+                  style="width:333px"
                   v-model="ruleForm.address"
                   placeholder="请输入详细街道地址"
                 ></el-input>
@@ -186,7 +197,14 @@ export default {
         city: "",
         area: ""
       },
-      rules: {}
+      rules: {
+        region: [
+          { required: true, message: "请选择所在地区", trigger: "blur" }
+        ],
+        address: [
+          { required: true, message: "请输入详细地址", trigger: "blur" }
+        ]
+      }
     };
   },
   created() {
@@ -226,10 +244,19 @@ export default {
       // this.$refs.formName.validate(valid => {
       // if (valid) {
       // 提交要修改的信息
-      this.ruleForm.province = this.ruleForm.region[0];
-      this.ruleForm.city = this.ruleForm.region[1];
-      this.ruleForm.area = this.ruleForm.region[2];
+      if (this.ruleForm.region.length != 0) {
+        this.ruleForm.province = this.ruleForm.region[0];
+        this.ruleForm.city = this.ruleForm.region[1];
+        this.ruleForm.area = this.ruleForm.region[2];
+      } else {
+        this.ruleForm.province = "";
+        this.ruleForm.city = "";
+        this.ruleForm.area = "";
+      }
+
+      // console.log(this.ruleForm);
       // debugger;
+      // return;
       updPersonalData(this.ruleForm).then(res => {
         if (res.code == 200) {
           this.$refs.tips.toast(res.msg);

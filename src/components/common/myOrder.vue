@@ -325,7 +325,7 @@
               </div>
               <div>
                 <span>{{ item.orderStatusName }}</span>
-                <i
+                <!-- <i
                   @click="chooseOrder(item)"
                   v-if="item.isBill == false && statusNum == '4'"
                   :class="[
@@ -340,12 +340,31 @@
                   class="f999"
                   v-if="item.isBill == true && statusNum == '4'"
                   >已开具发票</span
-                >
+                > -->
               </div>
             </div>
           </div>
           <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
+              <!-- 选择开发票的订单 -->
+              <div style="width: 50px;">
+                <!-- <span>{{ item.orderStatusName }}</span> -->
+                <i
+                  @click="chooseOrder(item)"
+                  v-if="item.isBill == false && statusNum == '4'"
+                  :class="[
+                    'el-icon-success',
+                    'font24',
+                    'pointer',
+                    item.select ? 'price-color' : 'f999'
+                  ]"
+                ></i>
+                <span
+                  class="f999 font12"
+                  v-if="item.isBill == true && statusNum == '4'"
+                  >已开发票</span
+                >
+              </div>
               <div
                 class="order-img-box pointer"
                 @click="toGoodsInfo(item.goods.paperId)"
