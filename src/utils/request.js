@@ -8,8 +8,8 @@ import router from "@/router";
 const service = axios.create({
     // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
     // baseURL: "https://admin.cdzkzs.top",
-    // baseURL: 'http://192.168.31.9:8080',
-    baseURL: 'http://192.168.31.114:8080',
+    baseURL: 'http://192.168.31.9:8080',
+    // baseURL: 'http://192.168.31.114:8080',
     // baseURL: 'http://192.168.31.101:8080',
     // withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout

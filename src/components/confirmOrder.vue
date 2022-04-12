@@ -343,10 +343,7 @@ export default {
   },
   methods: {
     chooseNav(ind) {
-      // window.alert("111");
-      // console.log(ind);
       this.navNum = ind;
-      // debugger;
     },
     getbuyFirst() {
       approve().then(res => {
@@ -372,6 +369,7 @@ export default {
             if (this.addressList[i].is_default) {
               this.itemAddress = this.addressList[i];
               this.ind = i;
+              return;
             } else {
               this.ind = -1;
               this.navNum = -1;
@@ -483,7 +481,7 @@ export default {
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");
       } else if (this.region.length == 0 || this.unitName == "") {
-        this.$refs.tips.toast("请输入单位");
+        this.$refs.tips.toast("请填写单位");
       } else {
         createOrder(data).then(res => {
           if (res.code == 200) {

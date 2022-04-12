@@ -145,28 +145,37 @@ export default {
               setToken(res.data.authorization);
               hasLogin();
               this.$refs.tips.toast(res.msg);
-              if (res.data.fillAddress) {
-                this.$router.push({
-                  path: "/",
-                  name: "index"
-                });
-              } else {
-                this.$confirm("请完善个人信息中地址信息！", "提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                })
-                  .then(() => {
-                    this.$router.push({
-                      path: "/My",
-                      name: "My",
-                      query: {
-                        orderPage: 0
-                      }
-                    });
-                  })
-                  .catch(() => {});
-              }
+              this.$router.push({
+                path: "/",
+                name: "index"
+              });
+              // if (res.data.fillAddress) {
+              //   this.$router.push({
+              //     path: "/",
+              //     name: "index"
+              //   });
+              // } else {
+              //   this.$confirm("请完善个人信息中地址信息！", "提示", {
+              //     confirmButtonText: "确定",
+              //     cancelButtonText: "取消",
+              //     type: "warning"
+              //   })
+              //     .then(() => {
+              //       this.$router.push({
+              //         path: "/My",
+              //         name: "My",
+              //         query: {
+              //           orderPage: 0
+              //         }
+              //       });
+              //     })
+              //     .catch(() => {
+              //       this.$router.push({
+              //         path: "/",
+              //         name: "index"
+              //       });
+              //     });
+              // }
             } else if (res.code == -5) {
               this.$refs.tips.toast(res.msg);
               this.getImgcodeFun();
@@ -190,28 +199,32 @@ export default {
               setToken(res.data.authorization);
               hasLogin();
               this.$refs.tips.toast(res.msg);
-              if (res.data.fillAddress) {
-                this.$router.push({
-                  path: "/",
-                  name: "index"
-                });
-              } else {
-                this.$confirm("请完善个人信息中地址信息！", "提示", {
-                  confirmButtonText: "确定",
-                  cancelButtonText: "取消",
-                  type: "warning"
-                })
-                  .then(() => {
-                    this.$router.push({
-                      path: "/My",
-                      name: "My",
-                      query: {
-                        orderPage: 0
-                      }
-                    });
-                  })
-                  .catch(() => {});
-              }
+              this.$router.push({
+                path: "/",
+                name: "index"
+              });
+              // if (res.data.fillAddress) {
+              //   this.$router.push({
+              //     path: "/",
+              //     name: "index"
+              //   });
+              // } else {
+              //   this.$confirm("请完善个人信息中地址信息！", "提示", {
+              //     confirmButtonText: "确定",
+              //     cancelButtonText: "取消",
+              //     type: "warning"
+              //   })
+              //     .then(() => {
+              //       this.$router.push({
+              //         path: "/My",
+              //         name: "My",
+              //         query: {
+              //           orderPage: 0
+              //         }
+              //       });
+              //     })
+              //     .catch(() => {});
+              // }
             } else {
               this.$refs.tips.toast(res.msg);
             }

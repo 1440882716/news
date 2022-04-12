@@ -349,16 +349,22 @@
               <!-- 选择开发票的订单 -->
               <div style="width: 50px;">
                 <!-- <span>{{ item.orderStatusName }}</span> -->
-                <i
-                  @click="chooseOrder(item)"
+                <div
+                  class="flex-c"
                   v-if="item.isBill == false && statusNum == '4'"
-                  :class="[
-                    'el-icon-success',
-                    'font24',
-                    'pointer',
-                    item.select ? 'price-color' : 'f999'
-                  ]"
-                ></i>
+                >
+                  <span class="f999 font12">开发票</span>
+                  <i
+                    @click="chooseOrder(item)"
+                    :class="[
+                      'el-icon-success',
+                      'font24',
+                      'pointer',
+                      item.select ? 'price-color' : 'f999'
+                    ]"
+                  ></i>
+                </div>
+
                 <span
                   class="f999 font12"
                   v-if="item.isBill == true && statusNum == '4'"
@@ -520,10 +526,6 @@ export default {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      console.log(goodsCount);
-      // console.log(this.idArr);
-      // debugger;
-      // return;
       // 选中发票开具发票
       if (this.invoiceOrder.length != 0) {
         this.invoiceForm.money = goodsCount.toFixed(2);
@@ -534,12 +536,9 @@ export default {
             this.invoiceData = res.data;
             for (let i = 0; i < this.invoiceData.length; i++) {
               if (this.invoiceData[i].isDefault) {
-                // debugger;
-                // this.invoiceForm.ordersId = this.idArr.join(",");
                 this.invoiceForm.status = this.invoiceData[i].type;
                 this.invoiceForm.name = this.invoiceData[i].name;
                 this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
-                // this.invoiceForm.money = goodsCount.toFixed(2);
                 this.invoiceForm.companyAddress = this.invoiceData[
                   i
                 ].companyAddress;
@@ -576,6 +575,9 @@ export default {
       handupInvoice(this.invoiceForm).then(res => {
         if (res.code == 200) {
           this.$refs.tips.toast("发票已开成功");
+          // 清除之前的发票订单
+          this.invoiceOrder = [];
+          this.idArr = [];
           this.getData();
         } else {
           this.$refs.tips.toast(res.msg);
@@ -761,6 +763,7 @@ export default {
         return item.select;
       });
       // console.log(this.invoiceOrder);
+      // debugger;
     }
   }
 };

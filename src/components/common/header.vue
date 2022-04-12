@@ -11,7 +11,7 @@
               <li @click="toMypage(0)">
                 个人中心
               </li>
-              <li @click="toMypage(5)">我的订单</li>
+              <li @click="toMypage(4)">我的订单</li>
               <li>
                 <router-link to="./cart" style="text-decoration: none;"
                   >购物车</router-link

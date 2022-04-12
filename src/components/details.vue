@@ -4,7 +4,7 @@
     <!-- 寒假快乐和 -->
     <Header></Header>
     <div class="content p-b-80">
-      <div class="goods-box flex-r flex-b m-t-10">
+      <div class="goods-box flex-r flex-b m-t-20">
         <div class="goods-left">
           <div class="big-img-box">
             <Magnifier :imgList="imgList"></Magnifier>
@@ -13,6 +13,14 @@
         <div class="goods-right text-left">
           <div class="font24 m-b-20 bold-font">{{ goodsData.name }}</div>
           <span class="tips-color font16">{{ goodsData.description }}</span>
+
+          <!-- <span
+            >明月几时有把酒问青天不知天上宫阙今夕是何年我欲乘风归去又恐琼楼玉宇高处不胜寒起舞弄清影何似在人间转朱阁低绮户照无眠不应有恨何事长向别时圆人有悲欢离合月有阴晴圆缺此事古难全但愿人长久千里共婵娟</span
+          >
+          <span
+            >大江东去浪淘尽
+            千古风流人物故垒西边人道是三国周郎赤壁乱石穿空惊涛拍岸卷起千堆雪江山如画一时多少豪杰遥想公将当年小乔初嫁了英姿雄发羽扇纶巾谈笑间樯橹灰飞烟灭故国神游多情应笑我早生华发人生如梦一樽还酹江月</span
+          > -->
           <div class="price-box-de flex-r">
             <!-- <div class="font14 tips-color price-title">
               {{ goodsData.price }}
