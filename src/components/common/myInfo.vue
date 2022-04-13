@@ -69,16 +69,13 @@
                   width="100px"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="真实姓名">
+              <!-- <el-form-item label="真实姓名">
                 <el-input
                   style="width:333px"
                   v-model="ruleForm.name"
                   placeholder="请输入姓名"
                 ></el-input>
-                <!-- <el-button class="primary-btn" type="primary"
-                  >实名认证</el-button
-                > -->
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item label="性别">
                 <el-radio-group v-model="ruleForm.sex">
                   <el-radio label="男"></el-radio>
@@ -187,7 +184,7 @@ export default {
       headImg: "../../assets/img/people3.png",
       ruleForm: {
         nickname: "",
-        name: "",
+        // name: "",
         sex: "",
         idCard: "",
         mobile: "",
@@ -219,14 +216,18 @@ export default {
           let arr = [res.data.province, res.data.city, res.data.area];
           this.userName = res.data.userName;
           this.nickName = res.data.nickname;
+          this.ruleForm.nickname = res.data.nickname;
+          // this.ruleForm.name = res.data.name;
+
+          this.ruleForm.idCard = res.data.idCard;
           this.ruleForm.sex = res.data.sex;
           this.ruleForm.mobile = res.data.mobile;
           this.ruleForm.region = arr;
           this.ruleForm.address = res.data.address;
-          if (res.data.avatar != "" || res.data.avatar != null) {
-            this.headImg = res.data.avatar;
-          } else {
+          if (res.data.avatar == "" || res.data.avatar == null) {
             this.headImg = "../../assets/img/people3.png";
+          } else {
+            this.headImg = res.data.avatar;
           }
         } else {
         }

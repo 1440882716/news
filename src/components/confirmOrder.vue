@@ -64,12 +64,11 @@
                 </div>
                 <div class="m-r-10">{{ item.mobile }}</div>
               </div>
-              <div class="myActiveColor add-right text-right">
+              <!-- <div class="myActiveColor add-right text-right">
                 <span class="m-r-20 pointer" @click="delAddFun(item.id)"
                   >删除</span
                 >
-                <!-- <span class="pointer" @click="updAddFun(item)">编辑</span> -->
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="order-box">
@@ -395,6 +394,10 @@ export default {
     // 新增地址后关闭弹框 更新地址列表
     setData(msg) {
       this.addressList = msg;
+      console.log(this.addressList);
+      this.ind = 0;
+      this.itemAddress = this.addressList[0];
+      // debugger;
     },
     delAddFun(id) {
       delAdd({ id: id }).then(res => {

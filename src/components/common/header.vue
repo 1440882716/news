@@ -4,7 +4,11 @@
       <div class="v1-head-box">
         <div class=" font16 fff-font content flex-r flex-b tips-color">
           <div class="head-line-left">
-            <span>您好，欢迎来到报刊订阅平台</span>
+            <span v-if="toHome">您好，欢迎来到报刊订阅平台</span>
+            <!-- <span v-else>回到首页</span> -->
+            <router-link v-else to="/" style="text-decoration: none;"
+              >回到首页</router-link
+            >
           </div>
           <div class="head-line-right flex-r flex-e">
             <ul class="flex-r flex-e head-ul-list pointer">
@@ -62,6 +66,7 @@ export default {
   data() {
     return {
       isLogin: false,
+      toHome: true,
       loginTxt: "请登录",
       keyWord: ""
     };
@@ -69,7 +74,12 @@ export default {
   created() {
     // let aaa = getToken();
     this.isLogin = getLogin();
-    // console.log(this.isLogin);
+    console.log(this.$route.path);
+    if (this.$route.path == "/") {
+      this.toHome = true;
+    } else {
+      this.toHome = false;
+    }
     // debugger;
   },
   mounted() {},

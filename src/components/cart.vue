@@ -96,6 +96,7 @@
                         value-format="yyyy-MM-dd"
                         v-model="item.startrTime"
                         type="date"
+                        :picker-options="pickerOptions1"
                         placeholder="选择日期"
                         @change="changeStart(item)"
                       >
@@ -109,6 +110,7 @@
                         value-format="yyyy-MM-dd"
                         v-model="item.endTime"
                         type="date"
+                        :picker-options="pickerOptions2"
                         placeholder="选择日期"
                         @change="changeEnd(item)"
                       >
@@ -264,7 +266,28 @@ export default {
       visible: false,
       selectAll: false,
       allPrice: 0,
-      goodsList: []
+      goodsList: [],
+      pickerOptions1: {
+        disabledDate(time) {
+          return (
+            time.getTime() < Date.now() - 8.64e7 ||
+            time.getFullYear() < new Date(time).getFullYear()
+          );
+        }
+      },
+      pickerOptions2: {
+        disabledDate(time) {
+          // let nowDate = new Date();
+          // let year = nowDate.getFullYear();
+          // let end_time = `${year}-12-31`;
+          // end_time = new Date(end_timenew).getTime();
+          // return time.getTime() < end_time;
+          return (
+            time.getTime() < Date.now() - 8.64e7 ||
+            time.getFullYear() < new Date(time).getFullYear()
+          );
+        }
+      }
     };
   },
   computed: {
@@ -350,14 +373,28 @@ export default {
     // 改变起订日期
     changeStart(info) {
       console.log(info);
-      // debugger;
-      // return;
-      this.getNewsNum(
-        info.paperId,
-        info.startrTime,
-        info.endTime,
-        info.paperPrice
-      );
+      var nowDate = new Date();
+      var year = nowDate.getFullYear();
+      let thisYear = year + "-" + "12-31";
+      let a = Date.parse(info.startrTime);
+      let b = Date.parse(thisYear);
+      if (a < b) {
+        this.getNewsNum(
+          info.paperId,
+          info.startrTime,
+          info.endTime,
+          info.paperPrice
+        );
+      } else {
+        this.$refs.tips.toast("只能在今年内选择订阅开始时间");
+        info.startrTime = thisYear;
+        this.getNewsNum(
+          info.paperId,
+          info.startrTime,
+          info.endTime,
+          info.paperPrice
+        );
+      }
     },
     // 改变订阅结束日期
     changeEnd(info) {

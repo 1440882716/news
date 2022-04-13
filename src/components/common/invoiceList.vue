@@ -310,14 +310,22 @@ export default {
     },
     // 删除发票
     delInvoice(id) {
-      delInvoiceList({ id: id }).then(res => {
-        if (res.code == 200) {
-          this.$refs.tips.toast(res.msg);
-          this.getData();
-        } else {
-          this.$refs.tips.toast(res.msg);
-        }
-      });
+      this.$confirm("确定要删除发票吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delInvoiceList({ id: id }).then(res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.getData();
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
+        })
+        .catch(() => {});
     },
     getInvoiceFun() {
       pageData().then(res => {

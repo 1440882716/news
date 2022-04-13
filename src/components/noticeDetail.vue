@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" style="height: 940px;position: relative;">
     <msgBox ref="tips"></msgBox>
     <!-- 寒假快乐和 -->
     <Header></Header>
@@ -25,7 +25,7 @@
       </div>
       <!-- <a :href="fileUrl">下载附件</a> -->
     </div>
-    <Footer></Footer>
+    <Footer style="position: absolute;bottom: 0;"></Footer>
   </div>
 </template>
 <script>

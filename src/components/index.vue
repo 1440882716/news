@@ -58,61 +58,64 @@
           </div>
         </div>
       </div>
-      <!-- 民主法制建设 -->
-      <div class="home-goods-two flex-r fff-font">
-        <div class="two-goods-img">
-          <img
-            class="goods-img-size"
-            :src="newsFirst.pics"
-            alt=""
-            @click="toDetail(newsFirst.id)"
-          />
-        </div>
-        <div class="goods-des-box text-left">
-          <p class="font48">{{ newsFirst.name }}</p>
-          <p class="font28 m-t-40 goods-des-text">
-            {{ newsFirst.description }}
-          </p>
 
-          <div class="font20 m-t-40 home-price-text">
-            ￥<span class="font48">{{
-              (newsFirst.price * newsFirst.totalNum).toFixed(2)
-            }}</span
-            >/年
+      <div v-for="(item, index) in goodsData">
+        <!-- 民主法制建设 -->
+        <div class="home-goods-two flex-r fff-font" v-if="index == 0">
+          <div class="two-goods-img">
+            <img
+              class="goods-img-size"
+              :src="item.pics"
+              alt=""
+              @click="toDetail(item.id)"
+            />
           </div>
-          <div
-            class="buy-first-home font24 m-t-30 pointer"
-            @click="toDetail(newsFirst.id)"
-          >
-            立即订阅
+          <div class="goods-des-box text-left">
+            <p class="font48">{{ item.name }}</p>
+            <p class="font28 m-t-40 goods-des-text">
+              {{ item.description }}
+            </p>
+
+            <div class="font20 m-t-40 home-price-text">
+              ￥<span class="font48">{{
+                (item.price * item.totalNum).toFixed(2)
+              }}</span
+              >/年
+            </div>
+            <div
+              class="buy-first-home font24 m-t-30 pointer"
+              @click="toDetail(item.id)"
+            >
+              立即订阅
+            </div>
           </div>
         </div>
-      </div>
-      <!-- 人民权力报 -->
-      <div class="home-goods-two flex-r fff-font">
-        <div class="goods-des-box-second text-left">
-          <p class="font48">{{ newsSecond.name }}</p>
-          <p class="font28 m-t-40">{{ newsSecond.description }}</p>
-          <div class="font20 m-t-40 home-price-text">
-            ￥<span class="font48">{{
-              (newsSecond.price * newsSecond.totalNum).toFixed(2)
-            }}</span>
-            /年
+        <!-- 人民权力报 -->
+        <div class="home-goods-two flex-r fff-font" v-else>
+          <div class="goods-des-box-second text-left">
+            <p class="font48">{{ item.name }}</p>
+            <p class="font28 m-t-40">{{ item.description }}</p>
+            <div class="font20 m-t-40 home-price-text">
+              ￥<span class="font48">{{
+                (item.price * item.totalNum).toFixed(2)
+              }}</span>
+              /年
+            </div>
+            <div
+              class="buy-first-home font24 m-t-30 pointer"
+              @click="toDetail(item.id)"
+            >
+              立即订阅
+            </div>
           </div>
-          <div
-            class="buy-first-home font24 m-t-30 pointer"
-            @click="toDetail(newsSecond.id)"
-          >
-            立即订阅
+          <div class="two-goods-img text-left">
+            <img
+              class="goods-img-size-second"
+              :src="item.pics"
+              alt=""
+              @click="toDetail(item.id)"
+            />
           </div>
-        </div>
-        <div class="two-goods-img text-left">
-          <img
-            class="goods-img-size-second"
-            :src="newsSecond.pics"
-            alt=""
-            @click="toDetail(newsSecond.id)"
-          />
         </div>
       </div>
     </div>
@@ -263,7 +266,8 @@ export default {
       ],
       noticeData: [],
       newsFirst: {},
-      newsSecond: {}
+      newsSecond: {},
+      goodsData: []
     };
   },
   created() {
@@ -275,10 +279,15 @@ export default {
     getGoods() {
       paperPage().then(res => {
         if (res.code == 200) {
-          this.newsFirst = res.data.records[0];
-          this.newsSecond = res.data.records[1];
-          // console.log(this.newsFirst);
-          // debugger;
+          this.goodsData = res.data.records;
+          // if (res.data.records.length == 2) {
+          //   this.newsFirst = res.data.records[0];
+          //   this.newsSecond = res.data.records[1];
+          // } else if (res.data.records.length == 1) {
+          //   this.newsFirst = res.data.records[0];
+          // } else {
+          //   this.goodsData = res.data.records;
+          // }
         }
       });
     },

@@ -54,7 +54,7 @@
             </el-form-item>
             <el-form-item label="邮编">
               <el-input
-                v-model="addressForm.postcode"
+                v-model="addressForm.postCode"
                 type="text"
                 placeholder="请输入邮政编码"
               ></el-input>
@@ -203,16 +203,16 @@ export default {
         ],
         address: [
           { required: true, message: "请输入详细地址", trigger: "blur" }
-        ],
-        postCode: [
-          { required: true, message: "请输入邮编", trigger: "blur" },
-          {
-            required: true,
-            pattern: /^\d{6}$/,
-            message: "请输入正确的邮编",
-            trigger: "blur"
-          }
         ]
+        // postCode: [
+        //   { required: true, message: "请输入邮编", trigger: "blur" },
+        //   {
+        //     required: true,
+        //     pattern: /^\d{6}$/,
+        //     message: "请输入正确的邮编",
+        //     trigger: "blur"
+        //   }
+        // ]
       }
     };
   },
@@ -261,7 +261,7 @@ export default {
       this.addressForm.mobile = info.mobile;
       this.addressForm.region = arr;
       this.addressForm.address = info.address;
-      this.addressForm.postcode = info.postcode;
+      this.addressForm.postCode = info.postcode;
       this.addressForm.isDefault = info.is_default;
       this.addressForm.id = info.id;
       this.isDefault = info.is_default;

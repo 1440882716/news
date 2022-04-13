@@ -1,10 +1,10 @@
 <template>
-  <div id="container">
+  <div id="container" style="height: 940px;position: relative;">
     <msgBox ref="tips"></msgBox>
     <myHeader></myHeader>
     <!-- <span>订单详情</span> -->
     <div class="content980 text-left">
-      <img class="logo-img m-t-20 " src="../assets/img/logo.png" alt="" />
+      <!-- <img class="logo-img m-t-20 " src="../assets/img/logo.png" alt="" /> -->
       <div class="flex-r flex-b order-step m-t-20">
         <div class="order-step-left font12 main-color">
           <span>订单号：{{ orderId }}</span>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <Footer></Footer>
+    <Footer style="position: absolute;bottom: 0;"></Footer>
   </div>
 </template>
 <script>

@@ -53,7 +53,7 @@
             </div>
             <input
               class=" re-step-code"
-              type="password"
+              type="text"
               v-model="phoneCode"
               placeholder="请输入手机验证码"
             />
