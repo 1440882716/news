@@ -22,7 +22,7 @@
         </div>
         <div class="my-nav-right">
           <!-- 个人资料 -->
-          <myInfo v-show="navNum == 0"></myInfo>
+          <myInfo v-show="navNum == 0" ref="child1"></myInfo>
           <!-- 账户安全 -->
           <Account v-show="navNum == 1"></Account>
           <!-- 我的银行卡 -->
@@ -89,9 +89,8 @@ export default {
   },
   methods: {
     chooseNav(ind) {
-      // window.alert("111");
-      // console.log(ind);
       this.navNum = ind;
+
       if (ind == 0) {
         this.$refs.child1.getData();
       }

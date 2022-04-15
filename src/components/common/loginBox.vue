@@ -144,6 +144,11 @@ export default {
             if (res.code == 200) {
               setToken(res.data.authorization);
               hasLogin();
+
+              // console.log(this.loginFlag);
+              // debugger;
+              // return;
+
               this.$refs.tips.toast(res.msg);
               this.$router.push({
                 path: "/",
@@ -198,6 +203,7 @@ export default {
             if (res.code == 200) {
               setToken(res.data.authorization);
               hasLogin();
+
               this.$refs.tips.toast(res.msg);
               this.$router.push({
                 path: "/",

@@ -18,6 +18,8 @@ Vue.use(Element)
 Vue.prototype.rq = requests
 const imgApi = "http://106.13.208.177:9001"
 Vue.prototype.globleImgApi = imgApi
+const loginFlag = false
+Vue.prototype.loginFlag = loginFlag
 
 Vue.config.productionTip = false
 

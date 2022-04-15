@@ -40,11 +40,25 @@
         <div class="info-container" v-show="navTitle == 1">
           <div class="my-head-img flex-r">
             <img
+              v-if="hasImg"
+              class="head-img m-r-10"
+              src="../../assets/img/people3.png"
+              alt=""
+            />
+            <img v-else class="head-img m-r-10" :src="headImg" alt="" />
+            <!-- <el-image
+              class="head-img m-r-10"
+              src="../../assets/img/people3.png"
+              @click="selectNav(2)"
+              alt=""
+            ></el-image>
+            <el-image
               class="head-img m-r-10"
               :src="headImg"
               @click="selectNav(2)"
               alt=""
-            />
+            ></el-image> -->
+
             <div class="tips-color font14 m-t-10">
               <div>
                 用户名：<span class="main-color">{{ userName }}</span>
@@ -69,13 +83,6 @@
                   width="100px"
                 ></el-input>
               </el-form-item>
-              <!-- <el-form-item label="真实姓名">
-                <el-input
-                  style="width:333px"
-                  v-model="ruleForm.name"
-                  placeholder="请输入姓名"
-                ></el-input>
-              </el-form-item> -->
               <el-form-item label="性别">
                 <el-radio-group v-model="ruleForm.sex">
                   <el-radio label="男"></el-radio>
@@ -194,6 +201,7 @@ export default {
         city: "",
         area: ""
       },
+      hasImg: true,
       rules: {
         region: [
           { required: true, message: "请选择所在地区", trigger: "blur" }
@@ -208,7 +216,7 @@ export default {
     this.token = getToken();
     this.getData();
   },
-  mounted() {},
+  // mounted() {},
   methods: {
     getData() {
       userInfo().then(res => {
@@ -217,17 +225,18 @@ export default {
           this.userName = res.data.userName;
           this.nickName = res.data.nickname;
           this.ruleForm.nickname = res.data.nickname;
-          // this.ruleForm.name = res.data.name;
-
           this.ruleForm.idCard = res.data.idCard;
           this.ruleForm.sex = res.data.sex;
           this.ruleForm.mobile = res.data.mobile;
           this.ruleForm.region = arr;
           this.ruleForm.address = res.data.address;
           if (res.data.avatar == "" || res.data.avatar == null) {
-            this.headImg = "../../assets/img/people3.png";
+            this.hasImg = true;
           } else {
+            this.hasImg = false;
             this.headImg = res.data.avatar;
+            // console.log(this.headImg);
+            // debugger;
           }
         } else {
         }
@@ -254,22 +263,31 @@ export default {
         this.ruleForm.city = "";
         this.ruleForm.area = "";
       }
-
       // console.log(this.ruleForm);
       // debugger;
       // return;
       updPersonalData(this.ruleForm).then(res => {
         if (res.code == 200) {
-          this.$refs.tips.toast(res.msg);
-          this.getData();
+          // 修改个人信息成功 提示需要重新登录
+          this.$confirm("修改个人信息后需要重新登录?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.$router.push({
+                path: "/login"
+              });
+            })
+            .catch(() => {
+              this.$router.push({
+                path: "/"
+              });
+            });
         } else {
           this.$refs.tips.toast(res.msg);
         }
       });
-      // } else {
-      //   return false;
-      // }
-      // });
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
