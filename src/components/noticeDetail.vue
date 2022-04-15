@@ -1,5 +1,5 @@
 <template>
-  <div class="container" style="height: 940px;position: relative;">
+  <div class="container" style="height: 100%;position: relative;">
     <msgBox ref="tips"></msgBox>
     <!-- 寒假快乐和 -->
     <Header></Header>

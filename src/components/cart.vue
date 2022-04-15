@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" style="height: 100%;position: relative;">
     <msgBox ref="tips"></msgBox>
     <Header></Header>
     <!-- 购物车不为空 -->
@@ -243,7 +243,7 @@
         </router-link>
       </el-empty>
     </div>
-    <Footer></Footer>
+    <Footer style="position: absolute;bottom: 0;"></Footer>
   </div>
 </template>
 
@@ -348,8 +348,10 @@ export default {
         endTime: endtime
       }).then(res => {
         if (res.code == 200) {
+          // if (res.data == 0) {
+          // this.$refs.tips.toast("期数不能为0");
+          // } else {
           // 拿到期数，计算单价、总价
-          // this.goodsData.present = res.data;
           for (let i = 0; i < this.goodsList.length; i++) {
             if (paperid == this.goodsList[i].paperId) {
               this.goodsList[i].periodNum = res.data;
@@ -367,6 +369,7 @@ export default {
               );
             }
           }
+          // }
         }
       });
     },
