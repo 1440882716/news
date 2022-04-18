@@ -37,7 +37,7 @@
                 <!-- src="../assets/img/banner_v3.png" -->
                 <img
                   style="width: 100%"
-                  src="../assets/img/banner_v3.png"
+                  src="../assets/img/banner2_v4.png"
                   alt=""
                 />
               </el-carousel-item>
@@ -48,14 +48,18 @@
         <div class="news-ad-box flex flex-e">
           <div class="news-and-ad flex-c flex-b  text-left">
             <div class="news-ad-item">
-              <div class="ad-news-title font22 p-l-10 p-t-10">公告</div>
-              <div class="flex-r flex-b" v-for="item in noticeData">
+              <div class="ad-news-title font22  text-center">公告</div>
+              <div
+                class="flex-r flex-b news-item-v4"
+                v-for="item in noticeData"
+              >
                 <div class="ellipsis-text pointer" @click="toNotice(item.id)">
                   {{ item.title }}
                 </div>
-                <div class="hot-text-box font12 m-r-20 bold-font">热门</div>
+                <div class="hot-text-box font12  bold-font">热门</div>
               </div>
             </div>
+            <!-- <el-divider></el-divider> -->
           </div>
         </div>
       </div>

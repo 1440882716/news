@@ -2,54 +2,49 @@
   <div class="footer">
     <div class="flex-r footer-box fff-font">
       <div class="our-style">
-        <!-- <ul class="flex-r flex-a footer-ul">
-          <li class="flex-r">
+        <ul class="flex-r flex-a footer-ul">
+          <li class="flex-r pointer">
             <img
               class="footer-img"
               src="../../assets/img/brand-footer.png"
               alt=""
             />
-            <div class="flex-c text-left m-l-10 m-t-5">
-              <span class="font18 bold600">品质保证</span>
-              <span class="font14 ">邮政优选</span>
+            <div
+              class="flex-c text-left m-l-10 m-t-10"
+              @click="toOtherPage(otherPage[0])"
+            >
+              <span class="font18 bold600">省人大</span>
             </div>
           </li>
-          <li class="flex-r">
+          <li class="flex-r pointer">
             <img
               class="footer-img"
               src="../../assets/img/brand-footer.png"
               alt=""
             />
-            <div class="flex-c text-left m-l-10 m-t-5">
-              <span class="font18 bold600">特色服务</span>
-              <span class="font14 ">不一样的感受</span>
+            <div
+              class="flex-c text-left m-l-10 m-t-10"
+              @click="toOtherPage(otherPage[1])"
+            >
+              <span class="font18 bold600">人民权利报</span>
             </div>
           </li>
-          <li class="flex-r">
+          <li class="flex-r pointer">
             <img
               class="footer-img"
               src="../../assets/img/brand-footer.png"
               alt=""
             />
-            <div class="flex-c text-left m-l-10 m-t-5">
-              <span class="font18 bold600">集团文化</span>
-              <span class="font14 ">正品权威</span>
+            <div
+              class="flex-c text-left m-l-10 m-t-10"
+              @click="toOtherPage(otherPage[2])"
+            >
+              <span class="font18 bold600">人民法制网</span>
             </div>
           </li>
-          <li class="flex-r">
-            <img
-              class="footer-img"
-              src="../../assets/img/brand-footer.png"
-              alt=""
-            />
-            <div class="flex-c text-left m-l-10 m-t-5">
-              <span class="font18 bold600">覆盖全乡</span>
-              <span class="font14 ">安全送达</span>
-            </div>
-          </li>
-        </ul> -->
+        </ul>
         <div class="des-footer font14 tips-color text-center">
-          <span @click="toOtherPage" class="pointer"
+          <span @click="toOtherPage(otherPage[3])" class="pointer"
             >备案号:蜀ICP备2020035095号-1</span
           >
         </div>
@@ -64,9 +59,19 @@
 </template>
 <script>
 export default {
+  data() {
+    return {
+      otherPage: [
+        "http://www.scspc.gov.cn/", //四川省人大
+        "http://www.sdrd.gov.cn/rmqlb/channels/ch03587/", //人民权利报
+        "https://www.rmfz.org.cn/", //民主法制报
+        "https://beian.miit.gov.cn/#/Integrated/index" //备案号查询
+      ]
+    };
+  },
   methods: {
-    toOtherPage() {
-      window.open("https://beian.miit.gov.cn/#/Integrated/index", "_blank");
+    toOtherPage(url) {
+      window.open(url, "_blank");
     }
   }
 };
@@ -88,7 +93,7 @@ export default {
 }
 .our-style {
   width: 100%;
-  /* padding-top: 30px; */
+  padding-top: 30px;
   padding-bottom: 10px;
 }
 .footer-ul {

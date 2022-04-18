@@ -213,7 +213,7 @@
                 />
               </div>
               <span class="m-l-10 m-r-10">全选</span>
-              <span>删除选中的商品</span>
+              <span class="pointer" @click="delAll">删除选中的商品</span>
             </div>
             <div class="count-right flex-r flex-e">
               <div class="m-r-20">
@@ -522,6 +522,40 @@ export default {
         })
         .catch(() => {});
       // }
+    },
+    // 多项删除
+    delAll() {
+      let select_goods = this.goodsList.filter(item => {
+        return item.select;
+      });
+      let idArr = select_goods.map(item => {
+        return item.id;
+      });
+      console.log(select_goods);
+      console.log(idArr);
+      debugger;
+      if (idArr.length == 0) {
+        this.$refs.tips.toast("请选择要删除的商品");
+      } else {
+        this.$confirm("您确定要删除吗?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            for (let i = 0; i < idArr.length; i++) {
+              delCart({ id: idArr[i] }).then(res => {
+                if (res.code == 200) {
+                  this.$refs.tips.toast(res.msg);
+                  this.getData();
+                } else {
+                  this.$refs.tips.toast(res.msg);
+                }
+              });
+            }
+          })
+          .catch(() => {});
+      }
     },
     // 商品详情
     toDetail(info) {

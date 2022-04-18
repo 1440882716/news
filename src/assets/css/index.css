@@ -87,31 +87,36 @@ body{
   height: 1000px !important;
 }
 .news-ad-item {
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   line-height: 30px;
   /* overflow: hidden; */
   overflow-y: auto;
+  /* border-bottom: 1px solid #DCDFE6; */
   /* background-color: lightcoral; */
+  padding: 10px 10px;
 }
 .deliver-line {
   width: 100%;
   height: 2px;
   background-color: #fff;
 }
+.news-item-v4{
+  border-bottom: 1px solid #DCDFE6;
+}
 .ellipsis-text {
   width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding-left: 10px;
+  /* padding-left: 10px; */
 }
 .hot-text-box {
   width: 34px;
   height: 20px;
   text-align: center;
-  line-height: 20px;
-  margin-top: 10px;
+  line-height: 30px;
+  /* margin-top: 10px; */
   color: #ff4b4b;
   /* background-color: #ff4b4b; */
 }
@@ -191,25 +196,20 @@ body{
 .left-img-v4{
   margin-top: 40px;
   margin-left: 40px;
-  /* padding: 10px; */
 }
 .goods-item-v4{
   width: 49%;
-  /* padding: 10px; */
   height: 380px;
   background-color: #ffcccc;
-  /* border: 1px solid #DCDFE6; */
   background: url(../img/home-line-v4.png) no-repeat;
-  /* background-size:730px 300px; */
   background-size: 100% 100%;
   margin-bottom: 20px;
 
 }
 .goods-info-v4{
-  width: calc(100% - 320px);
+  width: calc(100% - 380px);
   height: 100%;
   position: relative;
-  /* background-color: #fff; */
 }
 .buy-btn-v4{
   width: 120px;
