@@ -27,6 +27,12 @@ router-link {
   margin: 0 auto;
   /* background-color: aquamarine; */
 }
+.content-home {
+  width: 1500px;
+  height: auto;
+  margin: 0 auto;
+  /* background-color: darksalmon; */
+}
 .content980 {
   width: 980px;
   margin: 0 auto;
@@ -255,6 +261,10 @@ input {
 .m-b-80 {
   margin-bottom: 80px;
 }
+.p-l-10{
+  padding-left: 10px;
+}
+
 .p-t-10 {
   padding-top: 10px;
 }

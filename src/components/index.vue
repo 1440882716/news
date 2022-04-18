@@ -21,22 +21,23 @@
       </div>
     </div> -->
     <!-- 轮播、商品模块 -->
-    <div class="full-container gray-bgc ">
+    <div class="content-home gray-bgc ">
       <!-- 分类和广告 -->
       <div class="bannar-center-box flex-r flex-b">
         <!-- 轮播图 -->
         <div class="bannar-box">
           <!-- 轮播图 -->
           <div class="block bannar-box">
-            <el-carousel trigger="click" height="1000px">
+            <el-carousel trigger="click" height="300px">
               <el-carousel-item
                 class="bannar-item"
                 v-for="item in bannarArr"
                 :key="item"
               >
+                <!-- src="../assets/img/banner_v3.png" -->
                 <img
                   style="width: 100%"
-                  src="../assets/img/bannar.png"
+                  src="../assets/img/banner_v3.png"
                   alt=""
                 />
               </el-carousel-item>
@@ -45,22 +46,56 @@
         </div>
         <!-- 新闻动态和通知公告 -->
         <div class="news-ad-box flex flex-e">
-          <div class="news-and-ad flex-c flex-b fff-font text-left">
+          <div class="news-and-ad flex-c flex-b  text-left">
             <div class="news-ad-item">
-              <div class="ad-news-title font24">公告</div>
+              <div class="ad-news-title font22 p-l-10 p-t-10">公告</div>
               <div class="flex-r flex-b" v-for="item in noticeData">
                 <div class="ellipsis-text pointer" @click="toNotice(item.id)">
                   {{ item.title }}
                 </div>
-                <div class="hot-text-box font12 m-r-20">热门</div>
+                <div class="hot-text-box font12 m-r-20 bold-font">热门</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div v-for="(item, index) in goodsData">
-        <!-- 民主法制建设 -->
+      <!-- 报刊分类 -->
+      <div class="font24 m-t-40 ">
+        <el-divider>
+          <div class="font24 ">报刊分类</div>
+        </el-divider>
+      </div>
+      <div class="goods-v4 m-t-40 flex-r flex-b">
+        <div
+          class="goods-item-v4 flex-r flex-b"
+          v-for="(item, index) in goodsData"
+        >
+          <div class="left-img-v4 pointer" @click="toDetail(item.id)">
+            <img
+              style="width: 250px; height: 300px"
+              src="../assets/img/mzfz.png"
+              alt=""
+            />
+          </div>
+          <div class="goods-info-v4 text-left">
+            <p class="font24 m-t-40">{{ item.name }}</p>
+            <div class="m-t-20 goods-des-text">
+              {{ item.description }}
+              <!-- 明月几时有把酒问青天不知天上宫阙今夕是何年我欲乘风归去又恐琼楼玉宇高处不胜寒起舞弄清影明月几时有把酒问青天不知天上宫阙今夕是何年我欲乘风归去又恐琼楼玉宇高处不胜寒起舞弄清影 -->
+            </div>
+            <div class="font18 m-t-40 home-price-text">
+              ￥<span class="font24 main-red">{{
+                (item.price * item.totalNum).toFixed(2)
+              }}</span
+              >/年
+            </div>
+            <div class="buy-btn-v4 m-t-40 pointer" @click="toDetail(item.id)">
+              立即订阅
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div v-for="(item, index) in goodsData" class="m-t-40">
         <div class="home-goods-two flex-r fff-font" v-if="index == 0">
           <div class="two-goods-img">
             <img
@@ -90,7 +125,6 @@
             </div>
           </div>
         </div>
-        <!-- 人民权力报 -->
         <div class="home-goods-two flex-r fff-font" v-else>
           <div class="goods-des-box-second text-left">
             <p class="font48">{{ item.name }}</p>
@@ -117,7 +151,7 @@
             />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
     <Footer></Footer>
   </div>
@@ -141,7 +175,7 @@ export default {
     return {
       msg: "Welcome to Your Vue.js App",
       // goodsId: "1496359872988073985",
-      bannarArr: ["../assets/img/bannar.png"],
+      bannarArr: ["../assets/img/banner_v3.png"],
       newsArr: [
         {
           text:

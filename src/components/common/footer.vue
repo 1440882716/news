@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="flex-r footer-box fff-font">
       <div class="our-style">
-        <ul class="flex-r flex-a footer-ul">
+        <!-- <ul class="flex-r flex-a footer-ul">
           <li class="flex-r">
             <img
               class="footer-img"
@@ -47,41 +47,30 @@
               <span class="font14 ">安全送达</span>
             </div>
           </li>
-        </ul>
+        </ul> -->
         <div class="des-footer font14 tips-color text-center">
-          <span>周一至周日 9:00~23:00 客服不受理商务合作</span>
-          <!-- <div class="des-line-box">
-            <span>客服电话：11111111</span>
-            <span>|</span>
-            <span>配送方式</span>
-            <span>|</span>
-            <span>注意事项</span>
-            <span>|</span>
-            <span>支付方式</span>
-            <span>|</span>
-            <span>新手入门</span>
-          </div>
-          <div class="des-line-box">
-            <span>友情链接：</span>
-            <span>中国邮政集团官网</span>
-            <span>|</span>
-            <span>中国邮政储蓄银行</span>
-            <span>|</span>
-            <span>EMS</span>
-            <span>|</span>
-            <span>中国邮政广告网</span>
-          </div> -->
+          <span @click="toOtherPage" class="pointer"
+            >备案号:蜀ICP备2020035095号-1</span
+          >
         </div>
-        <img
+        <!-- <img
           class="footer-logo"
           src="https://www.11185.cn/web/static/img/footer5.png"
           alt=""
-        />
+        /> -->
       </div>
     </div>
   </div>
 </template>
-<script></script>
+<script>
+export default {
+  methods: {
+    toOtherPage() {
+      window.open("https://beian.miit.gov.cn/#/Integrated/index", "_blank");
+    }
+  }
+};
+</script>
 <style>
 @import "../../assets/css/gloab.css";
 .footer {
@@ -89,6 +78,7 @@
   height: auto;
   /* border-top: 5px solid #a30202; */
   background-color: #333333;
+  z-index: 2;
   /* margin-top: 40px; */
 }
 .footer-box {
@@ -98,7 +88,7 @@
 }
 .our-style {
   width: 100%;
-  padding-top: 30px;
+  /* padding-top: 30px; */
   padding-bottom: 10px;
 }
 .footer-ul {

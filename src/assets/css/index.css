@@ -1,3 +1,6 @@
+body{
+  background-color: #F3F4F6;
+}
 .head-line {
   width: 100%;
   height: 30px;
@@ -37,27 +40,29 @@
 .bannar-center-box {
   /* height: 340px; */
   /* background-color: salmon; */
-  position: relative;
+  /* width: 1250px; */
+  margin-top: 30px;
+  /* position: relative; */
 }
 .news-ad-box {
-  width: 1200px;
+  /* width: 1200px;
   height: 1000px;
   position: absolute;
   top: 0px;
   right: 100px;
-  /* margin-left: 50%;
-  margin-right: 50%;
-  transform: translate(-50%); */
-
-  z-index: 999;
+  z-index: 999; */
+  width: 240px;
+  height: 300px;
+  background-color: #F3F4F6;
 }
 .news-and-ad {
-  width: 30%;
-  height: 960px;
+  width: 240px;
+  height: 300px;
   /* height: 100%; */
-  padding: 20px;
+  /* padding: 20px; */
   padding-right: 0px;
-  background-color: rgba(0, 0, 0, 0.28);
+  /* background-color: #fff; */
+  /* background-color: rgba(0, 0, 0, 0.28); */
 }
 
 .bannar-left-classify {
@@ -73,9 +78,9 @@
   text-align: left;
 }
 .bannar-box {
-  width: 100%;
+  /* width: 100%; */
+  width: 1250px;
   height: 100%;
-  /* background-color: lightpink; */
 }
 
 .el-carousel__container {
@@ -84,7 +89,7 @@
 .news-ad-item {
   width: 100%;
   height: 100%;
-  line-height: 40px;
+  line-height: 30px;
   /* overflow: hidden; */
   overflow-y: auto;
   /* background-color: lightcoral; */
@@ -99,6 +104,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding-left: 10px;
 }
 .hot-text-box {
   width: 34px;
@@ -106,7 +112,8 @@
   text-align: center;
   line-height: 20px;
   margin-top: 10px;
-  background-color: #ff4b4b;
+  color: #ff4b4b;
+  /* background-color: #ff4b4b; */
 }
 .home-goods-two {
   width: 100%;
@@ -138,7 +145,7 @@
   position: relative;
 }
 .home-price-text {
-  color: #ffdeb4;
+  /* color: #ffdeb4; */
 }
 .buy-first-home {
   width: 276px;
@@ -173,4 +180,45 @@
   -webkit-line-clamp: 3;
   overflow: hidden;
   -webkit-box-orient: vertical;
+}
+
+/* ==========================第四版首页商品样式 */
+.goods-v4{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.left-img-v4{
+  margin-top: 40px;
+  margin-left: 40px;
+  /* padding: 10px; */
+}
+.goods-item-v4{
+  width: 49%;
+  /* padding: 10px; */
+  height: 380px;
+  background-color: #ffcccc;
+  /* border: 1px solid #DCDFE6; */
+  background: url(../img/home-line-v4.png) no-repeat;
+  /* background-size:730px 300px; */
+  background-size: 100% 100%;
+  margin-bottom: 20px;
+
+}
+.goods-info-v4{
+  width: calc(100% - 320px);
+  height: 100%;
+  position: relative;
+  /* background-color: #fff; */
+}
+.buy-btn-v4{
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 40px;
+  left: 10px;
+  background-color: #FBD9AF;
 }

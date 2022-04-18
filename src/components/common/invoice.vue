@@ -239,7 +239,8 @@ export default {
 
     // 修改银行卡信息
     changeAccount(info) {
-      // debugger;
+      console.log(info);
+      debugger;
       this.accountForm.id = info.id;
       if (info.type == 1) {
         this.accountForm.type = info.type;
