@@ -55,7 +55,7 @@
             <el-form-item label="邮编">
               <el-input
                 v-model="addressForm.postCode"
-                type="text"
+                type="number"
                 placeholder="请输入邮政编码"
               ></el-input>
             </el-form-item>

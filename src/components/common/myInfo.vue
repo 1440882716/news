@@ -89,7 +89,7 @@
                   <el-radio label="女"></el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="身份证号">
+              <el-form-item label="身份证号" prop="idCard">
                 <el-input
                   style="width:333px"
                   v-model="ruleForm.idCard"
@@ -179,6 +179,16 @@ export default {
     msgBox
   },
   data() {
+    const checkIdNum = () => {
+      const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+      if (!value) {
+        return callback(new Error("证件号码不能为空"));
+      } else if (!reg.test(value)) {
+        return callback(new Error("证件号码不正确"));
+      } else {
+        callback();
+      }
+    };
     return {
       imgApi: this.globleImgApi,
       navTitle: 1,
@@ -203,6 +213,14 @@ export default {
       },
       hasImg: true,
       rules: {
+        idCard: [
+          {
+            required: false,
+            message: "请输入正确的身份证号",
+            validator: checkIdNum,
+            trigger: "blur"
+          }
+        ],
         region: [
           { required: true, message: "请选择所在地区", trigger: "blur" }
         ],
@@ -295,23 +313,40 @@ export default {
       if (res.code == 200) {
         this.getData();
         this.$refs.tips.toast(res.msg);
+      } else if (res.code == 400) {
+        this.$refs.tips.toast("上传头像图片只能是 JPG、PNG 格式!");
+      } else {
+        this.$refs.tips.toast(res.msg);
       }
     },
-    uploadError(error, file, fileList) {
-      let errorMsg = JSON.parse(error.message);
+    uploadError(err, file, fileList) {
+      let errorMsg = JSON.parse(err.message);
       // console.log(errorMsg);
       if (errorMsg.code == 401) {
         this.$router.push({
           path: "/login",
           name: "login"
         });
+      } else {
+        this.$refs.tips.toast(errorMsg.msg);
       }
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg" || "image/png";
+      console.log(file);
+
+      // const isJPG = file.type === "image/jpeg" || "image/png";
+      // var index = file.name.lastIndexOf(".");
+      // var ext = file.name.substr(index + 1).toLowerCase();
+      // var extarr = ["jpg", "png", "jpeg"];
+      const isJPG = file.type;
       const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isJPG) {
-        this.$refs.tips.toast("上传头像图片只能是 JPG、png 格式!");
+
+      // console.log(isJPG, isLt2M);
+      // console.log(extarr.indexOf(ext));
+      // debugger;
+      // return;
+      if (isJPG != "image/jpeg" || isJPG != "image/png") {
+        this.$refs.tips.toast("上传头像图片只能是 JPG、PNG 格式!");
       }
       if (!isLt2M) {
         this.$refs.tips.toast("上传头像图片大小不能超过 2MB!");

@@ -15,6 +15,7 @@
           </div>
           <div v-html="heleData.content"></div>
           <div
+            v-if="heleData.fileUrl != '' && heleData.fileUrl != undefined"
             class="font14 bold-font main-color m-t-20 text-right pointer"
             @click="downFile(heleData.fileUrl)"
           >
@@ -66,7 +67,7 @@ export default {
     downFile(url) {
       let link = document.createElement("a");
       link.style.display = "none";
-      link.href = url;
+      link.href = "https://paper.cdzkzs.top" + url;
       link.setAttribute("download", "附件");
       document.body.appendChild(link);
       link.click();

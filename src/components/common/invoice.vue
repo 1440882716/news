@@ -239,12 +239,13 @@ export default {
 
     // 修改银行卡信息
     changeAccount(info) {
-      console.log(info);
-      debugger;
+      // console.log(info);
+      // debugger;
       this.accountForm.id = info.id;
       if (info.type == 1) {
         this.accountForm.type = info.type;
         this.accountForm.name = info.name;
+        this.accountForm.isDefault = info.isDefault;
       } else {
         this.accountForm.type = info.type;
         this.accountForm.name = info.name;

@@ -3,7 +3,7 @@
     <msgBox ref="tips"></msgBox>
     <!-- 寒假快乐和 -->
     <Header></Header>
-    <div class="content p-b-80 m-t-20">
+    <div class="content p-b-80 m-t-20" style="min-height: 560px;">
       <h2 class="m-b-10">{{ title }}</h2>
       <div class="text-left" v-html="content"></div>
       <div
@@ -84,7 +84,7 @@ export default {
     downFile() {
       let link = document.createElement("a");
       link.style.display = "none";
-      link.href = "	https://paper.cdzkzs.top" + this.fileUrl;
+      link.href = "https://paper.cdzkzs.top" + this.fileUrl;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
