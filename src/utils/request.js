@@ -10,7 +10,7 @@ const service = axios.create({
     baseURL: "https://admin.cdzkzs.top",
     // baseURL: 'http://192.168.31.9:8080',
     // baseURL: 'http://192.168.31.114:8080',
-    // baseURL: 'http://192.168.31.101:8080',
+    // baseURL: 'http://192.168.31.16:8080',
     // withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
 })

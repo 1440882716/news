@@ -179,7 +179,7 @@ export default {
     msgBox
   },
   data() {
-    const checkIdNum = () => {
+    const checkIdNum = (rule, value, callback) => {
       const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
       if (!value) {
         return callback(new Error("证件号码不能为空"));
@@ -214,12 +214,13 @@ export default {
       hasImg: true,
       rules: {
         idCard: [
-          {
-            required: false,
-            message: "请输入正确的身份证号",
-            validator: checkIdNum,
-            trigger: "blur"
-          }
+          // {
+          //   required: true,
+          //   message: "请输入正确的身份证号",
+          //   validator: checkIdNum,
+          //   trigger: "blur"
+          // }
+          { required: false, trigger: "blur", validator: checkIdNum }
         ],
         region: [
           { required: true, message: "请选择所在地区", trigger: "blur" }
@@ -281,9 +282,7 @@ export default {
         this.ruleForm.city = "";
         this.ruleForm.area = "";
       }
-      // console.log(this.ruleForm);
-      // debugger;
-      // return;
+
       updPersonalData(this.ruleForm).then(res => {
         if (res.code == 200) {
           // 修改个人信息成功 提示需要重新登录
@@ -314,7 +313,7 @@ export default {
         this.getData();
         this.$refs.tips.toast(res.msg);
       } else if (res.code == 400) {
-        this.$refs.tips.toast("上传头像图片只能是 JPG、PNG 格式!");
+        this.$refs.tips.toast(res.msg);
       } else {
         this.$refs.tips.toast(res.msg);
       }
@@ -333,18 +332,8 @@ export default {
     },
     beforeAvatarUpload(file) {
       console.log(file);
-
-      // const isJPG = file.type === "image/jpeg" || "image/png";
-      // var index = file.name.lastIndexOf(".");
-      // var ext = file.name.substr(index + 1).toLowerCase();
-      // var extarr = ["jpg", "png", "jpeg"];
       const isJPG = file.type;
       const isLt2M = file.size / 1024 / 1024 < 2;
-
-      // console.log(isJPG, isLt2M);
-      // console.log(extarr.indexOf(ext));
-      // debugger;
-      // return;
       if (isJPG != "image/jpeg" || isJPG != "image/png") {
         this.$refs.tips.toast("上传头像图片只能是 JPG、PNG 格式!");
       }
