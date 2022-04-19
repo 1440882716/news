@@ -569,21 +569,58 @@ export default {
     },
     // 提交发票信息
     getInvoice() {
-      // console.log(this.invoiceForm);
+      console.log(this.invoiceForm);
+      if (this.invoiceForm.status == 2) {
+        this.$refs.invoiceForm.validate(valid => {
+          if (valid) {
+            handupInvoice(this.invoiceForm).then(res => {
+              if (res.code == 200) {
+                this.$refs.tips.toast("发票已开成功");
+                // 清除之前的发票订单
+                this.invoiceOrder = [];
+                this.idArr = [];
+                this.getData();
+              } else {
+                this.$refs.tips.toast(res.msg);
+              }
+              this.invoiceDialog = false;
+            });
+          } else {
+            this.$refs.tips.toast("公司名称和税号必填");
+          }
+        });
+      } else {
+        if (this.invoiceForm.name == "") {
+          this.$refs.tips.toast("请填写个人名称");
+        } else {
+          handupInvoice(this.invoiceForm).then(res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast("发票已开成功");
+              // 清除之前的发票订单
+              this.invoiceOrder = [];
+              this.idArr = [];
+              this.getData();
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+            this.invoiceDialog = false;
+          });
+        }
+      }
       // debugger;
       // return;
-      handupInvoice(this.invoiceForm).then(res => {
-        if (res.code == 200) {
-          this.$refs.tips.toast("发票已开成功");
-          // 清除之前的发票订单
-          this.invoiceOrder = [];
-          this.idArr = [];
-          this.getData();
-        } else {
-          this.$refs.tips.toast(res.msg);
-        }
-        this.invoiceDialog = false;
-      });
+      // handupInvoice(this.invoiceForm).then(res => {
+      //   if (res.code == 200) {
+      //     this.$refs.tips.toast("发票已开成功");
+      //     // 清除之前的发票订单
+      //     this.invoiceOrder = [];
+      //     this.idArr = [];
+      //     this.getData();
+      //   } else {
+      //     this.$refs.tips.toast(res.msg);
+      //   }
+      //   this.invoiceDialog = false;
+      // });
     },
     //把时间日期转成时间戳
     getTimestamp(time) {

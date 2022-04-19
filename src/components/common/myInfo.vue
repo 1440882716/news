@@ -12,7 +12,7 @@
     </el-dialog>
     <div class="info-content text-left">
       <div class="title-box">
-        <div class="my-info-title" @click="dialogVisible = true">个人资料</div>
+        <div class="my-info-title">个人资料</div>
       </div>
       <div class="my-info-box">
         <div class="info-nav-box flex-r font14 main-color">

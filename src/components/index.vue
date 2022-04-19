@@ -75,11 +75,7 @@
           v-for="(item, index) in goodsData"
         >
           <div class="left-img-v4 pointer" @click="toDetail(item.id)">
-            <img
-              style="width: 250px; height: 300px"
-              src="../assets/img/mzfz.png"
-              alt=""
-            />
+            <img style="width: 250px; height: 300px" :src="item.pics" alt="" />
           </div>
           <div class="goods-info-v4 text-left">
             <p class="font24 m-t-40">{{ item.name }}</p>
