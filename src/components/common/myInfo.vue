@@ -223,10 +223,10 @@ export default {
           { required: false, trigger: "blur", validator: checkIdNum }
         ],
         region: [
-          { required: true, message: "请选择所在地区", trigger: "blur" }
+          { required: false, message: "请选择所在地区", trigger: "blur" }
         ],
         address: [
-          { required: true, message: "请输入详细地址", trigger: "blur" }
+          { required: false, message: "请输入详细地址", trigger: "blur" }
         ]
       }
     };
@@ -282,29 +282,26 @@ export default {
         this.ruleForm.city = "";
         this.ruleForm.area = "";
       }
-
-      updPersonalData(this.ruleForm).then(res => {
-        if (res.code == 200) {
-          // 修改个人信息成功 提示需要重新登录
-          this.$confirm("修改个人信息后需要重新登录?", "提示", {
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            type: "warning"
-          })
-            .then(() => {
+      // 修改个人信息成功 提示需要重新登录
+      this.$confirm("修改个人信息后需要重新登录?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          updPersonalData(this.ruleForm).then(res => {
+            if (res.code == 200) {
               this.$router.push({
                 path: "/login"
               });
-            })
-            .catch(() => {
-              this.$router.push({
-                path: "/"
-              });
-            });
-        } else {
-          this.$refs.tips.toast(res.msg);
-        }
-      });
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          });
+        })
+        .catch(() => {
+          this.getData();
+        });
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);

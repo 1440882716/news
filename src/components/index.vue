@@ -48,7 +48,7 @@
         <div class="news-ad-box flex flex-e">
           <div class="news-and-ad flex-c flex-b  text-left">
             <div class="news-ad-item">
-              <div class="ad-news-title font22  text-center">公告</div>
+              <div class="ad-news-title font22  text-center m-b-10">公告</div>
               <div
                 class="flex-r flex-b news-item-v4"
                 v-for="item in noticeData"
@@ -153,6 +153,7 @@
         </div>
       </div> -->
     </div>
+    <!-- <div @click="numAdd">防抖和节流：{{ num }}</div> -->
     <Footer></Footer>
   </div>
 </template>
@@ -163,6 +164,8 @@ import bannar from "./common/bannar.vue";
 import Footer from "./common/footer.vue";
 import { paperPage } from "@/api/goods";
 import { noticeList } from "@/api/user";
+// import { debounce, Throttle } from "@/utils/tool";
+import { Form } from "element-ui";
 export default {
   components: {
     Header,
@@ -302,6 +305,7 @@ export default {
       newsFirst: {},
       newsSecond: {},
       goodsData: []
+      // num: 0
     };
   },
   created() {
@@ -310,18 +314,16 @@ export default {
   },
   mounted() {},
   methods: {
+    // numAdd() {
+    //   this.num++;
+    // },
+    // numA: debounce(() => {
+    //   this.num++;
+    // }, 500),
     getGoods() {
       paperPage().then(res => {
         if (res.code == 200) {
           this.goodsData = res.data.records;
-          // if (res.data.records.length == 2) {
-          //   this.newsFirst = res.data.records[0];
-          //   this.newsSecond = res.data.records[1];
-          // } else if (res.data.records.length == 1) {
-          //   this.newsFirst = res.data.records[0];
-          // } else {
-          //   this.goodsData = res.data.records;
-          // }
         }
       });
     },
@@ -350,6 +352,11 @@ export default {
       });
     }
   }
+  // mounted() {
+  //   window.onmouseover = () => {
+  //     this.numA;
+  //   };
+  // }
 };
 </script>
 

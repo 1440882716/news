@@ -140,7 +140,11 @@
                 }"
                 @change="closeCascader"
               ></el-cascader>
-              <el-input style="width: 30%;" v-model="unitName"></el-input>
+              <el-input
+                style="width: 30%;"
+                v-model="unitName"
+                placeholder="单位/个人名称"
+              ></el-input>
             </div>
             <!-- 订单备注 -->
             <div class="m-b-20 flex-r m-t-20">
@@ -495,25 +499,26 @@ export default {
                 orderPage: 4
               }
             });
-          } else if (res.code == 400) {
-            // 完善个人信息中的地址
-            // this.$refs.tips.toast(res.msg);
-            this.$confirm("请完善个人信息中地址信息！", "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "warning"
-            })
-              .then(() => {
-                this.$router.push({
-                  path: "/My",
-                  name: "My",
-                  query: {
-                    orderPage: 0
-                  }
-                });
-              })
-              .catch(() => {});
-          } else {
+          }
+          // else if (res.code == 400) {
+          //   // 完善个人信息中的地址
+          //   this.$confirm("请完善个人信息中地址信息！", "提示", {
+          //     confirmButtonText: "确定",
+          //     cancelButtonText: "取消",
+          //     type: "warning"
+          //   })
+          //     .then(() => {
+          //       this.$router.push({
+          //         path: "/My",
+          //         name: "My",
+          //         query: {
+          //           orderPage: 0
+          //         }
+          //       });
+          //     })
+          //     .catch(() => {});
+          // }
+          else {
             this.$refs.tips.toast(res.msg);
           }
         });

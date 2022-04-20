@@ -101,6 +101,9 @@ body{
   height: 2px;
   background-color: #fff;
 }
+.ad-news-title{
+  background-color: #BCBCBC;
+}
 .news-item-v4{
   border-bottom: 1px solid #DCDFE6;
 }

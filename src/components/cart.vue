@@ -1,9 +1,13 @@
 <template>
-  <div class="container" style="height: 100%;position: relative;">
+  <div class="container" style="height: 100%">
     <msgBox ref="tips"></msgBox>
     <Header></Header>
     <!-- 购物车不为空 -->
-    <div class="content p-b-80" v-if="goodsList.length != 0">
+    <div
+      class="content p-b-80"
+      style="min-height: 600px;"
+      v-if="goodsList.length != 0"
+    >
       <div class="cart-box">
         <div class="cart-head flex-r flex-b">
           <div class="font18 main-color">
@@ -243,7 +247,7 @@
         </router-link>
       </el-empty>
     </div>
-    <Footer style="position: absolute;bottom: 0;"></Footer>
+    <Footer></Footer>
   </div>
 </template>
 
