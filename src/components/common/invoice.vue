@@ -124,12 +124,23 @@
       <div class="my-card-box" v-else>
         <div class="card-item-box flex-r" v-for="item in invoiceList">
           <div class="type-img-box" v-if="item.type == 1">
-            <img
+            <div class="type-img-box" @click="setDefaultFun(item)">
+              <img
+                v-if="item.isDefault"
+                class="default-icon"
+                src="../../assets/img/default.png"
+                alt=""
+              />
+              <img class="type-img" src="../../assets/img/people3.png" alt="" />
+              <div class="tips-color">{{ item.name }}</div>
+            </div>
+            <!-- <img
               v-if="item.isDefault"
               class="default-icon"
               src="../../assets/img/default.png"
               alt=""
-            />
+            /> -->
+
             <img class="type-img" src="../../assets/img/people3.png" alt="" />
             <div class="tips-color">个人发票</div>
           </div>
@@ -175,7 +186,13 @@
   </div>
 </template>
 <script>
-import { addInvoice, updInvoice, pageData, delInvoice } from "@/api/invoice";
+import {
+  addInvoice,
+  updInvoice,
+  pageData,
+  delInvoice,
+  setDefault
+} from "@/api/invoice";
 import msgBox from "./msg.vue";
 export default {
   name: "mycard",
@@ -221,6 +238,18 @@ export default {
           this.invoiceList = res.data;
         }
       });
+    },
+    setDefaultFun(info) {
+      for (let i = 0; i < this.invoiceList.length; i++) {
+        if (info.id == this.invoiceList[i].id) {
+          this.invoiceList[i].isDefault = true;
+          setDefault({ id: info.id }).then(res => {
+            if (res.code == 200) {
+              this.getData();
+            }
+          });
+        }
+      }
     },
     //   关闭弹窗后清除表单内容
     closeDialog() {

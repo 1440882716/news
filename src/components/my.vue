@@ -34,9 +34,9 @@
           <!-- 我的订单 -->
           <myOrder v-show="navNum == 4" ref="child5"></myOrder>
           <!-- 我的售后 -->
-          <afterSale v-show="navNum == 5" ref="child6"></afterSale>
+          <!-- <afterSale v-show="navNum == 5" ref="child6"></afterSale> -->
           <!-- 发票管理 -->
-          <invoiceList v-show="navNum == 6" ref="child7"></invoiceList>
+          <invoiceList v-show="navNum == 5" ref="child7"></invoiceList>
         </div>
       </div>
     </div>
@@ -79,7 +79,7 @@ export default {
         "常用地址",
         "发票抬头",
         "我的订单",
-        "我的售后",
+        // "我的售后",
         "发票管理"
       ]
     };
@@ -103,9 +103,11 @@ export default {
         this.$refs.child4.getData();
       } else if (ind == 4) {
         this.$refs.child5.getData();
-      } else if (ind == 5) {
-        this.$refs.child6.getData();
-      } else if (ind == 6) {
+      }
+      // else if (ind == 5) {
+      //   this.$refs.child6.getData();
+      // }
+      else if (ind == 5) {
         this.$refs.child7.getData();
       }
     }

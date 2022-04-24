@@ -71,7 +71,7 @@
       </div>
       <div class="goods-v4 m-t-40 flex-r flex-b">
         <div
-          class="goods-item-v4 flex-r flex-b"
+          class="goods-item-v4 flex-r flex-a"
           v-for="(item, index) in goodsData"
         >
           <div class="left-img-v4 pointer" @click="toDetail(item.id)">
@@ -81,7 +81,6 @@
             <p class="font24 m-t-40">{{ item.name }}</p>
             <div class="m-t-20 goods-des-text">
               {{ item.description }}
-              <!-- 明月几时有把酒问青天不知天上宫阙今夕是何年我欲乘风归去又恐琼楼玉宇高处不胜寒起舞弄清影明月几时有把酒问青天不知天上宫阙今夕是何年我欲乘风归去又恐琼楼玉宇高处不胜寒起舞弄清影 -->
             </div>
             <div class="font18 m-t-40 home-price-text">
               ￥<span class="font24 main-red">{{

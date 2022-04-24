@@ -118,3 +118,17 @@
   padding: 25px 20px;
   border-top: 1px solid #eaeaee;
 }
+.goods-name-hidden{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.goods-info-des{
+  width: 100%;
+  overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 3; 
+-webkit-box-orient: vertical;
+}

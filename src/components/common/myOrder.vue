@@ -288,13 +288,13 @@
               >
                 取消订单
               </div>
-              <div
+              <!-- <div
                 class="handle-btn pointer"
                 @click="backNews(item.id, item.goods.paperId)"
                 v-if="item.orderStatus == 4"
               >
                 退订
-              </div>
+              </div> -->
               <div
                 class="handle-btn pointer"
                 @click="delFun(item.id)"

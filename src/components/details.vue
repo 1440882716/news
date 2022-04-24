@@ -11,16 +11,12 @@
           </div>
         </div>
         <div class="goods-right text-left">
-          <div class="font24 m-b-20 bold-font">{{ goodsData.name }}</div>
-          <span class="tips-color font16">{{ goodsData.description }}</span>
-
-          <!-- <span
-            >明月几时有把酒问青天不知天上宫阙今夕是何年我欲乘风归去又恐琼楼玉宇高处不胜寒起舞弄清影何似在人间转朱阁低绮户照无眠不应有恨何事长向别时圆人有悲欢离合月有阴晴圆缺此事古难全但愿人长久千里共婵娟</span
-          >
-          <span
-            >大江东去浪淘尽
-            千古风流人物故垒西边人道是三国周郎赤壁乱石穿空惊涛拍岸卷起千堆雪江山如画一时多少豪杰遥想公将当年小乔初嫁了英姿雄发羽扇纶巾谈笑间樯橹灰飞烟灭故国神游多情应笑我早生华发人生如梦一樽还酹江月</span
-          > -->
+          <div class="font24 m-b-20 bold-font goods-name-hidden">
+            {{ goodsData.name }}
+          </div>
+          <div class="tips-color font16 goods-info-des">
+            {{ goodsData.description }}
+          </div>
           <div class="price-box-de flex-r">
             <!-- <div class="font14 tips-color price-title">
               {{ goodsData.price }}
@@ -108,6 +104,7 @@
                   v-model="goodsNum"
                   @change="handleChange"
                   :min="1"
+                  :max="10000"
                   label="描述文字"
                 ></el-input-number>
               </div>
@@ -223,6 +220,7 @@ export default {
   methods: {
     handleChange(value) {
       console.log(value);
+      // debugger;
     },
     // 设置默认年显示日期
     getTime() {
@@ -267,10 +265,14 @@ export default {
     changeStart(value) {
       let a = new Date(value).getTime();
       let b = new Date().getTime();
-      if (a > b) {
+      let c = Date.parse(value);
+      let d = Date.parse(this.thisYear);
+      if (b < a && c < d) {
         this.getNewsNum(this.goodsId, value, this.dateEnd);
       } else {
-        this.$refs.tips.toast("开始订阅的日期不能小于当前日期");
+        this.$refs.tips.toast(
+          "开始订阅的日期不能小于当前日期并且只能在今年内订阅"
+        );
         var nowDate = new Date();
         var year = nowDate.getFullYear();
         var month =
@@ -282,6 +284,11 @@ export default {
         var dateStr = year + "-" + month + "-" + day;
         this.dateStart = dateStr;
       }
+      // if(c<d){
+      //    this.getNewsNum(this.goodsId, value, this.dateEnd);
+      // }else{
+
+      // }
     },
     // 改变订阅结束日期
     changeEnd(value) {

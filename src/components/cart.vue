@@ -166,6 +166,7 @@
                 v-model="item.quantity"
                 @change="changeNum(item)"
                 :min="1"
+                :max="100000"
                 size="mini"
                 label="描述文字"
               ></el-input-number>

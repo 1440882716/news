@@ -178,7 +178,13 @@ export default {
     //   关闭弹窗后清除表单内容
     closeDialog() {
       this.$nextTick(() => {
-        this.$refs.accountForm.clearValidate();
+        this.$refs.addressForm.clearValidate();
+        this.addressForm.name = "";
+        this.addressForm.mobile = "";
+        this.addressForm.address = "";
+        // this.addressForm.region[0] = this.upData.province;
+        // this.addressForm.region[1] = this.upData.city;
+        // this.addressForm.region[2] = this.upData.county;
       });
     },
     getDefault() {

@@ -11,8 +11,17 @@ const userApi = {
     query: '/client/receipt/query',
     reopen: '/client/receipt/reopen',
     toEmail: '/client/receipt/email',
+    setDefault: 'client/userInvoice/setDefault'
     // :'/client/receipt/reopen'
 
+}
+
+export function setDefault(data) {
+    return request({
+        url: userApi.setDefault,
+        method: 'get',
+        params: data
+    })
 }
 
 export function toEmail(data) {
