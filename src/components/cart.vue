@@ -536,9 +536,6 @@ export default {
       let idArr = select_goods.map(item => {
         return item.id;
       });
-      console.log(select_goods);
-      console.log(idArr);
-      debugger;
       if (idArr.length == 0) {
         this.$refs.tips.toast("请选择要删除的商品");
       } else {

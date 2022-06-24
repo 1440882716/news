@@ -68,7 +68,7 @@
             <!-- 价钱 -->
             <div class="text-right price-box font14">
               支付金额：<span class="font14 price-main">¥ </span
-              ><span class="font18 price-main">24.99</span>
+              ><span class="font18 price-main">{{ money }}</span>
               <!-- <div
                 class="handle-voucher pointer"
                 v-if="payWay == 4"
@@ -110,12 +110,14 @@ export default {
       zfbUrl: "https://qr.alipay.com/bax06387rh8te3fxuczd004d",
       voucherImg: "",
       dataImg: "",
-      unitRemarks: ""
+      unitRemarks: "",
+      money: 0
     };
   },
   created() {
     this.orderId = this.$route.query.orderId;
     this.payWay = this.$route.query.payWay;
+    this.money = this.$route.query.money;
     this.getPayImg();
     this.token = getToken();
   },
@@ -226,20 +228,23 @@ export default {
         this.qrcode();
       });
     },
-    // queryPay() {
-    //   payQuery({ orderId: this.orderId }).then(res => {
-    //     if (res.code == 200) {
-    //     } else {
-    //     }
-    //   });
-    // },
+
     getResult() {
       let timer = setInterval(() => {
         payQuery({ orderId: this.orderId }).then(res => {
           if (res.code == 200) {
             clearInterval(timer);
           } else {
-            clearInterval(timer);
+            setTimeout(() => {
+              clearInterval(timer);
+              this.$router.push({
+                path: "/My",
+                name: "My",
+                query: {
+                  orderPage: 4
+                }
+              });
+            }, 120000);
           }
         });
       }, 2000);

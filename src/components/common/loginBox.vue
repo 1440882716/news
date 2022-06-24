@@ -50,7 +50,7 @@
       <div class="flex-r m-t-20 m-b-20">
         <img src="../../assets/img/phone.png" alt="" />
         <!-- <el-input v-model="phone" placeholder="手机号码"></el-input> -->
-        <input v-model="phone" class="account-inp" type="number" />
+        <input v-model="phone" class="account-inp fff-font" type="number" />
       </div>
       <Slider status="status"></Slider>
       <div class="flex-r m-t-20 m-b-20">

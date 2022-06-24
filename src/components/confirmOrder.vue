@@ -162,8 +162,7 @@
 
             <div>
               <!-- 支付凭证 -->
-              <span class="bold-font">上传线下支付凭证</span>
-              <!-- <div class="flex-r"> -->
+              <!-- <span class="bold-font">上传线下支付凭证</span>
               <el-upload
                 class="avatar-uploader m-t-20"
                 :headers="{ Authorization: token }"
@@ -175,7 +174,8 @@
               >
                 <img v-if="voucherImg" :src="voucherImg" class="avatar" />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+              </el-upload> -->
+              <!-- 单位 -->
               <!-- <div class="flex-r m-t-30 m-b-20">
                 <div class="unitRemarks-title">单位：</div>
                 <el-input
@@ -193,7 +193,9 @@
 
               <!-- </div> -->
 
-              <!-- <div class="flex-r ">
+              <div class="flex-r m-b-20 m-t-20">
+                <span class="bold-font">选择支付方式</span>
+
                 <div class="pointer m-r-20 text-center" @click="payWay = 1">
                   <img
                     v-if="payWay == 1"
@@ -254,7 +256,7 @@
                   />
                   <p>上传凭证</p>
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>
@@ -478,9 +480,10 @@ export default {
         cartList: this.goodsId,
         remarks: this.remark,
         imgUrl: this.voucherImg,
+        payType: this.payWay,
         unitRemarks: this.unitRemarks
       };
-      console.log(data);
+      // console.log(data);
       // debugger;
       // return;
       if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
@@ -493,12 +496,24 @@ export default {
         createOrder(data).then(res => {
           if (res.code == 200) {
             this.$router.push({
-              path: "/My",
-              name: "My",
+              path: "/pay",
+              name: "pay",
               query: {
-                orderPage: 4
+                orderId: res.data,
+                payWay: this.payWay,
+                money: this.goodsCount
+                // name:this.
               }
             });
+
+            // 提交订单成功
+            // this.$router.push({
+            //   path: "/My",
+            //   name: "My",
+            //   query: {
+            //     orderPage: 4
+            //   }
+            // });
           }
           // else if (res.code == 400) {
           //   // 完善个人信息中的地址

@@ -71,6 +71,8 @@ export default {
       geocoder.getLocation(that.markerPo, res => {
         that.address = res.address;
         that.$emit("getAddFun", res.address);
+        // console.log(res.address);
+        // debugger;
       });
     },
     dragend(val) {

@@ -203,6 +203,9 @@ export default {
               addList().then(res => {
                 if (res.code == 200) {
                   this.$emit("changeData", res.data);
+                  // console.log(res.data);
+                  // debugger;
+                  // return;
                   this.dialogVisible = false;
                 }
               });
