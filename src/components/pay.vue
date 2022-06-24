@@ -40,7 +40,7 @@
             <div class="font14 m-t-20 order-pay-det">
               <p class="font16">订单提交成功！请尽快完成支付~</p>
               <p>商户名称：某某某某</p>
-              <p>商品名称：报刊业务订单</p>
+              <p>商品名称：{{ goodsName }}</p>
               <div class="pay-img-box" v-if="payWay == 1 || payWay == 2">
                 <span>扫码支付：</span>
                 <img
@@ -102,6 +102,7 @@ export default {
   data() {
     return {
       orderId: "",
+      goodsName: "",
       payWay: 0,
       count: 0,
       navList: [],
@@ -118,6 +119,7 @@ export default {
     this.orderId = this.$route.query.orderId;
     this.payWay = this.$route.query.payWay;
     this.money = this.$route.query.money;
+    this.goodsName = this.$route.query.name;
     this.getPayImg();
     this.token = getToken();
   },
@@ -237,13 +239,13 @@ export default {
           } else {
             setTimeout(() => {
               clearInterval(timer);
-              this.$router.push({
-                path: "/My",
-                name: "My",
-                query: {
-                  orderPage: 4
-                }
-              });
+              // this.$router.push({
+              //   path: "/My",
+              //   name: "My",
+              //   query: {
+              //     orderPage: 4
+              //   }
+              // });
             }, 120000);
           }
         });

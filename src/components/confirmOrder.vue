@@ -501,8 +501,8 @@ export default {
               query: {
                 orderId: res.data,
                 payWay: this.payWay,
-                money: this.goodsCount
-                // name:this.
+                money: this.goodsCount,
+                name: this.goodsList[0].name
               }
             });
 

@@ -141,10 +141,14 @@
               alt=""
             /> -->
 
-            <img class="type-img" src="../../assets/img/people3.png" alt="" />
-            <div class="tips-color">个人发票</div>
+            <!-- <img class="type-img" src="../../assets/img/people3.png" alt="" />
+            <div class="tips-color">个人发票</div> -->
           </div>
-          <div class="type-img-box" v-if="item.type == 2">
+          <div
+            class="type-img-box"
+            v-if="item.type == 2"
+            @click="setDefaultFun(item)"
+          >
             <img
               v-if="item.isDefault"
               class="default-icon"
@@ -261,7 +265,6 @@ export default {
         this.accountForm.companyMobile = "";
         this.accountForm.bankName = "";
         this.accountForm.bankCard = "";
-
         this.$refs.accountForm.clearValidate();
       });
     },
