@@ -65,6 +65,7 @@
 .de-img-box {
   width: 60px;
   height: 80px;
+  cursor: pointer;
 }
 .de-img {
   width: 60px;

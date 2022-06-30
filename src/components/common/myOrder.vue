@@ -5,7 +5,9 @@
     <el-dialog title="支付方式" :visible.sync="dialogVisible" width="30%">
       <!-- <span>支付方式的种类</span> -->
       <div class="flex-r ">
-        <div class="pointer m-r-20 text-center" @click="payWay = 1">
+        <!-- 微信支付 -->
+        <!-- <div class="pointer m-r-20 text-center" @click="payWay = 1"> -->
+        <div class="pointer m-r-20 text-center">
           <img
             v-if="payWay == 1"
             class="pay-box"
@@ -20,7 +22,9 @@
           />
           <p>微信</p>
         </div>
-        <div class="pointer m-r-20 text-center" @click="payWay = 2">
+        <!-- 支付宝支付 -->
+        <!-- <div class="pointer m-r-20 text-center" @click="payWay = 2"> -->
+        <div class="pointer m-r-20 text-center">
           <img
             v-if="payWay == 2"
             class="pay-box"
@@ -35,7 +39,7 @@
           />
           <p class="">支付宝</p>
         </div>
-        <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
+        <!-- <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
           <img
             v-if="payWay == 3"
             class="pay-box"
@@ -49,7 +53,7 @@
             alt=""
           />
           <p>银行卡</p>
-        </div>
+        </div> -->
         <div class="pointer text-center" @click="payWay = 4">
           <img
             v-if="payWay == 4"
@@ -364,7 +368,6 @@
                     ]"
                   ></i>
                 </div>
-
                 <span
                   class="f999 font12"
                   v-if="item.isBill == true && statusNum == '4'"
@@ -455,7 +458,7 @@ export default {
       orderCount: 0,
       editableTabsValue: "0",
       payId: "",
-      payWay: -1, //支付方式
+      payWay: 4, //支付方式
       cardData: [], //银行卡列表
       companyType: "", //发票类型
       // isOver: false, //控制开发票的选择
@@ -475,10 +478,10 @@ export default {
         //   title: "待发货",
         //   name: "2"
         // },
-        {
-          title: "订阅中",
-          name: "3"
-        },
+        // {
+        //   title: "订阅中",
+        //   name: "3"
+        // },
         {
           title: "已完成",
           name: "4"
@@ -531,6 +534,9 @@ export default {
         this.invoiceForm.money = goodsCount.toFixed(2);
         this.invoiceForm.ordersId = this.idArr.join(",");
         this.invoiceDialog = true;
+        // console.log(this.invoiceForm);
+        // debugger;
+        // return;
         pageData().then(res => {
           if (res.code == 200) {
             this.invoiceData = res.data;

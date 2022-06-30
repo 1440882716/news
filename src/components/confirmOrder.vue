@@ -73,7 +73,7 @@
           </div>
           <div class="order-box">
             <div class="confirm-title flex-r flex-b m-t-10 m-b-10">
-              <span class="bold-font">订单列表</span>
+              <span class="bold-font">商品列表</span>
             </div>
             <div
               class="cart-list flex-r font14 m-b-10"
@@ -124,8 +124,8 @@
               </div>
             </div>
             <div class="flex-r m-t-20">
-              <div class="unitRemarks-title bold-font" style="width: 10%;">
-                单位(必填)
+              <div class="unitRemarks-title bold-font" style="width: 15%;">
+                单位/个人(必填)
               </div>
               <el-cascader
                 v-model="region"
@@ -148,7 +148,7 @@
             </div>
             <!-- 订单备注 -->
             <div class="m-b-20 flex-r m-t-20">
-              <div class="bold-font m-t-10" style="width: 10%;">订单备注</div>
+              <div class="bold-font m-t-10" style="width: 15%;">订单备注</div>
               <el-input
                 style="width: 53%;"
                 class="m-t-10"
@@ -161,20 +161,6 @@
             </div>
 
             <div>
-              <!-- 支付凭证 -->
-              <!-- <span class="bold-font">上传线下支付凭证</span>
-              <el-upload
-                class="avatar-uploader m-t-20"
-                :headers="{ Authorization: token }"
-                action="https://admin.cdzkzs.top/client/order/upload"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :on-error="uploadError"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img v-if="voucherImg" :src="voucherImg" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload> -->
               <!-- 单位 -->
               <!-- <div class="flex-r m-t-30 m-b-20">
                 <div class="unitRemarks-title">单位：</div>
@@ -194,9 +180,28 @@
               <!-- </div> -->
 
               <div class="flex-r m-b-20 m-t-20">
-                <span class="bold-font">选择支付方式</span>
-
-                <div class="pointer m-r-20 text-center" @click="payWay = 1">
+                <span class="bold-font">支付方式</span>
+                <!-- 线下支付凭证 -->
+                <div
+                  class="pointer text-center m-r-20 m-l-30"
+                  @click="payWay = 4"
+                >
+                  <img
+                    v-if="payWay == 4"
+                    class="pay-box"
+                    src="../assets/img/pz.png"
+                    alt=""
+                  />
+                  <img
+                    v-else
+                    class="pay-box"
+                    src="../assets/img/active-pz.png"
+                    alt=""
+                  />
+                  <p>线下支付</p>
+                </div>
+                <!-- 微信支付 -->
+                <div class="pointer m-r-20 text-center" @click="payWayFun(1)">
                   <img
                     v-if="payWay == 1"
                     class="pay-box"
@@ -209,9 +214,10 @@
                     src="../assets/img/active-wx.png"
                     alt=""
                   />
-                  <p>微信</p>
+                  <p class="f999">微信</p>
                 </div>
-                <div class="pointer m-r-20 text-center" @click="payWay = 2">
+                <!-- 支付宝支付 -->
+                <div class="pointer m-r-20 text-center" @click="payWayFun(2)">
                   <img
                     v-if="payWay == 2"
                     class="pay-box"
@@ -224,9 +230,10 @@
                     src="../assets/img/active-zfb.png"
                     alt=""
                   />
-                  <p class="">支付宝</p>
+                  <p class="f999">支付宝</p>
                 </div>
-                <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
+                <!-- 银联支付 -->
+                <!-- <div class="pointer m-r-20 text-center" @click="payWayFun(3)">
                   <img
                     v-if="payWay == 3"
                     class="pay-box"
@@ -240,22 +247,39 @@
                     alt=""
                   />
                   <p>银行卡</p>
-                </div>
-                <div class="pointer text-center" @click="payWay = 4">
-                  <img
-                    v-if="payWay == 4"
-                    class="pay-box"
-                    src="../assets/img/pz.png"
-                    alt=""
-                  />
-                  <img
-                    v-else
-                    class="pay-box"
-                    src="../assets/img/active-pz.png"
-                    alt=""
-                  />
-                  <p>上传凭证</p>
-                </div>
+                </div> -->
+              </div>
+              <!-- 支付凭证 -->
+              <div class="flex-r m-b-20 m-t-30">
+                <span class="bold-font">上传转账凭证</span>
+                <el-upload
+                  class="avatar-uploader m-l-30"
+                  :headers="{ Authorization: token }"
+                  action="https://admin.cdzkzs.top/client/order/upload"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :on-error="uploadError"
+                  :before-upload="beforeAvatarUpload"
+                >
+                  <img v-if="voucherImg" :src="voucherImg" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </div>
+              <!-- 投递地址 -->
+              <div class="flex-r m-b-20 m-t-30">
+                <span class="bold-font">上传投递地址</span>
+                <el-upload
+                  class="avatar-uploader m-l-30"
+                  :headers="{ Authorization: token }"
+                  action="https://admin.cdzkzs.top/client/order/upload"
+                  :show-file-list="false"
+                  :on-success="handleAvatarSuccess"
+                  :on-error="uploadError"
+                  :before-upload="beforeAvatarUpload"
+                >
+                  <img v-if="voucherImg" :src="voucherImg" class="avatar" />
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
               </div>
             </div>
           </div>
@@ -321,7 +345,7 @@ export default {
       goodsCount: 0,
       remark: "",
       token: "",
-      payWay: -1,
+      payWay: 4,
       cardId: "",
       imgUrl: "",
       itemAddress: {},
@@ -419,13 +443,17 @@ export default {
       this.itemAddress = info;
     },
     payWayFun(num) {
-      this.payWay = num;
-      cardList().then(res => {
-        if (res.code == 200) {
-          this.cardData = res.data;
-        } else {
-        }
-      });
+      if (num == 1 || 2) {
+        this.$refs.tips.toast("暂未开通");
+      } else {
+        this.payWay = num;
+        cardList().then(res => {
+          if (res.code == 200) {
+            this.cardData = res.data;
+          } else {
+          }
+        });
+      }
     },
     chooseBank(info, ind) {
       this.bankInd = ind;
@@ -470,8 +498,6 @@ export default {
       // debugger;
     },
     handleOrder() {
-      // debugger;
-      // console.log(this.region);
       if (this.region.length != 0) {
         this.unitRemarks = this.region.join(" ") + this.unitName;
       }
@@ -483,9 +509,6 @@ export default {
         payType: this.payWay,
         unitRemarks: this.unitRemarks
       };
-      // console.log(data);
-      // debugger;
-      // return;
       if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
@@ -493,50 +516,40 @@ export default {
       } else if (this.region.length == 0 || this.unitName == "") {
         this.$refs.tips.toast("请填写单位");
       } else {
-        createOrder(data).then(res => {
-          if (res.code == 200) {
-            this.$router.push({
-              path: "/pay",
-              name: "pay",
-              query: {
-                orderId: res.data,
-                payWay: this.payWay,
-                money: this.goodsCount,
-                name: this.goodsList[0].name
+        this.$confirm("请在开票后30日内到款", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            createOrder(data).then(res => {
+              if (res.code == 200) {
+                // 有微信、支付宝支付就去到支付页面
+                // this.$router.push({
+                //   path: "/pay",
+                //   name: "pay",
+                //   query: {
+                //     orderId: res.data,
+                //     payWay: this.payWay,
+                //     money: this.goodsCount,
+                //     name: this.goodsList[0].name
+                //   }
+                // });
+
+                // 只有上传凭证的支付去到订单页面
+                this.$router.push({
+                  path: "/My",
+                  name: "My",
+                  query: {
+                    orderPage: 4
+                  }
+                });
+              } else {
+                this.$refs.tips.toast(res.msg);
               }
             });
-
-            // 提交订单成功
-            // this.$router.push({
-            //   path: "/My",
-            //   name: "My",
-            //   query: {
-            //     orderPage: 4
-            //   }
-            // });
-          }
-          // else if (res.code == 400) {
-          //   // 完善个人信息中的地址
-          //   this.$confirm("请完善个人信息中地址信息！", "提示", {
-          //     confirmButtonText: "确定",
-          //     cancelButtonText: "取消",
-          //     type: "warning"
-          //   })
-          //     .then(() => {
-          //       this.$router.push({
-          //         path: "/My",
-          //         name: "My",
-          //         query: {
-          //           orderPage: 0
-          //         }
-          //       });
-          //     })
-          //     .catch(() => {});
-          // }
-          else {
-            this.$refs.tips.toast(res.msg);
-          }
-        });
+          })
+          .catch(() => {});
       }
     },
     toDetail(id) {

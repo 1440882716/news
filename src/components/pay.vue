@@ -27,7 +27,7 @@
               <el-upload
                 class="avatar-uploader m-t-20"
                 :headers="{ Authorization: token }"
-                action="http://192.168.31.105:8080/client/order/upload"
+                action="https://admin.cdzkzs.top/client/order/upload"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -142,9 +142,11 @@ export default {
           }
         });
       } else if (this.payWay == 3) {
+        // 查询银联的支付结果
+        this.getResult();
         // 银联支付
         unionPay({ orderId: this.orderId }).then(res => {
-          console.log(res);
+          // console.log(res);
           window.localStorage.removeItem("callbackHTML");
           window.localStorage.setItem("callbackHTML", res);
           var newWin = window.open("");
@@ -239,13 +241,13 @@ export default {
           } else {
             setTimeout(() => {
               clearInterval(timer);
-              // this.$router.push({
-              //   path: "/My",
-              //   name: "My",
-              //   query: {
-              //     orderPage: 4
-              //   }
-              // });
+              this.$router.push({
+                path: "/My",
+                name: "My",
+                query: {
+                  orderPage: 4
+                }
+              });
             }, 120000);
           }
         });

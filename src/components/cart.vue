@@ -354,7 +354,7 @@ export default {
       }).then(res => {
         if (res.code == 200) {
           // if (res.data == 0) {
-          // this.$refs.tips.toast("期数不能为0");
+          // this.$refs.tips.toast("期数不能为0")
           // } else {
           // 拿到期数，计算单价、总价
           for (let i = 0; i < this.goodsList.length; i++) {
@@ -374,6 +374,8 @@ export default {
               );
             }
           }
+          // 重新计算总价
+          this.allPrice = this.getTotalPrice();
           // }
         }
       });

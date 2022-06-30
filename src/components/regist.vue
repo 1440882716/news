@@ -91,6 +91,11 @@
               ></el-input>
             </el-form-item>
           </el-form>
+          <div>
+            <i class="el-icon-warning-outline price-main"></i>
+            <span class="price-main">恶意注册用户将负法律责任</span>
+          </div>
+
           <!-- 会员注册与服务协议 -->
           <!-- <div class="flex-r m-t-10 m-b-20 m-l-129">
             <img

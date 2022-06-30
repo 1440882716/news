@@ -35,9 +35,10 @@
                 :key="item"
               >
                 <!-- src="../assets/img/banner_v3.png" -->
+                <!-- src="../assets/img/bannar_v5.png" -->
                 <img
                   style="width: 100%"
-                  src="../assets/img/banner2_v4.png"
+                  src="../assets/img/bannar_v6.png"
                   alt=""
                 />
               </el-carousel-item>
@@ -63,6 +64,7 @@
           </div>
         </div>
       </div>
+      <!-- <preview-close theme="outline" size="24" fill="#000000" /> -->
       <!-- 报刊分类 -->
       <div class="font24 m-t-40 ">
         <el-divider>
@@ -83,10 +85,8 @@
               {{ item.description }}
             </div>
             <div class="font18 m-t-40 home-price-text">
-              ￥<span class="font24 main-red">{{
-                (item.price * item.totalNum).toFixed(2)
-              }}</span
-              >/年
+              ￥<span class="font24 main-red">{{ item.price }}</span
+              >/期
             </div>
             <div class="buy-btn-v4 m-t-40 pointer" @click="toDetail(item.id)">
               立即订阅

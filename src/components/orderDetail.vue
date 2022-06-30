@@ -132,8 +132,8 @@ export default {
           this.buyerInfo = res.data.addressInfo;
           this.goodsInfo = res.data.goods;
           this.activities = res.data.orderFlow;
-          console.log(res);
-          debugger;
+          // console.log(res)
+          // debugger;
         }
       });
     },
