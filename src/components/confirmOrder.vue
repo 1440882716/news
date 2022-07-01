@@ -268,18 +268,81 @@
               <!-- 投递地址 -->
               <div class="flex-r m-b-20 m-t-30">
                 <span class="bold-font">上传投递地址</span>
-                <el-upload
-                  class="avatar-uploader m-l-30"
-                  :headers="{ Authorization: token }"
-                  action="https://admin.cdzkzs.top/client/order/upload"
-                  :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :on-error="uploadError"
-                  :before-upload="beforeAvatarUpload"
+                <div class="m-l-30 pointer" @click="upload()">
+                  上传<i
+                    class="el-icon-upload el-icon--right primary-color"
+                  ></i>
+                </div>
+                <!-- <el-button
+                  class="main-top-button"
+                  type="primary"
+                  plain
+                  @click="upload()"
+                  style="margin-left:-2px;"
+                  >上传<i class="el-icon-upload el-icon--right"></i>
+                </el-button> -->
+              </div>
+
+              <!-- 上传投递地址的弹框 -->
+              <div style="width:90%;">
+                <el-dialog
+                  title="上传投递地址"
+                  :visible.sync="uploadFormVisible"
+                  width="200"
+                  :before-close="handleClose"
+                  :close-on-click-modal="false"
+                  append-to-body
                 >
-                  <img v-if="voucherImg" :src="voucherImg" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+                  <div
+                    style="dispaly:flex;flex-direction:column;justify-content:center;"
+                  >
+                    <div>
+                      若无模板，请先<span
+                        class="downSpan"
+                        @click="downLoadExcel()"
+                        style="color:blue;cursor:pointer;"
+                        >下载发票</span
+                      >模板，再上传Excel表格
+                    </div>
+                    <div>
+                      <el-upload
+                        class="upload-demo"
+                        ref="upload"
+                        action="doUpload"
+                        :limit="1"
+                        :file-list="fileList"
+                        :before-upload="beforeUpload"
+                        style="width:300px;float:left;"
+                      >
+                        <el-button
+                          slot="trigger"
+                          class="main-top-button del-btn"
+                          type="primary"
+                          plain
+                          >选择文件</el-button
+                        >
+                        <div
+                          class="el-upload-list__item-name"
+                          style="line-height: 40px;"
+                        >
+                          {{ fileName }}
+                        </div>
+                      </el-upload>
+                    </div>
+
+                    <div style="height: 100px;width: 230px;">
+                      <el-button
+                        class="main-top-button del-btn"
+                        type="primary"
+                        plain
+                        style="margin-top: 10px;float: left;"
+                        @click="submitUpload()"
+                        >上传</el-button
+                      >
+                      <div style="line-height: 60px;">{{ result }}</div>
+                    </div>
+                  </div>
+                </el-dialog>
               </div>
             </div>
           </div>
@@ -357,7 +420,12 @@ export default {
       region: "",
       voucherImg: "",
       unitName: "",
-      unitRemarks: ""
+      unitRemarks: "",
+      // 上传excel文件
+      uploadFormVisible: false,
+      result: "",
+      fileName: "未选择文件",
+      fileList: []
     };
   },
   created() {
@@ -562,13 +630,69 @@ export default {
           goodsId: id
         }
       });
-    }
-
+    },
+    // 上传投递地址
     // 编辑地址
     // updAddFun(info) {
     //   this.itemAddress = info;
     //   this.$refs.openBox.openDialog();
     // }
+    handleClose(done) {
+      done();
+      this.fileName = "未选择文件";
+    },
+    submitUpload() {
+      if (this.fileName == "未选择文件") {
+        this.$alert("请选择文件夹");
+      } else {
+        var file = new FormData();
+        //修改點1：根據參數修改
+        file.append("后台给你的文档中的参数", 你要给他的值);
+        //eg: file.append('changeFlow', this.addForm.changeFlow);
+        file.append("file", this.files);
+        let requestConfig = {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        };
+        this.result = "上传中...";
+        //修改點2:
+        // http://那你的後台ip:端口號/你的後台映射
+        this.$http.post("/upload", file, requestConfig).then(res => {
+          alert(res.data.message);
+          this.result = "";
+          this.fileName = "未选择文件";
+          this.uploadFormVisible = false;
+        });
+      }
+    },
+    beforeUpload(file) {
+      /* debugger */
+      this.files = file;
+      //	const extension = file.name.split('.')[1] === 'xls'
+      const extension2 = file.name.split(".")[1] === "xlsx";
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!extension2) {
+        this.$message.warning("上传模板xlsx格式!");
+        return;
+      }
+      if (!isLt2M) {
+        this.$message.warning("上传模板大小不能超过 5MB!");
+        return;
+      }
+      this.fileName = file.name;
+      return false; // 返回false不会自动上传
+    },
+    //如果你不需要下載模板，可以忽略
+    downLoadExcel() {
+      //把文件模板放在項目static目錄下   "/服務器上文件夾名/static/文件名.xlsx"
+      // 服务器上：   window.open("/换成你的文件夹/static/book.xlsx")
+      //本地
+      window.open("/static/book.xlsx");
+    },
+    upload() {
+      this.uploadFormVisible = true;
+    }
   }
 };
 </script>
