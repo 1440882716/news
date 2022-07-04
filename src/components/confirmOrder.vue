@@ -301,8 +301,8 @@
                         class="downSpan"
                         @click="downLoadExcel()"
                         style="color:blue;cursor:pointer;"
-                        >下载发票</span
-                      >模板，再上传Excel表格
+                        >下载模板</span
+                      >，再上传Excel表格
                     </div>
                     <div>
                       <el-upload

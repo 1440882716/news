@@ -37,6 +37,8 @@
           <!-- <afterSale v-show="navNum == 5" ref="child6"></afterSale> -->
           <!-- 发票管理 -->
           <invoiceList v-show="navNum == 5" ref="child7"></invoiceList>
+          <!-- 反馈意见 -->
+          <feedback v-show="navNum == 6" ref="child8"></feedback>
         </div>
       </div>
     </div>
@@ -53,6 +55,7 @@ import Invoice from "./common/invoice.vue";
 import myOrder from "./common/myOrder.vue";
 import afterSale from "./common/afterSale.vue";
 import invoiceList from "./common/invoiceList.vue";
+import feedback from "./common/feedback.vue";
 import Footer from "./common/footer.vue";
 export default {
   name: "my",
@@ -67,7 +70,8 @@ export default {
     myOrder,
     myAddress,
     afterSale,
-    invoiceList
+    invoiceList,
+    feedback
   },
   data() {
     return {
@@ -76,11 +80,12 @@ export default {
         "个人资料",
         "账户安全",
         // "我的银行卡",
-        "常用地址",
+        "投递地址",
         "发票抬头",
         "我的订单",
         // "我的售后",
-        "发票管理"
+        "发票管理",
+        "意见反馈"
       ]
     };
   },

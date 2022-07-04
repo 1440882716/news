@@ -215,6 +215,12 @@ input {
 .box100 {
   width: 100%;
 }
+.relative{
+  position: relative;
+}
+.absolute{
+  position: absolute;
+}
 /* ===================================间距 */
 .m-l-10 {
   margin-left: 10px;

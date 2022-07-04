@@ -231,15 +231,18 @@
     </el-dialog>
 
     <div class="info-content">
-      <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
-        <el-tab-pane
-          v-for="(item, index) in editableTabs"
-          :key="item.name"
-          :label="item.title"
-          :name="item.name"
-        >
-        </el-tab-pane>
-      </el-tabs>
+      <div class="relative">
+        <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
+          <el-tab-pane
+            v-for="(item, index) in editableTabs"
+            :key="item.name"
+            :label="item.title"
+            :name="item.name"
+          >
+          </el-tab-pane>
+        </el-tabs>
+        <div class="absolute font14 download-excel-btn">下载投递地址模板</div>
+      </div>
 
       <div class="my-info-box" v-if="orderData.length == 0">
         <div class="font16 tips-color no-card-text">
@@ -400,10 +403,16 @@
                 </div>
               </div>
             </div>
-            <div>
+            <div class="text-right">
               金额：<span class="price-main font16 bold-font">{{
                 item.totalPrice.toFixed(2)
               }}</span>
+              <div class="flex-r font14 m-t-40">
+                <el-button type="primary" size="small">上传转账凭证</el-button>
+                <el-button type="primary" size="small">上传投递地址</el-button>
+                <el-button type="primary" size="small">更换转账凭证</el-button>
+                <el-button type="primary" size="small">更换投递地址</el-button>
+              </div>
             </div>
           </div>
           <!-- <el-divider></el-divider> -->
@@ -956,5 +965,9 @@ export default {
 .backreason-title {
   width: 100px;
   /* margin-top: 40px; */
+}
+.download-excel-btn {
+  right: 0;
+  top: 10px;
 }
 </style>
