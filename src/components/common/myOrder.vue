@@ -412,6 +412,12 @@
                 <el-button type="primary" size="small">上传投递地址</el-button>
                 <el-button type="primary" size="small">更换转账凭证</el-button>
                 <el-button type="primary" size="small">更换投递地址</el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  v-if="item.isBill == true && statusNum == '4'"
+                  >发票冲红</el-button
+                >
               </div>
             </div>
           </div>
@@ -534,18 +540,17 @@ export default {
     // 发票信息
     chooseInvoiceFun() {
       let goodsCount = 0;
+      this.idArr = [];
+      console.log(this.invoiceOrder);
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
       }
-      // 选中发票开具发票
+      // 选中订单开具发票
       if (this.invoiceOrder.length != 0) {
         this.invoiceForm.money = goodsCount.toFixed(2);
         this.invoiceForm.ordersId = this.idArr.join(",");
         this.invoiceDialog = true;
-        // console.log(this.invoiceForm);
-        // debugger;
-        // return;
         pageData().then(res => {
           if (res.code == 200) {
             this.invoiceData = res.data;
@@ -809,13 +814,10 @@ export default {
     },
     // 选择订单
     chooseOrder(info) {
-      // console.log(info);
       info.select = !info.select;
       this.invoiceOrder = this.orderData.filter(item => {
         return item.select;
       });
-      // console.log(this.invoiceOrder);
-      // debugger;
     }
   }
 };
