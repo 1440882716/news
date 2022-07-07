@@ -134,7 +134,7 @@
                 :props="{
                   checkStrictly: true,
                   expandTrigger: 'hover',
-                  value: 'ext_name',
+                  value: 'id',
                   label: 'ext_name',
                   children: 'childs'
                 }"
@@ -297,18 +297,22 @@
                     style="dispaly:flex;flex-direction:column;justify-content:center;"
                   >
                     <div>
-                      若无模板，请先<span
+                      若无模板，请先
+                      <a href="" class="downSpan"></a>
+                      <span
                         class="downSpan"
                         @click="downLoadExcel()"
                         style="color:blue;cursor:pointer;"
                         >下载模板</span
-                      >，再上传Excel表格
+                      >
+                      ，再上传Excel表格
                     </div>
                     <div>
                       <el-upload
                         class="upload-demo"
                         ref="upload"
-                        action="doUpload"
+                        :headers="{ Authorization: token }"
+                        action="https://admin.cdzkzs.top/client/order/upload"
                         :limit="1"
                         :file-list="fileList"
                         :before-upload="beforeUpload"
@@ -390,6 +394,7 @@ import { addList, delAdd } from "@/api/address";
 import { getToken } from "@/utils/auth";
 import { confirmUrl, createOrder, approve } from "@/api/cart";
 import { cardList } from "@/api/card";
+// import { exportDataFun } from "@/utils/downloadExcel";
 export default {
   name: "confirm",
   components: {
@@ -421,6 +426,8 @@ export default {
       voucherImg: "",
       unitName: "",
       unitRemarks: "",
+      // 选中地址对象
+      nodesObj: [],
       // 上传excel文件
       uploadFormVisible: false,
       result: "",
@@ -561,13 +568,14 @@ export default {
     },
     // 单位备注  选择省市区备注 关闭级联选择器
     closeCascader(e) {
+      console.log(e);
+      this.nodesObj = this.$refs["cascaderHandle"].getCheckedNodes();
       this.$refs.cascaderHandle.dropDownVisible = false;
-      // console.log(e);
-      // debugger;
     },
     handleOrder() {
       if (this.region.length != 0) {
-        this.unitRemarks = this.region.join(" ") + this.unitName;
+        this.unitRemarks =
+          this.nodesObj[0].pathLabels.join(" ") + this.unitName;
       }
       let data = {
         addId: this.itemAddress.id,
@@ -575,7 +583,10 @@ export default {
         remarks: this.remark,
         imgUrl: this.voucherImg,
         payType: this.payWay,
-        unitRemarks: this.unitRemarks
+        unitRemarks: this.unitRemarks,
+        unitProvince: this.nodesObj[0].path[0],
+        unitCity: this.nodesObj[0].path[1],
+        unitArea: this.nodesObj[0].path[2]
       };
       if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
         this.$refs.tips.toast("请选择收货地址");
@@ -685,10 +696,11 @@ export default {
     },
     //如果你不需要下載模板，可以忽略
     downLoadExcel() {
-      //把文件模板放在項目static目錄下   "/服務器上文件夾名/static/文件名.xlsx"
-      // 服务器上：   window.open("/换成你的文件夹/static/book.xlsx")
-      //本地
-      window.open("/static/book.xlsx");
+      let a = document.createElement("a");
+      a.href = "/static/download.xlsx";
+      a.download = "投递地址明细"; //下载后文件名
+      document.body.appendChild(a);
+      a.click(); //点击下载
     },
     upload() {
       this.uploadFormVisible = true;

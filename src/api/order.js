@@ -9,7 +9,24 @@ const userApi = {
     applyRefund: '/client/orderBack/applyRefund',
     refundList: '/client/orderBack/page',
     cancelBack: '/client/orderBack/cancelBack',
-    delBack: '/client/orderBack/del'
+    delBack: '/client/orderBack/del',
+    updCertificate: '/client/order/updCertificate',
+    updAddressUrl: '/client/order/updAddressUrl',
+
+}
+export function updAddress(data) {
+    return request({
+        url: userApi.updAddressUrl,
+        method: 'get',
+        params: data
+    })
+}
+export function updCertificate(data) {
+    return request({
+        url: userApi.updCertificate,
+        method: 'get',
+        params: data
+    })
 }
 export function delBack(data) {
     return request({

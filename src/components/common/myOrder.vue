@@ -202,7 +202,6 @@
     </el-dialog>
     <!-- 退订信息 -->
     <el-dialog title="退订信息" :visible.sync="backOrder" width="30%">
-      <!-- <div class="text-center">退订信息</div> -->
       <div class="flex-r">
         <img class="back-img-size" :src="backInfo.pics" alt="" />
         <div class="text-left m-l-30">
@@ -229,7 +228,49 @@
         <el-button type="primary" @click="backFun">确 定</el-button>
       </span>
     </el-dialog>
-
+    <el-dialog title="上传" :visible.sync="upVisible" width="30%">
+      <!-- <span>这是一段信息</span> -->
+      <el-form :model="form">
+        <el-form-item
+          label="上传转账凭证"
+          :label-width="formLabelWidth"
+          v-if="uploadNum == 1"
+        >
+          <el-upload
+            class="avatar-uploader"
+            :headers="{ Authorization: token }"
+            action="https://admin.cdzkzs.top/client/order/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :on-error="uploadError"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img v-if="voucherImg" :src="voucherImg" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item
+          label="上传投递地址"
+          :label-width="formLabelWidth"
+          v-if="uploadNum == 2"
+        ></el-form-item>
+        <el-form-item
+          label="更换转账凭证"
+          :label-width="formLabelWidth"
+          v-if="uploadNum == 3"
+        ></el-form-item>
+        <el-form-item
+          label="更换投递地址"
+          :label-width="formLabelWidth"
+          v-if="uploadNum == 4"
+        ></el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="upVisible = false">取 消</el-button>
+        <el-button type="primary" @click="upVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 顶部导航标题 -->
     <div class="info-content">
       <div class="relative">
         <el-tabs v-model="editableTabsValue" @tab-click="handleClick">
@@ -327,7 +368,7 @@
           <div class="flex-r flex-b order-count font12">
             <div class="flex-r flex-b box100">
               <div>
-                <span class="m-r-20">订单号：{{ item.id }}</span>
+                <span class="m-r-20">订单号：{{ item.code }}</span>
                 <span>订单总额：{{ item.totalPrice }}</span>
               </div>
               <div>
@@ -408,10 +449,34 @@
                 item.totalPrice.toFixed(2)
               }}</span>
               <div class="flex-r font14 m-t-40">
-                <el-button type="primary" size="small">上传转账凭证</el-button>
-                <el-button type="primary" size="small">上传投递地址</el-button>
-                <el-button type="primary" size="small">更换转账凭证</el-button>
-                <el-button type="primary" size="small">更换投递地址</el-button>
+                <el-button
+                  type="primary"
+                  size="small"
+                  v-if="item.certificateFlag"
+                  @click="upVoucher(3)"
+                  >更换转账凭证</el-button
+                >
+                <el-button
+                  type="primary"
+                  size="small"
+                  v-else
+                  @click="upVoucher(1)"
+                  >上传转账凭证</el-button
+                >
+                <el-button
+                  type="primary"
+                  size="small"
+                  v-if="item.addressFlag"
+                  @click="upVoucher(4)"
+                  >更换投递地址</el-button
+                >
+                <el-button
+                  type="primary"
+                  size="small"
+                  v-else
+                  @click="upVoucher(2)"
+                  >上传投递地址</el-button
+                >
                 <el-button
                   type="primary"
                   size="small"
@@ -442,7 +507,9 @@ import {
   orderCancel,
   orderDel,
   reckonOther,
-  applyRefund
+  applyRefund,
+  updCertificate,
+  updAddress
 } from "@/api/order";
 import { pageData, handupInvoice } from "@/api/invoice";
 import { cardList } from "@/api/card";
@@ -530,7 +597,15 @@ export default {
       startTime: 0,
       endTime: "",
       size: 10,
-      idArr: []
+      idArr: [],
+      upVisible: false,
+      form: {
+        name: "",
+        content: "",
+        type: []
+      },
+      formLabelWidth: "120px",
+      uploadNum: -1
     };
   },
   created() {
@@ -707,6 +782,20 @@ export default {
       this.currentPage = val;
       this.getData();
       // console.log(this.idArr);
+    },
+    // 上传转账凭证
+    upVoucher(num) {
+      this.upVisible = true;
+      this.uploadNum = num;
+      // 上传转账凭证
+      if (num == 1) {
+      } else if (num == 2) {
+        // 上传投递地址
+      } else if (num == 3) {
+        //更换转账凭证
+      } else if (num == 4) {
+        // 更换投递地址
+      }
     },
     // getInvoiceList() {
     //   cardList().then(res => {
@@ -971,5 +1060,25 @@ export default {
 .download-excel-btn {
   right: 0;
   top: 10px;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  /* text-align: left; */
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  border: 1px solid #e5e5e5;
 }
 </style>

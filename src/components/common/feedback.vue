@@ -1,5 +1,6 @@
 <template>
   <div class="info-content">
+    <msgBox ref="tips"></msgBox>
     <div class="relative">
       <el-tabs v-model="editableTabsValue">
         <el-tab-pane
@@ -17,17 +18,33 @@
         提交反馈意见
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="180"> </el-table-column>
-      <el-table-column prop="name" label="单位名称" width="180">
-      </el-table-column>
-      <el-table-column prop="address" label="反馈内容" width="430">
-      </el-table-column>
+    <el-table :data="feedbackData" style="width: 100%">
+      <el-table-column prop="date" width="60" type="index"> </el-table-column>
+      <el-table-column prop="unitRemark" label="单位名称"> </el-table-column>
+      <el-table-column prop="content" label="反馈内容"> </el-table-column>
+      <el-table-column prop="createTime" label="提交时间"> </el-table-column>
+
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="drawer = true"
+          <el-button type="primary" size="small" @click="detailFun(scope.row)"
             >详情</el-button
           >
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            title="确认删除?"
+            @confirm="delFeedbackFun(scope.row.id)"
+          >
+            <el-button slot="reference" type="danger" size="small"
+              >删除</el-button
+            >
+          </el-popconfirm>
+          <!-- <el-button
+            type="primary"
+            size="small"
+            @click="delFeedbackFun(scope.row.id)"
+            >删除</el-button
+          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -35,11 +52,11 @@
     <el-dialog title="反馈意见" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item label="单位名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="form.unitRemark" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="反馈内容" :label-width="formLabelWidth">
           <el-input
-            v-model="form.name"
+            v-model="form.content"
             autocomplete="off"
             type="textarea"
             :rows="3"
@@ -49,7 +66,9 @@
         <el-form-item label="上传图片" :label-width="formLabelWidth">
           <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :headers="{ Authorization: token }"
+            action="https://admin.cdzkzs.top/client/order/upload"
+            :on-success="handleAvatarSuccess"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
@@ -64,22 +83,59 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="addFeedbackFun">确 定</el-button>
       </div>
     </el-dialog>
     <!-- 反馈详情 -->
-    <el-drawer title="意见详情" :visible.sync="drawer" direction="rtl">
-      <span>哈哈哈哈哈哈</span>
+    <el-drawer title="" :visible.sync="drawer" direction="rtl">
+      <el-descriptions
+        class="margin-top"
+        style="padding: 20px;padding-top: 0;"
+        title="意见详情"
+        :column="1"
+        border
+      >
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-user"></i>
+            单位名称
+          </template>
+          {{ feedbackItem.unitRemark }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-time"></i>
+            反馈时间
+          </template>
+          {{ feedbackItem.createTime }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-tickets"></i>
+            反馈内容
+          </template>
+          {{ feedbackItem.content }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-sunrise-1"></i>
+            图片
+          </template>
+          <img src="" alt="" />
+        </el-descriptions-item>
+      </el-descriptions>
     </el-drawer>
   </div>
 </template>
 <script>
+import { addFeedback, feedbackList, delFeedback } from "@/api/feedback";
+import { getToken } from "@/utils/auth";
+import msgBox from "./msg.vue";
 export default {
-  components: {},
+  components: { msgBox },
   data() {
     return {
+      token: "",
       editableTabsValue: "0",
       editableTabs: [
         {
@@ -89,52 +145,64 @@ export default {
       ],
       drawer: false,
       dialogFormVisible: false,
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "四川省成都市人大代表",
-          address:
-            "上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        }
-      ],
+      feedbackData: [],
       form: {
-        name: "",
+        unitRemark: "",
         content: "",
-        type: []
+        imgUrl: ""
       },
       formLabelWidth: "120px",
-      fileList: [
-        // {
-        //   name: "food.jpeg",
-        //   url:
-        //     "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        // },
-        // {
-        //   name: "food2.jpeg",
-        //   url:
-        //     "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-        // }
-      ]
+      fileList: [],
+      feedbackItem: {}
     };
   },
+  created() {
+    this.token = getToken();
+    this.getData();
+  },
   methods: {
+    getData() {
+      feedbackList().then(res => {
+        if (res.code == 200) {
+          this.feedbackData = res.data.records;
+        }
+      });
+    },
+    addFeedbackFun() {
+      console.log(this.form);
+      addFeedback(this.form).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          this.dialogFormVisible = false;
+          this.getData();
+        }
+      });
+    },
+    detailFun(info) {
+      this.feedbackItem = info;
+      this.drawer = true;
+    },
+    delFeedbackFun(id) {
+      delFeedback({ id: id }).then(res => {
+        if (res.code == 200) {
+          this.$refs.tips.toast(res.msg);
+          this.getData();
+        }
+      });
+    },
+    handleAvatarSuccess(res, file) {
+      if (res.code == 200) {
+        // debugger;
+        // return
+        // this.voucherImg = URL.createObjectURL(file.raw);
+        // this.voucherImg = res.location;
+      } else {
+        this.$refs.tips.toast(res.msg);
+      }
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
+      debugger;
     },
     handlePreview(file) {
       console.log(file);

@@ -114,6 +114,8 @@ export default {
       // }
       else if (ind == 5) {
         this.$refs.child7.getData();
+      } else if (ind == 6) {
+        this.$refs.child8.getData();
       }
     }
   }

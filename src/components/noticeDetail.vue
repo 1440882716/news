@@ -40,7 +40,7 @@
     </div>
     <!-- 图片预览 -->
     <el-dialog :visible.sync="dialogVisible" width="30%">
-      <img :src="fileUrl" alt="" />
+      <img src="" alt="" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="downFile">下载附件</el-button>

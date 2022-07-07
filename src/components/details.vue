@@ -48,7 +48,7 @@
           <div class="font14 tips-color">
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">年度：</div>
-              <div class="right-box1">{{ yearTime }}</div>
+              <div class="right-box1">{{ goodsData.paperYear }}</div>
             </div>
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">订阅选择：</div>
