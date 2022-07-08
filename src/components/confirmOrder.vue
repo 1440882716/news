@@ -268,11 +268,11 @@
               <!-- 投递地址 -->
               <div class="flex-r m-b-20 m-t-30">
                 <span class="bold-font">上传投递地址</span>
-                <div class="m-l-30 pointer" @click="upload()">
+                <!-- <div class="m-l-30 pointer" @click="upload()">
                   上传<i
                     class="el-icon-upload el-icon--right primary-color"
                   ></i>
-                </div>
+                </div> -->
                 <!-- <el-button
                   class="main-top-button"
                   type="primary"
@@ -281,18 +281,18 @@
                   style="margin-left:-2px;"
                   >上传<i class="el-icon-upload el-icon--right"></i>
                 </el-button> -->
-              </div>
+                <!-- </div> -->
 
-              <!-- 上传投递地址的弹框 -->
-              <div style="width:90%;">
-                <el-dialog
+                <!-- 上传投递地址的弹框 -->
+                <div class="m-l-30 pointer">
+                  <!-- <el-dialog
                   title="上传投递地址"
                   :visible.sync="uploadFormVisible"
                   width="200"
                   :before-close="handleClose"
                   :close-on-click-modal="false"
                   append-to-body
-                >
+                > -->
                   <div
                     style="dispaly:flex;flex-direction:column;justify-content:center;"
                   >
@@ -316,6 +316,7 @@
                         :limit="1"
                         :file-list="fileList"
                         :before-upload="beforeUpload"
+                        :on-success="uploadExcel"
                         style="width:300px;float:left;"
                       >
                         <el-button
@@ -334,7 +335,7 @@
                       </el-upload>
                     </div>
 
-                    <div style="height: 100px;width: 230px;">
+                    <!-- <div style="height: 100px;width: 230px;">
                       <el-button
                         class="main-top-button del-btn"
                         type="primary"
@@ -344,9 +345,10 @@
                         >上传</el-button
                       >
                       <div style="line-height: 60px;">{{ result }}</div>
-                    </div>
+                    </div> -->
                   </div>
-                </el-dialog>
+                  <!-- </el-dialog> -->
+                </div>
               </div>
             </div>
           </div>
@@ -424,6 +426,7 @@ export default {
       regionData: region,
       region: "",
       voucherImg: "",
+      excelUrl: "",
       unitName: "",
       unitRemarks: "",
       // 选中地址对象
@@ -499,7 +502,7 @@ export default {
     // 新增地址后关闭弹框 更新地址列表
     setData(msg) {
       this.addressList = msg;
-      console.log(this.addressList);
+      // console.log(this.addressList);
       this.ind = 0;
       this.itemAddress = this.addressList[0];
       // debugger;
@@ -559,16 +562,16 @@ export default {
       const isJPG = file.type === "image/jpeg" || "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
-        this.$refs.tips.toast("上传头像图片只能是 JPG、png 格式!");
+        this.$refs.tips.toast("上传的凭证图片只能是 JPG、png 格式!");
       }
       if (!isLt2M) {
-        this.$refs.tips.toast("上传头像图片大小不能超过 2MB!");
+        this.$refs.tips.toast("上传的凭证图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
     },
     // 单位备注  选择省市区备注 关闭级联选择器
     closeCascader(e) {
-      console.log(e);
+      // console.log(e);
       this.nodesObj = this.$refs["cascaderHandle"].getCheckedNodes();
       this.$refs.cascaderHandle.dropDownVisible = false;
     },
@@ -582,12 +585,15 @@ export default {
         cartList: this.goodsId,
         remarks: this.remark,
         imgUrl: this.voucherImg,
+        addressUrl: this.excelUrl,
         payType: this.payWay,
         unitRemarks: this.unitRemarks,
         unitProvince: this.nodesObj[0].path[0],
         unitCity: this.nodesObj[0].path[1],
         unitArea: this.nodesObj[0].path[2]
       };
+      // console.log(data);
+      // debugger;
       if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
@@ -648,10 +654,7 @@ export default {
     //   this.itemAddress = info;
     //   this.$refs.openBox.openDialog();
     // }
-    handleClose(done) {
-      done();
-      this.fileName = "未选择文件";
-    },
+
     submitUpload() {
       if (this.fileName == "未选择文件") {
         this.$alert("请选择文件夹");
@@ -678,9 +681,7 @@ export default {
       }
     },
     beforeUpload(file) {
-      /* debugger */
       this.files = file;
-      //	const extension = file.name.split('.')[1] === 'xls'
       const extension2 = file.name.split(".")[1] === "xlsx";
       const isLt2M = file.size / 1024 / 1024 < 5;
       if (!extension2) {
@@ -692,9 +693,18 @@ export default {
         return;
       }
       this.fileName = file.name;
-      return false; // 返回false不会自动上传
+      // return false; // 返回false不会自动上传
     },
-    //如果你不需要下載模板，可以忽略
+    uploadExcel(res, file) {
+      if (res.code == 200) {
+        // debugger;
+        this.excelUrl = URL.createObjectURL(file.raw);
+        this.excelUrl = res.location;
+      } else {
+        this.$refs.tips.toast(res.msg);
+      }
+    },
+    //下载投递地址模板
     downLoadExcel() {
       let a = document.createElement("a");
       a.href = "/static/download.xlsx";

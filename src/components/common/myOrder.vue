@@ -228,13 +228,14 @@
         <el-button type="primary" @click="backFun">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="上传" :visible.sync="upVisible" width="30%">
+    <el-dialog title="上传/更换" :visible.sync="upVisible" width="30%">
       <!-- <span>这是一段信息</span> -->
       <el-form :model="form">
+        <!-- 上传转账凭证 -->
         <el-form-item
-          label="上传转账凭证"
+          :label="titleName"
           :label-width="formLabelWidth"
-          v-if="uploadNum == 1"
+          v-if="uploadNum == 1 || uploadNum == 3"
         >
           <el-upload
             class="avatar-uploader"
@@ -249,25 +250,39 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
+        <!-- 上传\更换投递地址 -->
         <el-form-item
-          label="上传投递地址"
+          :label="titleName"
           :label-width="formLabelWidth"
-          v-if="uploadNum == 2"
-        ></el-form-item>
-        <el-form-item
-          label="更换转账凭证"
-          :label-width="formLabelWidth"
-          v-if="uploadNum == 3"
-        ></el-form-item>
-        <el-form-item
-          label="更换投递地址"
-          :label-width="formLabelWidth"
-          v-if="uploadNum == 4"
-        ></el-form-item>
+          v-if="uploadNum == 2 || uploadNum == 4"
+        >
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            :headers="{ Authorization: token }"
+            action="https://admin.cdzkzs.top/client/order/upload"
+            :limit="1"
+            :file-list="fileList"
+            :before-upload="beforeUpload"
+            :on-success="uploadExcel"
+            style="width:300px;float:left;"
+          >
+            <el-button
+              slot="trigger"
+              class="main-top-button del-btn"
+              type="primary"
+              plain
+              >选择文件</el-button
+            >
+            <div class="el-upload-list__item-name" style="line-height: 40px;">
+              {{ fileName }}
+            </div>
+          </el-upload>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="upVisible = false">取 消</el-button>
-        <el-button type="primary" @click="upVisible = false">确 定</el-button>
+        <el-button type="primary" @click="uploadBtn">确 定</el-button>
       </span>
     </el-dialog>
     <!-- 顶部导航标题 -->
@@ -282,7 +297,12 @@
           >
           </el-tab-pane>
         </el-tabs>
-        <div class="absolute font14 download-excel-btn">下载投递地址模板</div>
+        <div
+          class="absolute font14 download-excel-btn pointer"
+          @click="downLoadExcel()"
+        >
+          下载投递地址模板
+        </div>
       </div>
 
       <div class="my-info-box" v-if="orderData.length == 0">
@@ -453,28 +473,28 @@
                   type="primary"
                   size="small"
                   v-if="item.certificateFlag"
-                  @click="upVoucher(3)"
+                  @click="upVoucher(3, item.id, '更换转账凭证')"
                   >更换转账凭证</el-button
                 >
                 <el-button
                   type="primary"
                   size="small"
                   v-else
-                  @click="upVoucher(1)"
+                  @click="upVoucher(1, item.id, '上传转账凭证')"
                   >上传转账凭证</el-button
                 >
                 <el-button
                   type="primary"
                   size="small"
                   v-if="item.addressFlag"
-                  @click="upVoucher(4)"
+                  @click="upVoucher(4, item.id, '更换投递地址')"
                   >更换投递地址</el-button
                 >
                 <el-button
                   type="primary"
                   size="small"
                   v-else
-                  @click="upVoucher(2)"
+                  @click="upVoucher(2, item.id, '上传投递地址')"
                   >上传投递地址</el-button
                 >
                 <el-button
@@ -511,6 +531,7 @@ import {
   updCertificate,
   updAddress
 } from "@/api/order";
+import { getToken } from "@/utils/auth";
 import { pageData, handupInvoice } from "@/api/invoice";
 import { cardList } from "@/api/card";
 import { setOrList, getOrList } from "@/utils/auth";
@@ -525,6 +546,7 @@ export default {
   },
   data() {
     return {
+      token: "",
       listtest: [1, 2, 3, 4, 5, 6],
       dialogVisible: false,
       invoiceDialog: false,
@@ -605,10 +627,19 @@ export default {
         type: []
       },
       formLabelWidth: "120px",
-      uploadNum: -1
+      uploadNum: -1,
+      uploadUrl: "",
+      updateUrl: "",
+      fileName: "未选择文件",
+      orderId: "",
+      voucherImg: "",
+      excelUrl: "",
+      titleName: "",
+      fileList: []
     };
   },
   created() {
+    this.token = getToken();
     this.getData();
   },
   methods: {
@@ -783,20 +814,7 @@ export default {
       this.getData();
       // console.log(this.idArr);
     },
-    // 上传转账凭证
-    upVoucher(num) {
-      this.upVisible = true;
-      this.uploadNum = num;
-      // 上传转账凭证
-      if (num == 1) {
-      } else if (num == 2) {
-        // 上传投递地址
-      } else if (num == 3) {
-        //更换转账凭证
-      } else if (num == 4) {
-        // 更换投递地址
-      }
-    },
+
     // getInvoiceList() {
     //   cardList().then(res => {
     //     if (res.code == 200) {
@@ -907,6 +925,83 @@ export default {
       this.invoiceOrder = this.orderData.filter(item => {
         return item.select;
       });
+    },
+    // 上传转账凭证
+    upVoucher(num, id, name) {
+      this.upVisible = true;
+      this.uploadNum = num;
+      this.titleName = name;
+      this.orderId = id;
+    },
+    // 上传凭证图片
+    handleAvatarSuccess(res, file) {
+      if (res.code == 200) {
+        // debugger;
+        this.voucherImg = URL.createObjectURL(file.raw);
+        this.voucherImg = res.location;
+      } else {
+        this.$refs.tips.toast(res.msg);
+      }
+    },
+    beforeUpload(file) {
+      this.files = file;
+      const extension2 = file.name.split(".")[1] === "xlsx";
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!extension2) {
+        this.$message.warning("上传模板xlsx格式!");
+        return;
+      }
+      if (!isLt2M) {
+        this.$message.warning("上传模板大小不能超过 5MB!");
+        return;
+      }
+      this.fileName = file.name;
+      // return false; // 返回false不会自动上传
+    },
+    uploadExcel(res, file) {
+      if (res.code == 200) {
+        // debugger;
+        this.excelUrl = URL.createObjectURL(file.raw);
+        this.excelUrl = res.location;
+      } else {
+        this.$refs.tips.toast(res.msg);
+      }
+    },
+    // 上传、更改 转账凭证和投递地址
+    uploadBtn() {
+      if (this.uploadNum == 1 || this.uploadNum == 3) {
+        updCertificate({ id: this.orderId, certificate: this.voucherImg }).then(
+          res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.upVisible = false;
+              this.getData();
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          }
+        );
+      } else {
+        updAddress({ id: this.orderId, addressUrl: this.excelUrl }).then(
+          res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.upVisible = false;
+              this.getData();
+            } else {
+              this.$refs.tips.toast(res.msg);
+            }
+          }
+        );
+      }
+    },
+    //下载投递地址模板
+    downLoadExcel() {
+      let a = document.createElement("a");
+      a.href = "/static/download.xlsx";
+      a.download = "投递地址明细"; //下载后文件名
+      document.body.appendChild(a);
+      a.click(); //点击下载
     }
   }
 };
