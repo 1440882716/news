@@ -11,10 +11,7 @@
         >
         </el-tab-pane>
       </el-tabs>
-      <div
-        class="absolute add-feedback font14"
-        @click="dialogFormVisible = true"
-      >
+      <div class="absolute add-feedback font14" @click="openDialog">
         提交反馈意见
       </div>
     </div>
@@ -48,15 +45,29 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      class="m-t-30"
+      background
+      layout="prev, pager, next"
+      :total="allCount"
+      :current-page="currentPage"
+      @current-change="handleCurrentChange"
+    >
+    </el-pagination>
+
     <!-- 新增反馈意见 -->
     <el-dialog title="反馈意见" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
+      <el-form ref="formData" :model="formData" :rules="formRules">
         <el-form-item label="单位名称" :label-width="formLabelWidth">
-          <el-input v-model="form.unitRemark" autocomplete="off"></el-input>
+          <el-input v-model="formData.unitRemark" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="反馈内容" :label-width="formLabelWidth">
+        <el-form-item
+          label="反馈内容"
+          prop="content"
+          :label-width="formLabelWidth"
+        >
           <el-input
-            v-model="form.content"
+            v-model="formData.content"
             autocomplete="off"
             type="textarea"
             :rows="3"
@@ -116,14 +127,24 @@
           </template>
           {{ feedbackItem.content }}
         </el-descriptions-item>
-        <el-descriptions-item>
+
+        <!-- <el-descriptions-item>
           <template slot="label">
             <i class="el-icon-sunrise-1"></i>
             图片
           </template>
           <img src="" alt="" />
-        </el-descriptions-item>
+        </el-descriptions-item> -->
       </el-descriptions>
+      <div class="text-left" style="padding: 20px;padding-top: 0;">
+        <div class="font16 bold700">反馈图片</div>
+        <img
+          v-for="item in feedbackItem.detailImg"
+          class="m-r-20 m-t-20"
+          :src="'https://admin.cdzkzs.top' + item"
+          alt="图片走丢啦~"
+        />
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -146,14 +167,23 @@ export default {
       drawer: false,
       dialogFormVisible: false,
       feedbackData: [],
-      form: {
+      formData: {
         unitRemark: "",
         content: "",
         imgUrl: ""
       },
+      formRules: {
+        content: [
+          { required: true, trigger: "blur", message: "请输入反馈内容" }
+        ]
+      },
       formLabelWidth: "120px",
       fileList: [],
-      feedbackItem: {}
+      imgArr: [],
+      feedbackItem: {},
+      allCount: 0,
+      currentPage: 1
+      // detailImg:[]
     };
   },
   created() {
@@ -162,19 +192,31 @@ export default {
   },
   methods: {
     getData() {
-      feedbackList().then(res => {
+      feedbackList({ current: this.currentPage }).then(res => {
         if (res.code == 200) {
           this.feedbackData = res.data.records;
+          this.allCount = res.data.total;
+          this.feedbackData.map(item => {
+            let detailImg = item.imgUrl.split(",");
+            this.$set(item, "detailImg", detailImg);
+          });
+        } else {
+          this.$refs.tips.toast(res.msg);
         }
       });
     },
     addFeedbackFun() {
-      console.log(this.form);
-      addFeedback(this.form).then(res => {
-        if (res.code == 200) {
-          this.$refs.tips.toast(res.msg);
-          this.dialogFormVisible = false;
-          this.getData();
+      this.formData.imgUrl = this.imgArr.join(",");
+      this.$refs.formData.validate(valid => {
+        if (valid) {
+          addFeedback(this.formData).then(res => {
+            if (res.code == 200) {
+              this.$refs.tips.toast(res.msg);
+              this.dialogFormVisible = false;
+              this.imgArr = [];
+              this.getData();
+            }
+          });
         }
       });
     },
@@ -190,22 +232,27 @@ export default {
         }
       });
     },
+    openDialog() {
+      this.dialogFormVisible = true;
+      this.imgArr = [];
+    },
     handleAvatarSuccess(res, file) {
       if (res.code == 200) {
-        // debugger;
-        // return
-        // this.voucherImg = URL.createObjectURL(file.raw);
-        // this.voucherImg = res.location;
+        // console.log(res);
+        // console.log(file);
+        // console.log(this.fileList);
+        let img_url = URL.createObjectURL(file.raw);
+        img_url = res.location;
+        this.imgArr.push(img_url);
       } else {
         this.$refs.tips.toast(res.msg);
       }
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-      debugger;
-    },
-    handlePreview(file) {
-      console.log(file);
+    handleRemove(file, fileList) {},
+    handlePreview(file) {},
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getData();
     }
   }
 };

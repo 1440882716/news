@@ -177,6 +177,9 @@ input {
 .bold600 {
   font-weight: 600;
 }
+.bold700 {
+  font-weight: 700;
+}
 /* ==================================布局 */
 .flex {
   display: flex;

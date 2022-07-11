@@ -812,7 +812,6 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
-      // console.log(this.idArr);
     },
 
     // getInvoiceList() {
