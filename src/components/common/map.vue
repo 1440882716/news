@@ -19,17 +19,10 @@
       <bm-marker
         :position="markerPo"
         :dragging="true"
-        :title="storeName"
         :zIndex="999999999"
-        @click="infoWindowOpen"
         @dragend="dragend"
       >
-        <bm-info-window
-          :show="isShowInfo"
-          @close="infoWindowClose"
-          @open="infoWindowOpen"
-          >{{ address }}</bm-info-window
-        >
+        <bm-info-window :show="isShowInfo">{{ address }}</bm-info-window>
       </bm-marker>
     </baidu-map>
     <!-- 因为我采用的是全局注册，所以不用再在该页面上注册components -->
@@ -71,8 +64,6 @@ export default {
       geocoder.getLocation(that.markerPo, res => {
         that.address = res.address;
         that.$emit("getAddFun", res.address);
-        // console.log(res.address);
-        // debugger;
       });
     },
     dragend(val) {

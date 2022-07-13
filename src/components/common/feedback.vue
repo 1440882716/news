@@ -56,7 +56,11 @@
     </el-pagination>
 
     <!-- 新增反馈意见 -->
-    <el-dialog title="反馈意见" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="反馈意见"
+      :visible.sync="dialogFormVisible"
+      @close="closeDialog"
+    >
       <el-form ref="formData" :model="formData" :rules="formRules">
         <el-form-item label="单位名称" :label-width="formLabelWidth">
           <el-input v-model="formData.unitRemark" autocomplete="off"></el-input>
@@ -235,6 +239,14 @@ export default {
     openDialog() {
       this.dialogFormVisible = true;
       this.imgArr = [];
+    },
+    closeDialog() {
+      this.$nextTick(() => {
+        this.formData.unitRemark = "";
+        this.formData.content = "";
+        this.formData.fileList = [];
+        this.$refs.formData.resetFields();
+      });
     },
     handleAvatarSuccess(res, file) {
       if (res.code == 200) {

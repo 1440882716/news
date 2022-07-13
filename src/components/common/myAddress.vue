@@ -34,6 +34,7 @@
                 style="width: 100%;"
                 v-model="addressForm.region"
                 :options="cityData"
+                filterable
                 :props="{
                   // checkStrictly: true,
                   expandTrigger: 'hover',
