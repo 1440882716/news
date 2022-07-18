@@ -11,9 +11,17 @@ const userApi = {
     query: '/client/receipt/query',
     reopen: '/client/receipt/reopen',
     toEmail: '/client/receipt/email',
-    setDefault: 'client/userInvoice/setDefault'
-    // :'/client/receipt/reopen'
+    setDefault: 'client/userInvoice/setDefault',
+    redApply: '/client/receipt/redApply'
 
+}
+
+export function redApply(data) {
+    return request({
+        url: userApi.redApply,
+        method: 'get',
+        params: data
+    })
 }
 
 export function setDefault(data) {

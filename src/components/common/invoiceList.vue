@@ -158,6 +158,13 @@
               <div
                 v-if="item.status == 2"
                 class="handle-btn m-l-10 pointer"
+                @click="redInvoice(item.id)"
+              >
+                发票冲红
+              </div>
+              <div
+                v-if="item.status == 2 || item.status == 4"
+                class="handle-btn m-l-10 pointer"
                 @click="downPDF(item.pdfUrl)"
               >
                 下载发票
@@ -183,7 +190,7 @@
               <span class="m-r-20">发票序号：{{ item.id }}</span>
               <div>
                 订单总额：<span class="font14 price-color">{{
-                  item.totalPrices
+                  item.totalPrices.toFixed(2)
                 }}</span>
               </div>
             </div>
@@ -229,7 +236,7 @@
 <script>
 import msgBox from "./msg.vue";
 import CountDown from "./countDown.vue";
-import { pageData, handupInvoice } from "@/api/invoice";
+import { pageData, handupInvoice, redApply } from "@/api/invoice";
 import {
   invoiceList,
   delInvoiceList,
@@ -363,6 +370,18 @@ export default {
       this.invoiceForm.bankName = info.bankName;
       this.invoiceForm.bankCard = info.bankCard;
       this.innerVisible = false;
+    },
+    // 发票冲红
+    redInvoice(id) {
+      if (id != "" && id != undefined) {
+        redApply({ id: id }).then(res => {
+          if (res.code == 200) {
+            this.$refs.tips.toast(res.msg);
+          } else {
+            this.$refs.tips.toast(res.msg);
+          }
+        });
+      }
     },
     // 提交发票信息
     getInvoice() {

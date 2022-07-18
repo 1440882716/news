@@ -18,9 +18,9 @@
     <el-table :data="feedbackData" style="width: 100%">
       <el-table-column prop="date" width="60" type="index"> </el-table-column>
       <el-table-column prop="unitRemark" label="单位名称"> </el-table-column>
+      <el-table-column prop="userName" label="反馈人"> </el-table-column>
       <el-table-column prop="content" label="反馈内容"> </el-table-column>
       <el-table-column prop="createTime" label="提交时间"> </el-table-column>
-
       <el-table-column fixed="right" label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="detailFun(scope.row)"
@@ -46,7 +46,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      class="m-t-30"
+      class="m-t-30 text-center"
       background
       layout="prev, pager, next"
       :total="allCount"
@@ -145,7 +145,7 @@
         <img
           v-for="item in feedbackItem.detailImg"
           class="m-r-20 m-t-20"
-          :src="'https://admin.cdzkzs.top' + item"
+          :src="item"
           alt="图片走丢啦~"
         />
       </div>
@@ -279,5 +279,8 @@ export default {
   font-size: 12px;
   border-radius: 3px;
   cursor: pointer;
+}
+.upload-demo {
+  text-align: left;
 }
 </style>

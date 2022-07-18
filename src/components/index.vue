@@ -153,6 +153,15 @@
       </div> -->
     </div>
     <!-- <div @click="numAdd">防抖和节流：{{ num }}</div> -->
+    <!-- <div class="test-grid">
+      <div class="grid-item">1</div>
+      <div class="grid-item">2</div>
+      <div class="grid-item">3</div>
+      <div class="grid-item">4</div>
+      <div class="grid-item">5</div>
+      <div class="grid-item">6</div>
+      <div class="grid-item">7</div>
+    </div> -->
     <Footer></Footer>
   </div>
 </template>
@@ -363,4 +372,22 @@ export default {
 <style scoped>
 @import "../assets/css/gloab.css";
 @import "../assets/css/index.css";
+.test-grid {
+  /* width: 800px; */
+  /* height: 400px; */
+  /* border: 1px solid #ffcccc; */
+  background-color: #ffcccc;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  grid-gap: 10px;
+  padding: 10px;
+}
+.grid-item {
+  background-color: #69c2c5;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
 </style>

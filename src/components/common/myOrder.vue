@@ -265,6 +265,7 @@
             :file-list="fileList"
             :before-upload="beforeUpload"
             :on-success="uploadExcel"
+            :on-error="upError"
             style="width:300px;float:left;"
           >
             <el-button
@@ -298,7 +299,7 @@
           </el-tab-pane>
         </el-tabs>
         <div
-          class="absolute font14 download-excel-btn pointer"
+          class="absolute font14 download-excel-btn pointer top-add-box"
           @click="downLoadExcel()"
         >
           下载投递地址模板
@@ -387,9 +388,13 @@
           </div>
           <div class="flex-r flex-b order-count font12">
             <div class="flex-r flex-b box100">
-              <div>
+              <div class="flex-r">
                 <span class="m-r-20">订单号：{{ item.code }}</span>
-                <span>订单总额：{{ item.totalPrice }}</span>
+                <div>
+                  订单总额：<span class="price-color font14">{{
+                    item.totalPrice.toFixed(2)
+                  }}</span>
+                </div>
               </div>
               <div>
                 <span>{{ item.orderStatusName }}</span>
@@ -497,12 +502,12 @@
                   @click="upVoucher(2, item.id, '上传投递地址')"
                   >上传投递地址</el-button
                 >
-                <el-button
+                <!-- <el-button
                   type="primary"
                   size="small"
                   v-if="item.isBill == true && statusNum == '4'"
                   >发票冲红</el-button
-                >
+                > -->
               </div>
             </div>
           </div>
@@ -966,6 +971,10 @@ export default {
         this.$refs.tips.toast(res.msg);
       }
     },
+    upError(err) {
+      console.log(err);
+      debugger;
+    },
     // 上传、更改 转账凭证和投递地址
     uploadBtn() {
       if (this.uploadNum == 1 || this.uploadNum == 3) {
@@ -1174,5 +1183,10 @@ export default {
   line-height: 100px;
   text-align: center;
   border: 1px solid #e5e5e5;
+}
+.top-add-box {
+  padding: 5px 20px;
+  color: #fff;
+  background-color: #2970c1;
 }
 </style>
