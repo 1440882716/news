@@ -73,7 +73,8 @@
             </div> -->
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">起期：</div>
-              <div>
+              <div class="date-box">{{ dateStart }}</div>
+              <!-- <div>
                 <el-date-picker
                   value-format="yyyy-MM-dd"
                   v-model="dateStart"
@@ -82,11 +83,12 @@
                   @change="changeStart"
                 >
                 </el-date-picker>
-              </div>
+              </div> -->
             </div>
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">止期：</div>
-              <div>
+              <div class="date-box">{{ dateEnd }}</div>
+              <!-- <div>
                 <el-date-picker
                   value-format="yyyy-MM-dd"
                   v-model="dateEnd"
@@ -95,7 +97,7 @@
                   @change="changeEnd"
                 >
                 </el-date-picker>
-              </div>
+              </div> -->
             </div>
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">数量：</div>
@@ -216,7 +218,9 @@ export default {
     // console.log(this.msg);
     // debugger;
   },
-  mounted() {},
+  mounted() {
+    this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
+  },
   methods: {
     handleChange(value) {
       console.log(value);
@@ -236,6 +240,9 @@ export default {
       this.dateStart = dateStr;
       this.yearTime = year;
       this.thisYear = year + "-" + "12-31";
+
+      // 设置起期为当年的01-01，止期为当年的12-31
+      this.dateStart = year + "-" + "01-01";
       this.dateEnd = year + "-" + "12-31";
       this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
     },
@@ -258,6 +265,7 @@ export default {
       }).then(res => {
         if (res.code == 200) {
           this.goodsData.present = res.data;
+          // console.log(this.goodsData.present);
         }
       });
     },

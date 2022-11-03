@@ -13,6 +13,13 @@
   height: 100%;
   /* background-color: lightblue; */
 }
+.date-box{
+  width: 180px;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 10px;
+  border: 1px solid #DCDFE6;
+}
 /* .goods-img-box {
   width: 100%;
   height: calc(100% - 532px);

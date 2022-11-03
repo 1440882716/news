@@ -303,7 +303,7 @@
                         class="downSpan"
                         @click="downLoadExcel()"
                         style="color:blue;cursor:pointer;"
-                        >下载模板</span
+                        >下载投递清单模板</span
                       >
                       ，再上传Excel表格
                     </div>
