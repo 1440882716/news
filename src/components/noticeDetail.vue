@@ -6,7 +6,7 @@
 
     <div class="content p-b-80 m-t-20" style="min-height: 560px;">
       <h2 class="m-b-10">{{ title }}</h2>
-      <div class="text-left" v-html="content"></div>
+      <div class="text-left content-style" v-html="content"></div>
       <div
         v-if="remarks != '' && remarks != undefined"
         class="text-left m-t-20 m-b-20"
@@ -130,4 +130,12 @@ export default {
 <style>
 @import "../assets/css/gloab.css";
 /* @import "../assets/css/details.css"; */
+.content-style {
+  width: 100%;
+  margin: 0 auto;
+}
+.content-style p img {
+  width: 800px;
+  margin: 0 auto;
+}
 </style>

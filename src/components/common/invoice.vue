@@ -37,7 +37,7 @@
                 ]"
                 @click="accountForm.type = 2"
               >
-                公司
+                单位
               </div>
             </div>
           </el-form-item>
@@ -156,7 +156,7 @@
               alt=""
             />
             <img class="type-img" src="../../assets/img/conpany.png" alt="" />
-            <div class="tips-color">公司发票</div>
+            <div class="tips-color">单位发票</div>
           </div>
           <div class="card-info font12">
             <div class="flex-r text-center m-t-20">
@@ -320,7 +320,7 @@ export default {
           }
         });
       } else {
-        //  公司发票
+        //  单位发票
         this.$refs.accountForm.validate(valid => {
           if (valid) {
             if (this.accountForm.hasOwnProperty("id")) {

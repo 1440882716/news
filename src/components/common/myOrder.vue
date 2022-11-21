@@ -127,10 +127,10 @@
         <el-form-item label="开票类型" style="text-align: left;">
           <el-radio-group v-model="invoiceForm.status">
             <el-radio :label="1">个人</el-radio>
-            <el-radio :label="2">公司</el-radio>
+            <el-radio :label="2">单位</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="公司/个人名称" prop="name">
+        <el-form-item label="单位/个人名称" prop="name">
           <el-input v-model="invoiceForm.name"></el-input>
         </el-form-item>
         <el-form-item label="税号" prop="taxNo" v-if="invoiceForm.status == 2">
@@ -139,10 +139,10 @@
         <el-form-item label="金额">
           <el-input :disabled="true" v-model="invoiceForm.money"></el-input>
         </el-form-item>
-        <el-form-item label="公司地址" v-if="invoiceForm.status == 2">
+        <el-form-item label="单位地址" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.companyAddress"></el-input>
         </el-form-item>
-        <el-form-item label="公司电话" v-if="invoiceForm.status == 2">
+        <el-form-item label="单位电话" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.companyMobile"></el-input>
         </el-form-item>
         <el-form-item label="开户行名称" v-if="invoiceForm.status == 2">
@@ -174,7 +174,7 @@
           </div>
           <div class="type-img-box" v-if="item.type == 2">
             <img class="type-img" src="../../assets/img/conpany.png" alt="" />
-            <div class="tips-color">公司发票</div>
+            <div class="tips-color">单位发票</div>
           </div>
           <div class="card-info font12">
             <div class="flex-r text-center m-t-20">
@@ -314,16 +314,6 @@
 
       <div v-else>
         <!-- 已完成的订单开发票 -->
-        <div class="flex flex-e">
-          <el-button
-            type="primary"
-            v-if="statusNum == '4'"
-            @click="chooseInvoiceFun"
-            class="text-right pointer invoice-btn m-b-10"
-          >
-            开发票
-          </el-button>
-        </div>
 
         <div
           class="order-item-box font14 m-b-20"
@@ -357,15 +347,24 @@
               >
                 取消订单
               </div>
-              <!-- <div
-                class="handle-btn pointer"
-                @click="backNews(item.id, item.goods.paperId)"
-                v-if="item.orderStatus == 4"
-              >
-                退订
+              <!-- <div class="flex flex-e">
+                <el-button
+                  type="primary"
+                  @click="chooseInvoiceFun"
+                  class="handle-btn pointer"
+                >
+                  开发票
+                </el-button>
               </div> -->
               <div
                 class="handle-btn pointer"
+                v-if="!item.isBill"
+                @click="itemOrderInvoiceFun(item)"
+              >
+                开发票
+              </div>
+              <div
+                class="handle-btn pointer m-l-10"
                 @click="delFun(item.id)"
                 v-if="item.orderStatus == 1 || item.orderStatus == 5"
               >
@@ -419,9 +418,7 @@
           </div>
           <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
-              <!-- 选择开发票的订单 -->
-              <div style="width: 50px;">
-                <!-- <span>{{ item.orderStatusName }}</span> -->
+              <!-- <div style="width: 50px;">
                 <div
                   class="flex-c"
                   v-if="item.isBill == false && statusNum == '4'"
@@ -442,7 +439,7 @@
                   v-if="item.isBill == true && statusNum == '4'"
                   >已开发票</span
                 >
-              </div>
+              </div> -->
               <div
                 class="order-img-box pointer"
                 @click="toGoodsInfo(item.goods.paperId)"
@@ -578,7 +575,7 @@ export default {
         {
           title: "全部订单",
           name: "0"
-        },
+        }
         // {
         //   title: "待付款",
         //   name: "1"
@@ -591,10 +588,10 @@ export default {
         //   title: "订阅中",
         //   name: "3"
         // },
-        {
-          title: "已完成",
-          name: "4"
-        }
+        // {
+        //   title: "已完成",
+        //   name: "4"
+        // }
         // {
         //   title: "已取消",
         //   name: "5"
@@ -613,9 +610,9 @@ export default {
       },
       invoiceRule: {
         name: [
-          { required: true, message: "请输入公司/个人名称", trigger: "blur" }
+          { required: true, message: "请输入单位/个人名称", trigger: "blur" }
         ],
-        taxNo: [{ required: true, message: "请输入公司税号", trigger: "blur" }]
+        taxNo: [{ required: true, message: "请输入单位税号", trigger: "blur" }]
       },
       orderData: [],
       invoiceData: [],
@@ -686,6 +683,34 @@ export default {
         this.$refs.tips.toast("请选择要开发票的订单");
       }
     },
+    // 2022.11.17修改
+    itemOrderInvoiceFun(info) {
+      let goodsCount = 0;
+      this.invoiceForm.money = info.totalPrice.toFixed(2);
+      // this.invoiceForm.ordersId = this.idArr.join(",");
+      this.invoiceForm.ordersId = info.id;
+      this.invoiceDialog = true;
+      pageData().then(res => {
+        if (res.code == 200) {
+          this.invoiceData = res.data;
+          for (let i = 0; i < this.invoiceData.length; i++) {
+            if (this.invoiceData[i].isDefault) {
+              this.invoiceForm.status = this.invoiceData[i].type;
+              this.invoiceForm.name = this.invoiceData[i].name;
+              this.invoiceForm.taxNo = this.invoiceData[i].taxNo;
+              this.invoiceForm.companyAddress = this.invoiceData[
+                i
+              ].companyAddress;
+              this.invoiceForm.companyMobile = this.invoiceData[
+                i
+              ].companyMobile;
+              this.invoiceForm.bankName = this.invoiceData[i].bankName;
+              this.invoiceForm.bankCard = this.invoiceData[i].bankCard;
+            }
+          }
+        }
+      });
+    },
     // 重新选择发票信息
     chooseInvoiceItem(info) {
       this.invoiceForm.status = info.type;
@@ -706,7 +731,7 @@ export default {
           if (valid) {
             handupInvoice(this.invoiceForm).then(res => {
               if (res.code == 200) {
-                this.$refs.tips.toast("发票已开成功");
+                this.$refs.tips.toast(res.msg);
                 // 清除之前的发票订单
                 this.invoiceOrder = [];
                 this.idArr = [];
@@ -717,7 +742,7 @@ export default {
               this.invoiceDialog = false;
             });
           } else {
-            this.$refs.tips.toast("公司名称和税号必填");
+            this.$refs.tips.toast("单位名称和税号必填");
           }
         });
       } else {
@@ -726,7 +751,7 @@ export default {
         } else {
           handupInvoice(this.invoiceForm).then(res => {
             if (res.code == 200) {
-              this.$refs.tips.toast("发票已开成功");
+              this.$refs.tips.toast(res.msg);
               // 清除之前的发票订单
               this.invoiceOrder = [];
               this.idArr = [];

@@ -64,7 +64,7 @@
             <!-- <el-form-item label="标签">
               <el-input
                 v-model="addressForm.label"
-                placeholder="请输入标签（如：家里、公司）"
+                placeholder="请输入标签（如：家里、单位）"
                 type="text"
               ></el-input>
             </el-form-item> -->

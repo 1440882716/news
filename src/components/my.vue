@@ -42,7 +42,7 @@
         </div>
       </div>
     </div>
-    <Footer></Footer>
+    <Footer class="foot-class"></Footer>
   </div>
 </template>
 <script>
@@ -145,6 +145,11 @@ export default {
 .my-nav-right {
   width: calc(100% - 100px);
   min-height: 500px;
+  margin-bottom: 200px;
   /* background-color: darkcyan; */
+}
+.foot-class {
+  position: fixed;
+  bottom: 0px;
 }
 </style>

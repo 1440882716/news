@@ -435,7 +435,8 @@ export default {
       uploadFormVisible: false,
       result: "",
       fileName: "未选择文件",
-      fileList: []
+      fileList: [],
+      downLoadUrl: "" //下载模板的地址
     };
   },
   created() {
@@ -456,6 +457,7 @@ export default {
       approve().then(res => {
         if (res.code == 200) {
           this.goodsList = res.data;
+          this.downLoadUrl = res.data[0].tempUrl;
           this.goodsId = res.data[0].id;
           let count = 0;
           for (let i = 0; i < this.goodsList.length; i++) {
@@ -706,11 +708,18 @@ export default {
     },
     //下载投递地址模板
     downLoadExcel() {
-      let a = document.createElement("a");
-      a.href = "/static/download.xlsx";
-      a.download = "投递地址明细"; //下载后文件名
-      document.body.appendChild(a);
-      a.click(); //点击下载
+      let link = document.createElement("a");
+      link.style.display = "none";
+      if (this.downLoadUrl) {
+        link.href = "https://paper.cdzkzs.top" + this.downLoadUrl;
+      } else {
+        link.href = "/static/download.xlsx";
+      }
+      // link.href = "https://paper.cdzkzs.top" + this.downLoadUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(this.downLoadUrl);
     },
     upload() {
       this.uploadFormVisible = true;

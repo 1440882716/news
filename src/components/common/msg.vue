@@ -44,7 +44,7 @@ export default {
   height: 45px;
   line-height: 45px;
   padding: 0 15px;
-  max-width: 300px;
+  /* max-width: 300px; */
   z-index: 999;
 }
 </style>

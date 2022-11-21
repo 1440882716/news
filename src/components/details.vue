@@ -71,10 +71,11 @@
                 ></el-cascader>
               </div>
             </div> -->
-            <div class="flex-r details-item m-t-20">
+            <!-- <div class="flex-r details-item m-t-20">
               <div class="details-item-left">起期：</div>
               <div class="date-box">{{ dateStart }}</div>
-              <!-- <div>
+            </div> -->
+            <!-- <div>
                 <el-date-picker
                   value-format="yyyy-MM-dd"
                   v-model="dateStart"
@@ -84,11 +85,12 @@
                 >
                 </el-date-picker>
               </div> -->
-            </div>
-            <div class="flex-r details-item m-t-20">
+
+            <!-- <div class="flex-r details-item m-t-20">
               <div class="details-item-left">止期：</div>
               <div class="date-box">{{ dateEnd }}</div>
-              <!-- <div>
+            </div> -->
+            <!-- <div>
                 <el-date-picker
                   value-format="yyyy-MM-dd"
                   v-model="dateEnd"
@@ -98,7 +100,7 @@
                 >
                 </el-date-picker>
               </div> -->
-            </div>
+
             <div class="flex-r details-item m-t-20">
               <div class="details-item-left">数量：</div>
               <div>
@@ -111,10 +113,10 @@
                 ></el-input-number>
               </div>
             </div>
-            <div class="flex-r details-item m-t-20">
+            <!-- <div class="flex-r details-item m-t-20">
               <div class="details-item-left">期数：</div>
               <div class="">{{ goodsData.present }} 期</div>
-            </div>
+            </div> -->
           </div>
           <!-- 加购物车/立即购买 -->
           <div class="flex-r buy-box">
@@ -134,20 +136,20 @@
         </div>
         <div class="de-item-box">
           <el-descriptions title="">
-            <el-descriptions-item label="全国统一刊号">{{
+            <!-- <el-descriptions-item label="全国统一刊号">{{
               goodsData.paperNum
-            }}</el-descriptions-item>
+            }}</el-descriptions-item> -->
             <el-descriptions-item label="报刊种类">{{
               goodsData.typeName
             }}</el-descriptions-item>
-            <el-descriptions-item label="刊期">{{
+            <!-- <el-descriptions-item label="刊期">{{
               goodsData.cycleName
-            }}</el-descriptions-item>
+            }}</el-descriptions-item> -->
             <el-descriptions-item label="单价"
               >￥{{ goodsData.price }}</el-descriptions-item
             >
             <el-descriptions-item label="出版日期">{{
-              goodsData.createTime
+              goodsData.publishDate
             }}</el-descriptions-item>
             <el-descriptions-item label="出版社名称">{{
               goodsData.press
@@ -214,9 +216,6 @@ export default {
   created() {
     this.goodsId = this.$route.query.goodsId;
     this.getDetails();
-    this.getTime();
-    // console.log(this.msg);
-    // debugger;
   },
   mounted() {
     this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
@@ -236,14 +235,13 @@ export default {
           : nowDate.getMonth() + 1;
       var day =
         nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
-      var dateStr = year + "-" + month + "-" + day;
-      this.dateStart = dateStr;
-      this.yearTime = year;
-      this.thisYear = year + "-" + "12-31";
+      // var dateStr = year + "-" + month + "-" + day;
+      // this.dateStart = dateStr;
+      // this.yearTime = year;
+      // this.thisYear = year + "-" + "12-31";
 
-      // 设置起期为当年的01-01，止期为当年的12-31
-      this.dateStart = year + "-" + "01-01";
-      this.dateEnd = year + "-" + "12-31";
+      // this.dateStart = year + "-" + "01-01";
+      // this.dateEnd = year + "-" + "12-31";
       this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
     },
     getDetails() {
@@ -251,6 +249,10 @@ export default {
         if (res.code == 200) {
           this.goodsData = res.data;
           this.imgList = res.data.pictures;
+          // 设置起期为当年的01-01，止期为当年的12-31
+          this.dateStart = res.data.paperYear + "-" + "01-01";
+          this.dateEnd = res.data.paperYear + "-" + "12-31";
+          this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
           this.yearPrice = (
             this.goodsData.price * this.goodsData.totalNum
           ).toFixed(2);

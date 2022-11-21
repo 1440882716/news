@@ -135,7 +135,7 @@
   color: #fff;
 }
 .change-buy-info {
-  border: 1px dashed transparent;
-  border-color: #f60;
+  /* border: 1px dashed transparent;
+  border-color: #f60; */
   position: relative;
 }
