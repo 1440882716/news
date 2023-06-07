@@ -125,13 +125,23 @@
         label-width="120px"
       >
         <el-form-item label="开票类型" style="text-align: left;">
-          <el-radio-group v-model="invoiceForm.status">
+          <el-radio-group v-model="invoiceForm.status" @input="changeRadio">
+            <!-- <el-radio :label="1">默认</el-radio> -->
             <el-radio :label="1">个人</el-radio>
             <el-radio :label="2">单位</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="单位/个人名称" prop="name">
-          <el-input v-model="invoiceForm.name"></el-input>
+          <!-- <el-input v-model="invoiceForm.name"></el-input> -->
+          <el-autocomplete
+            class="inline-input input-autocomplete"
+            v-model="invoiceForm.name"
+            value-key="name"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入单位/个人名称"
+            :trigger-on-focus="false"
+            @select="handleSelect"
+          ></el-autocomplete>
         </el-form-item>
         <el-form-item label="税号" prop="taxNo" v-if="invoiceForm.status == 2">
           <el-input v-model="invoiceForm.taxNo"></el-input>
@@ -240,7 +250,7 @@
           <el-upload
             class="avatar-uploader"
             :headers="{ Authorization: token }"
-            action="https://admin.cdzkzs.top/client/order/upload"
+            action="https://admin.newspapersub.cn/client/order/upload"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :on-error="uploadError"
@@ -260,7 +270,7 @@
             class="upload-demo"
             ref="upload"
             :headers="{ Authorization: token }"
-            action="https://admin.cdzkzs.top/client/order/upload"
+            action="https://admin.newspapersub.cn/client/order/upload"
             :limit="1"
             :file-list="fileList"
             :before-upload="beforeUpload"
@@ -598,7 +608,7 @@ export default {
         // }
       ],
       invoiceForm: {
-        status: "",
+        status: 1,
         name: "",
         taxNo: "",
         money: "",
@@ -637,12 +647,19 @@ export default {
       voucherImg: "",
       excelUrl: "",
       titleName: "",
-      fileList: []
+      fileList: [],
+      restaurants: [],
+      personalInvoice: [], //个人发票
+      unitInvoice: [] //单位发票
     };
   },
   created() {
     this.token = getToken();
     this.getData();
+  },
+  mounted() {
+    this.restaurants = this.loadAll();
+    // 根据类型获取发票抬头
   },
   methods: {
     // 发票信息
@@ -693,6 +710,16 @@ export default {
       pageData().then(res => {
         if (res.code == 200) {
           this.invoiceData = res.data;
+          this.personalInvoice = this.invoiceData.filter(item => {
+            if (item.type === 1) {
+              return item;
+            }
+          });
+          this.unitInvoice = this.invoiceData.filter(item => {
+            if (item.type === 2) {
+              return item;
+            }
+          });
           for (let i = 0; i < this.invoiceData.length; i++) {
             if (this.invoiceData[i].isDefault) {
               this.invoiceForm.status = this.invoiceData[i].type;
@@ -710,6 +737,15 @@ export default {
           }
         }
       });
+    },
+    changeRadio(e) {
+      console.log(e);
+      this.invoiceForm.name = "";
+      if (e === 1) {
+        this.restaurants = this.personalInvoice;
+      } else {
+        this.restaurants = this.unitInvoice;
+      }
     },
     // 重新选择发票信息
     chooseInvoiceItem(info) {
@@ -842,6 +878,86 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
       this.getData();
+    },
+    loadAll() {
+      pageData().then(res => {
+        if (res.code == 200) {
+          this.invoiceData = res.data;
+          this.personalInvoice = this.invoiceData.filter(item => {
+            if (item.type === 1) {
+              return item;
+            }
+          });
+          this.unitInvoice = this.invoiceData.filter(item => {
+            if (item.type === 2) {
+              return item;
+            }
+          });
+          this.restaurants = this.personalInvoice;
+        }
+      });
+      // return [
+      //   { value: "三全鲜食（北新泾店）", address: "长宁区新渔路144号" },
+      //   {
+      //     value: "Hot honey 首尔炸鸡（仙霞路）",
+      //     address: "上海市长宁区淞虹路661号"
+      //   },
+      //   {
+      //     value: "三新旺角茶餐厅",
+      //     address: "上海市普陀区真北路988号创邑金沙谷6号楼113"
+      //   },
+      //   { value: "泷千家(天山西路店)", address: "天山西路438号" },
+      //   {
+      //     value: "胖仙女纸杯蛋糕（上海凌空店）",
+      //     address: "上海市长宁区金钟路968号1幢18号楼一层商铺18-101"
+      //   },
+      //   { value: "贡茶", address: "上海市长宁区金钟路633号" },
+      //   {
+      //     value: "豪大大香鸡排超级奶爸",
+      //     address: "上海市嘉定区曹安公路曹安路1685号"
+      //   },
+      //   {
+      //     value: "茶芝兰（奶茶，手抓饼）",
+      //     address: "上海市普陀区同普路1435号"
+      //   },
+      //   { value: "十二泷町", address: "上海市北翟路1444弄81号B幢-107" },
+      //   { value: "星移浓缩咖啡", address: "上海市嘉定区新郁路817号" },
+      //   { value: "阿姨奶茶/豪大大", address: "嘉定区曹安路1611号" }
+      // ];
+    },
+    querySearch(queryString, cb) {
+      console.log(queryString);
+      console.log(this.restaurants);
+      var restaurants = this.restaurants;
+      var results = queryString
+        ? restaurants.filter(this.createFilter(queryString))
+        : restaurants;
+      // 调用 callback 返回建议列表的数据
+      console.log("返回的数据===", results);
+      // debugger;
+      cb(results);
+    },
+    createFilter(queryString) {
+      return restaurant => {
+        // return restaurant.name.indexOf(queryString) === 0;
+        return (
+          restaurant.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
+    handleSelect(item) {
+      console.log(item);
+      if (this.invoiceForm.status === 1) {
+        this.invoiceForm.email = item.email;
+      }
+      if (this.invoiceForm.status === 2) {
+        this.invoiceForm.taxNo = item.taxNo;
+        this.invoiceForm.companyAddress = item.companyAddress;
+        this.invoiceForm.companyMobile = item.companyMobile;
+        this.invoiceForm.bankName = item.bankName;
+        this.invoiceForm.bankCard = item.bankCard;
+      }
+      // this.invoiceForm.email = item.companyAddress;
     },
 
     // getInvoiceList() {
@@ -1213,5 +1329,8 @@ export default {
   padding: 5px 20px;
   color: #fff;
   background-color: #2970c1;
+}
+.input-autocomplete {
+  width: 100%;
 }
 </style>

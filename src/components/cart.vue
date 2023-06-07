@@ -248,7 +248,7 @@
         </router-link>
       </el-empty>
     </div>
-    <Footer></Footer>
+    <Footer class="foot-class"></Footer>
   </div>
 </template>
 
@@ -583,6 +583,9 @@ export default {
         let idArr = select_goods.map(item => {
           return item.id;
         });
+        let paperId = select_goods.map(item => {
+          return item.paperId;
+        });
         let idStr = idArr.join(",");
         // let a = new Date(select_goods[0].startrTime).getTime();
         // let b = new Date().getTime();
@@ -591,7 +594,8 @@ export default {
           path: "/confirmOrder",
           name: "confirmOrder",
           query: {
-            goodsId: idStr
+            goodsId: idStr,
+            paperId: paperId
           }
         });
         // } else {
@@ -611,4 +615,8 @@ export default {
 <style scoped>
 @import "../assets/css/gloab.css";
 @import "../assets/css/cart.css";
+.foot-class {
+  position: fixed;
+  bottom: 0px;
+}
 </style>

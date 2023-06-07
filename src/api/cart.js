@@ -12,7 +12,8 @@ const userApi = {
     unionPay: '/client/unionPay',
     directBuy: '/client/cart/direct',
     approve: '/client/cart/approve',
-    payQuery: '/client/pay/query'
+    payQuery: '/client/pay/query',
+    isRepeatOrder: '/client/order/isRepeatOrder'
 }
 export function payQuery(data) {
     return request({
@@ -59,6 +60,14 @@ export function orderPay(data) {
 export function createOrder(data) {
     return request({
         url: userApi.createOrder,
+        method: 'post',
+        data: data
+    })
+}
+
+export function isRepeatOrder(data) {
+    return request({
+        url: userApi.isRepeatOrder,
         method: 'post',
         data: data
     })

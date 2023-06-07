@@ -67,7 +67,7 @@ export default {
     downFile(url) {
       let link = document.createElement("a");
       link.style.display = "none";
-      link.href = "https://paper.cdzkzs.top" + url;
+      link.href = "https://www.newspapersub.cn" + url;
       link.setAttribute("download", "附件");
       document.body.appendChild(link);
       link.click();

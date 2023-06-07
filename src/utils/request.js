@@ -7,7 +7,7 @@ import router from "@/router";
 // create an axios instance
 const service = axios.create({
     // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-    baseURL: "https://admin.cdzkzs.top",
+    baseURL: "https://admin.newspapersub.cn",
     // baseURL: 'http://192.168.31.57:8080',
     // baseURL: 'http://192.168.31.114:8080',
     // baseURL: 'http://192.168.31.16:8080',

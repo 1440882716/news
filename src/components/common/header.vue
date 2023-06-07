@@ -72,9 +72,7 @@ export default {
     };
   },
   created() {
-    // let aaa = getToken();
     this.isLogin = getLogin();
-    console.log(this.$route.path);
     if (this.$route.path == "/") {
       this.toHome = true;
     } else {
@@ -87,7 +85,6 @@ export default {
     loginOut() {
       removeToken();
       removeLogin();
-
       this.$router.push({
         path: "/",
         name: "index"
@@ -104,16 +101,10 @@ export default {
     },
     // 推出登录
     logoutFun() {
-      // console.log(6666);
-      // debugger;
-      // return;
       logout().then(res => {
         if (res.code == 200) {
-          // this.isLogin = false;
-          // debugger;
           removeToken();
           removeLogin();
-
           this.$router.push({
             path: "/login",
             name: "login"

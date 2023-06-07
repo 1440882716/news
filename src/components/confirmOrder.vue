@@ -159,6 +159,19 @@
               >
               </el-input>
             </div>
+            <!-- 手机号 -->
+            <div class="m-b-20 flex-r m-t-20">
+              <div class="bold-font m-t-10" style="width: 15%;">手机号</div>
+              <el-input
+                style="width: 53%;"
+                class="m-t-10"
+                type="text"
+                :rows="4"
+                placeholder="此手机号用于接收流水单号"
+                v-model="spareMobile"
+              >
+              </el-input>
+            </div>
 
             <div>
               <!-- 单位 -->
@@ -180,12 +193,9 @@
               <!-- </div> -->
 
               <div class="flex-r m-b-20 m-t-20">
-                <span class="bold-font">支付方式</span>
+                <div class="bold-font title-upload">支付方式</div>
                 <!-- 线下支付凭证 -->
-                <div
-                  class="pointer text-center m-r-20 m-l-30"
-                  @click="payWay = 4"
-                >
+                <div class="pointer text-center m-r-20" @click="payWay = 4">
                   <img
                     v-if="payWay == 4"
                     class="pay-box"
@@ -251,11 +261,11 @@
               </div>
               <!-- 支付凭证 -->
               <div class="flex-r m-b-20 m-t-30">
-                <span class="bold-font">上传转账凭证</span>
+                <div class="bold-font title-upload">上传转账凭证</div>
                 <el-upload
-                  class="avatar-uploader m-l-30"
+                  class="avatar-uploader"
                   :headers="{ Authorization: token }"
-                  action="https://admin.cdzkzs.top/client/order/upload"
+                  action="https://admin.newspapersub.cn/client/order/upload"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :on-error="uploadError"
@@ -267,7 +277,8 @@
               </div>
               <!-- 投递地址 -->
               <div class="flex-r m-b-20 m-t-30">
-                <span class="bold-font">上传投递地址</span>
+                <div class="bold-font title-upload">上传投递地址</div>
+                <!-- <div class="bold-font title-upload">上传投递地址</div> -->
                 <!-- <div class="m-l-30 pointer" @click="upload()">
                   上传<i
                     class="el-icon-upload el-icon--right primary-color"
@@ -284,7 +295,7 @@
                 <!-- </div> -->
 
                 <!-- 上传投递地址的弹框 -->
-                <div class="m-l-30 pointer">
+                <div class="pointer">
                   <!-- <el-dialog
                   title="上传投递地址"
                   :visible.sync="uploadFormVisible"
@@ -312,7 +323,7 @@
                         class="upload-demo"
                         ref="upload"
                         :headers="{ Authorization: token }"
-                        action="https://admin.cdzkzs.top/client/order/upload"
+                        action="https://admin.newspapersub.cn/client/order/upload"
                         :limit="1"
                         :file-list="fileList"
                         :before-upload="beforeUpload"
@@ -394,7 +405,7 @@ import msgBox from "./common/msg.vue";
 import region from "../assets/data/area_format_user.json";
 import { addList, delAdd } from "@/api/address";
 import { getToken } from "@/utils/auth";
-import { confirmUrl, createOrder, approve } from "@/api/cart";
+import { confirmUrl, createOrder, approve, isRepeatOrder } from "@/api/cart";
 import { cardList } from "@/api/card";
 // import { exportDataFun } from "@/utils/downloadExcel";
 export default {
@@ -436,12 +447,15 @@ export default {
       result: "",
       fileName: "未选择文件",
       fileList: [],
-      downLoadUrl: "" //下载模板的地址
+      downLoadUrl: "", //下载模板的地址
+      spareMobile: "",
+      paperId: "" //下单的报纸的id
     };
   },
   created() {
     this.token = getToken();
     this.goodsId = this.$route.query.goodsId;
+    this.paperId = this.$route.query.paperId;
     this.getAddress();
     if (this.goodsId != "0") {
       this.getGoods();
@@ -519,6 +533,7 @@ export default {
       });
     },
     chooseAdd(num, info) {
+      // debugger;
       this.ind = num;
       this.itemAddress = info;
     },
@@ -543,7 +558,6 @@ export default {
     // 上传凭证图片
     handleAvatarSuccess(res, file) {
       if (res.code == 200) {
-        // debugger;
         this.voucherImg = URL.createObjectURL(file.raw);
         this.voucherImg = res.location;
       } else {
@@ -552,7 +566,6 @@ export default {
     },
     uploadError(error, file, fileList) {
       let errorMsg = JSON.parse(error.message);
-      // console.log(errorMsg);
       if (errorMsg.code == 401) {
         this.$router.push({
           path: "/login",
@@ -578,24 +591,9 @@ export default {
       this.$refs.cascaderHandle.dropDownVisible = false;
     },
     handleOrder() {
-      if (this.region.length != 0) {
-        this.unitRemarks =
-          this.nodesObj[0].pathLabels.join(" ") + this.unitName;
-      }
-      let data = {
-        addId: this.itemAddress.id,
-        cartList: this.goodsId,
-        remarks: this.remark,
-        imgUrl: this.voucherImg,
-        addressUrl: this.excelUrl,
-        payType: this.payWay,
-        unitRemarks: this.unitRemarks,
-        unitProvince: this.nodesObj[0].path[0],
-        unitCity: this.nodesObj[0].path[1],
-        unitArea: this.nodesObj[0].path[2]
-      };
-      // console.log(data);
-      // debugger;
+      // console.log("商品id===", this.paperId[0]);
+      // console.log("商品列表===", this.goodsList);
+      // return;
       if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
@@ -603,40 +601,85 @@ export default {
       } else if (this.region.length == 0 || this.unitName == "") {
         this.$refs.tips.toast("请填写单位");
       } else {
-        this.$confirm("请在开票后30日内到款", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            createOrder(data).then(res => {
-              if (res.code == 200) {
-                // 有微信、支付宝支付就去到支付页面
-                // this.$router.push({
-                //   path: "/pay",
-                //   name: "pay",
-                //   query: {
-                //     orderId: res.data,
-                //     payWay: this.payWay,
-                //     money: this.goodsCount,
-                //     name: this.goodsList[0].name
-                //   }
-                // });
-
-                // 只有上传凭证的支付去到订单页面
-                this.$router.push({
-                  path: "/My",
-                  name: "My",
-                  query: {
-                    orderPage: 4
-                  }
+        // 判断是否为重复订单，如果是就不能下单回到报刊详情
+        let data = {
+          addId: this.itemAddress.id,
+          cartList: this.goodsId,
+          remarks: this.remark,
+          imgUrl: this.voucherImg,
+          addressUrl: this.excelUrl,
+          payType: this.payWay,
+          unitRemarks: this.unitName,
+          unitProvince: this.nodesObj[0].path[0],
+          unitCity: this.nodesObj[0].path[1],
+          unitArea: this.nodesObj[0].path[2],
+          spareMobile: this.spareMobile
+        };
+        isRepeatOrder(data).then(res => {
+          if (res.code === 200) {
+            if (res.data === true) {
+              this.$confirm(
+                "您已在系统中提交过类似订单，是否继续下单？",
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "warning"
+                }
+              )
+                .then(() => {
+                  createOrder(data).then(res => {
+                    if (res.code == 200) {
+                      // 只有上传凭证的支付去到订单页面
+                      this.$router.push({
+                        path: "/My",
+                        name: "My",
+                        query: {
+                          orderPage: 4
+                        }
+                      });
+                    } else {
+                      this.$refs.tips.toast(res.msg);
+                    }
+                  });
+                })
+                .catch(action => {
+                  debugger;
+                  // 跳转到报刊详情页面
+                  this.$router.replace({
+                    path: "/details",
+                    name: "details",
+                    query: {
+                      goodsId: this.paperId[0]
+                    }
+                  });
                 });
-              } else {
-                this.$refs.tips.toast(res.msg);
-              }
-            });
-          })
-          .catch(() => {});
+            } else {
+              this.$confirm("请在开票后30日内到款", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              })
+                .then(() => {
+                  createOrder(data).then(res => {
+                    if (res.code == 200) {
+                      // 只有上传凭证的支付去到订单页面
+                      this.$router.push({
+                        path: "/My",
+                        name: "My",
+                        query: {
+                          orderPage: 4
+                        }
+                      });
+                    } else {
+                      this.$refs.tips.toast(res.msg);
+                    }
+                  });
+                })
+                .catch(() => {});
+            }
+          }
+        });
       }
     },
     toDetail(id) {
@@ -711,11 +754,11 @@ export default {
       let link = document.createElement("a");
       link.style.display = "none";
       if (this.downLoadUrl) {
-        link.href = "https://paper.cdzkzs.top" + this.downLoadUrl;
+        link.href = "https://www.newspapersub.cn" + this.downLoadUrl;
       } else {
         link.href = "/static/download.xlsx";
       }
-      // link.href = "https://paper.cdzkzs.top" + this.downLoadUrl;
+      // link.href = "https://www.newspapersub.cn" + this.downLoadUrl;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

@@ -114,7 +114,7 @@ export default {
     downFile() {
       let link = document.createElement("a");
       link.style.display = "none";
-      link.href = "https://paper.cdzkzs.top" + this.fileUrl;
+      link.href = "https://www.newspapersub.cn" + this.fileUrl;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

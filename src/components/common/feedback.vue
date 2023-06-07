@@ -82,7 +82,7 @@
           <el-upload
             class="upload-demo"
             :headers="{ Authorization: token }"
-            action="https://admin.cdzkzs.top/client/order/upload"
+            action="https://admin.newspapersub.cn/client/order/upload"
             :on-success="handleAvatarSuccess"
             :on-preview="handlePreview"
             :on-remove="handleRemove"

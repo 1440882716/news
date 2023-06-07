@@ -141,7 +141,7 @@
           <el-upload
             class="avatar-uploader"
             :headers="{ Authorization: token }"
-            action="https://admin.cdzkzs.top/client/user/updAvatar"
+            action="https://admin.newspapersub.cn/client/user/updAvatar"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :on-error="uploadError"

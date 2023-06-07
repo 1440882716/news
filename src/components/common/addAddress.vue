@@ -165,8 +165,6 @@ export default {
         this.addressForm.region[1] = this.upData.city;
         this.addressForm.region[2] = this.upData.county;
       }
-      // console.log(this.addressForm);
-      //   debugger;
     },
     getMsg(data) {
       this.addressForm.address = data;
@@ -194,7 +192,6 @@ export default {
     comfirmAddress() {
       this.$refs.addressForm.validate(valid => {
         if (valid) {
-          // console.log(this.addressForm);
           this.addressForm.province = this.addressForm.region[0];
           this.addressForm.city = this.addressForm.region[1];
           this.addressForm.county = this.addressForm.region[2];
@@ -203,9 +200,6 @@ export default {
               addList().then(res => {
                 if (res.code == 200) {
                   this.$emit("changeData", res.data);
-                  // console.log(res.data);
-                  // debugger;
-                  // return;
                   this.dialogVisible = false;
                 }
               });

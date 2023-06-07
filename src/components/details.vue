@@ -249,6 +249,7 @@ export default {
         if (res.code == 200) {
           this.goodsData = res.data;
           this.imgList = res.data.pictures;
+          this.yearTime = res.data.paperYear;
           // 设置起期为当年的01-01，止期为当年的12-31
           this.dateStart = res.data.paperYear + "-" + "01-01";
           this.dateEnd = res.data.paperYear + "-" + "12-31";

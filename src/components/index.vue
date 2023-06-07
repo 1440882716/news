@@ -21,7 +21,7 @@
       </div>
     </div> -->
     <!-- 轮播、商品模块 -->
-    <div class="content-home gray-bgc ">
+    <div class="content-home gray-bgc">
       <!-- 分类和广告 -->
       <div class="bannar-center-box flex-r flex-b">
         <!-- 轮播图 -->
@@ -152,16 +152,6 @@
         </div>
       </div> -->
     </div>
-    <!-- <div @click="numAdd">防抖和节流：{{ num }}</div> -->
-    <!-- <div class="test-grid">
-      <div class="grid-item">1</div>
-      <div class="grid-item">2</div>
-      <div class="grid-item">3</div>
-      <div class="grid-item">4</div>
-      <div class="grid-item">5</div>
-      <div class="grid-item">6</div>
-      <div class="grid-item">7</div>
-    </div> -->
     <Footer></Footer>
   </div>
 </template>
@@ -389,5 +379,9 @@ export default {
   text-align: center;
   padding: 20px 0;
   font-size: 30px;
+}
+.foot-class {
+  position: fixed;
+  bottom: 0px;
 }
 </style>

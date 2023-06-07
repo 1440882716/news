@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     handler({ BMap, map }) {
-      console.log(BMap, map);
+      // console.log(BMap, map);
       this.center.lng = 104.07;
       this.center.lat = 30.67;
       this.zoom = this.zoom;
