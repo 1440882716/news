@@ -113,7 +113,12 @@
       </span>
     </el-dialog>
     <!-- 发票信息 -->
-    <el-dialog title="发票信息" :visible.sync="invoiceDialog" width="40%">
+    <el-dialog
+      title="发票信息"
+      :visible.sync="invoiceDialog"
+      width="40%"
+      @close="closeDialog"
+    >
       <!-- 当前发票信息 -->
       <div class="text-right pointer" @click="innerVisible = true">
         选择发票抬头
@@ -662,10 +667,21 @@ export default {
     // 根据类型获取发票抬头
   },
   methods: {
+    closeDialog() {
+      this.invoiceForm.status = 1;
+      this.invoiceForm.name = "";
+      this.invoiceForm.taxNo = "";
+      this.invoiceForm.money = "";
+      this.invoiceForm.companyAddress = "";
+      this.invoiceForm.bankName = "";
+      this.invoiceForm.bankCard = "";
+      this.invoiceForm.email = "";
+    },
     // 发票信息
     chooseInvoiceFun() {
       let goodsCount = 0;
       this.idArr = [];
+      console.log(this.invoiceOrder.taxNo);
       console.log(this.invoiceOrder);
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
@@ -762,6 +778,7 @@ export default {
     // 提交发票信息
     getInvoice() {
       console.log(this.invoiceForm);
+      // return;
       if (this.invoiceForm.status == 2) {
         this.$refs.invoiceForm.validate(valid => {
           if (valid) {

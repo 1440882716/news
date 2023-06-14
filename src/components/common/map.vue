@@ -57,12 +57,17 @@ export default {
       this.zoom = this.zoom;
     },
     getClickInfo(e) {
+      // console.log(e);
+      // debugger;
       let that = this;
       let geocoder = new BMap.Geocoder();
       // 转成百度坐标
       that.markerPo = new BMap.Point(e.point.lng, e.point.lat);
       geocoder.getLocation(that.markerPo, res => {
+        // console.log(res);
+        // debugger;
         that.address = res.address;
+        // that.address = res.addressComponents;
         that.$emit("getAddFun", res.address);
       });
     },
@@ -71,6 +76,8 @@ export default {
       this.markerPo = val.point;
       let geocoder = new BMap.Geocoder(); //创建地址解析器的实例
       geocoder.getLocation(val.point, rs => {
+        console.log(rs);
+        // this.address = rs.address
         this.address = rs.address;
       });
     }

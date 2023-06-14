@@ -132,7 +132,8 @@
                 alt=""
               />
               <img class="type-img" src="../../assets/img/people3.png" alt="" />
-              <div class="tips-color">{{ item.name }}</div>
+              <!-- <div class="tips-color">{{ item.name }}</div> -->
+              <div class="tips-color">个人发票</div>
             </div>
             <!-- <img
               v-if="item.isDefault"

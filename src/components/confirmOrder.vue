@@ -600,6 +600,7 @@ export default {
         this.$refs.tips.toast("商品出错啦~");
       } else if (this.region.length == 0 || this.unitName == "") {
         this.$refs.tips.toast("请填写单位");
+        console.log();
       } else {
         // 判断是否为重复订单，如果是就不能下单回到报刊详情
         let data = {
@@ -727,10 +728,11 @@ export default {
     },
     beforeUpload(file) {
       this.files = file;
-      const extension2 = file.name.split(".")[1] === "xlsx";
+      const extension2 =
+        file.name.split(".")[1] === "xlsx" || file.name.split(".")[1] === "xls";
       const isLt2M = file.size / 1024 / 1024 < 5;
       if (!extension2) {
-        this.$message.warning("上传模板xlsx格式!");
+        this.$message.warning("上传模板xlsx、xls格式!");
         return;
       }
       if (!isLt2M) {

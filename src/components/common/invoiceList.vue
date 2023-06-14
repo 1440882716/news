@@ -194,7 +194,14 @@
                 }}</span>
               </div>
             </div>
-            <div>{{ item.statusName }}</div>
+            <div
+              v-if="item.status === -1"
+              style="color:#F56C6C;cursor: pointer;"
+              @click="billReason(item)"
+            >
+              {{ item.statusName }}查看拒绝原因
+            </div>
+            <div v-else>{{ item.statusName }}</div>
           </div>
           <div class="flex-r flex-b order-goods-item-box">
             <div class="flex-r">
@@ -219,6 +226,9 @@
             <!-- <div>下载发票</div> -->
           </div>
         </div>
+        <el-dialog title="拒绝理由" :visible.sync="billCheckFlag" width="30%">
+          <span>{{ billCheckMsg }}</span>
+        </el-dialog>
         <el-pagination
           background
           layout="prev, pager, next"
@@ -251,6 +261,8 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      billCheckFlag: false,
+      billCheckMsg: "",
       statusNum: "0",
       orderNum: "",
       currentPage: 1,
@@ -355,6 +367,11 @@ export default {
       //     this.$refs.tips.toast(res.msg);
       //   }
       // });
+    },
+    // 查看开发票被拒的原因
+    billReason(reason) {
+      this.billCheckFlag = true;
+      this.billCheckMsg = reason.billCheckReason;
     },
     // 重新选择发票信息
     chooseInvoiceItem(info) {

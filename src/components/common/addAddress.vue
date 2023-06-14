@@ -167,6 +167,7 @@ export default {
       }
     },
     getMsg(data) {
+      console.log(data);
       this.addressForm.address = data;
     },
     // 打开弹窗
@@ -180,9 +181,7 @@ export default {
         this.addressForm.name = "";
         this.addressForm.mobile = "";
         this.addressForm.address = "";
-        // this.addressForm.region[0] = this.upData.province;
-        // this.addressForm.region[1] = this.upData.city;
-        // this.addressForm.region[2] = this.upData.county;
+        this.addressForm.region = "";
       });
     },
     getDefault() {
@@ -223,13 +222,10 @@ export default {
   resize: none;
 }
 .default-box {
-  /* width: 100%; */
   margin: 0 auto;
   padding-left: 120px;
   height: 30px;
   color: #606266;
-  /* margin-left: 120px; */
-  /* background-color: #5fbaae; */
 }
 .dialog-btn {
   /* width: 50%; */
