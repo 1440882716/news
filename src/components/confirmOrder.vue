@@ -264,6 +264,7 @@
                 <div class="bold-font title-upload">上传转账凭证</div>
                 <el-upload
                   class="avatar-uploader"
+                  accept=".jpg,.jpeg,.png"
                   :headers="{ Authorization: token }"
                   action="https://admin.newspapersub.cn/client/order/upload"
                   :show-file-list="false"
@@ -278,32 +279,8 @@
               <!-- 投递地址 -->
               <div class="flex-r m-b-20 m-t-30">
                 <div class="bold-font title-upload">上传投递地址</div>
-                <!-- <div class="bold-font title-upload">上传投递地址</div> -->
-                <!-- <div class="m-l-30 pointer" @click="upload()">
-                  上传<i
-                    class="el-icon-upload el-icon--right primary-color"
-                  ></i>
-                </div> -->
-                <!-- <el-button
-                  class="main-top-button"
-                  type="primary"
-                  plain
-                  @click="upload()"
-                  style="margin-left:-2px;"
-                  >上传<i class="el-icon-upload el-icon--right"></i>
-                </el-button> -->
-                <!-- </div> -->
-
                 <!-- 上传投递地址的弹框 -->
                 <div class="pointer">
-                  <!-- <el-dialog
-                  title="上传投递地址"
-                  :visible.sync="uploadFormVisible"
-                  width="200"
-                  :before-close="handleClose"
-                  :close-on-click-modal="false"
-                  append-to-body
-                > -->
                   <div
                     style="dispaly:flex;flex-direction:column;justify-content:center;"
                   >
@@ -322,12 +299,14 @@
                       <el-upload
                         class="upload-demo"
                         ref="upload"
+                        accept=".xls,.xlsx"
                         :headers="{ Authorization: token }"
                         action="https://admin.newspapersub.cn/client/order/upload"
                         :limit="1"
                         :file-list="fileList"
                         :before-upload="beforeUpload"
                         :on-success="uploadExcel"
+                        :on-remove="removeExcel"
                         style="width:300px;float:left;"
                       >
                         <el-button
@@ -340,6 +319,7 @@
                         <div
                           class="el-upload-list__item-name"
                           style="line-height: 40px;"
+                          v-if="hasUploadaddress"
                         >
                           {{ fileName }}
                         </div>
@@ -419,6 +399,7 @@ export default {
   data() {
     return {
       isOpen: false,
+      hasUploadaddress: true,
       ind: 0,
       bankId: "",
       bankInd: -1,
@@ -586,21 +567,16 @@ export default {
     },
     // 单位备注  选择省市区备注 关闭级联选择器
     closeCascader(e) {
-      // console.log(e);
       this.nodesObj = this.$refs["cascaderHandle"].getCheckedNodes();
       this.$refs.cascaderHandle.dropDownVisible = false;
     },
     handleOrder() {
-      // console.log("商品id===", this.paperId[0]);
-      // console.log("商品列表===", this.goodsList);
-      // return;
       if (this.itemAddress.id == "" || this.itemAddress.id == undefined) {
         this.$refs.tips.toast("请选择收货地址");
       } else if (this.goodsId == "") {
         this.$refs.tips.toast("商品出错啦~");
       } else if (this.region.length == 0 || this.unitName == "") {
         this.$refs.tips.toast("请填写单位");
-        console.log();
       } else {
         // 判断是否为重复订单，如果是就不能下单回到报刊详情
         let data = {
@@ -645,13 +621,12 @@ export default {
                   });
                 })
                 .catch(action => {
-                  debugger;
                   // 跳转到报刊详情页面
                   this.$router.replace({
                     path: "/details",
                     name: "details",
                     query: {
-                      goodsId: this.paperId[0]
+                      goodsId: this.goodsList[0].paperId
                     }
                   });
                 });
@@ -684,8 +659,6 @@ export default {
       }
     },
     toDetail(id) {
-      // console.log(id);
-      // debugger;
       this.$router.push({
         path: "/details",
         name: "details",
@@ -695,20 +668,12 @@ export default {
       });
     },
     // 上传投递地址
-    // 编辑地址
-    // updAddFun(info) {
-    //   this.itemAddress = info;
-    //   this.$refs.openBox.openDialog();
-    // }
-
     submitUpload() {
       if (this.fileName == "未选择文件") {
         this.$alert("请选择文件夹");
       } else {
         var file = new FormData();
-        //修改點1：根據參數修改
-        file.append("后台给你的文档中的参数", 你要给他的值);
-        //eg: file.append('changeFlow', this.addForm.changeFlow);
+        // file.append("后台给你的文档中的参数", 你要给他的值);
         file.append("file", this.files);
         let requestConfig = {
           headers: {
@@ -716,8 +681,6 @@ export default {
           }
         };
         this.result = "上传中...";
-        //修改點2:
-        // http://那你的後台ip:端口號/你的後台映射
         this.$http.post("/upload", file, requestConfig).then(res => {
           alert(res.data.message);
           this.result = "";
@@ -744,11 +707,16 @@ export default {
     },
     uploadExcel(res, file) {
       if (res.code == 200) {
-        // debugger;
         this.excelUrl = URL.createObjectURL(file.raw);
         this.excelUrl = res.location;
+        this.hasUploadaddress = false;
       } else {
         this.$refs.tips.toast(res.msg);
+      }
+    },
+    removeExcel(res, file) {
+      if (res.status === "success") {
+        this.hasUploadaddress = true;
       }
     },
     //下载投递地址模板
@@ -760,7 +728,6 @@ export default {
       } else {
         link.href = "/static/download.xlsx";
       }
-      // link.href = "https://www.newspapersub.cn" + this.downLoadUrl;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

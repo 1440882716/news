@@ -76,7 +76,7 @@ export default {
       this.markerPo = val.point;
       let geocoder = new BMap.Geocoder(); //创建地址解析器的实例
       geocoder.getLocation(val.point, rs => {
-        console.log(rs);
+        // console.log(rs);
         // this.address = rs.address
         this.address = rs.address;
       });

@@ -235,13 +235,6 @@ export default {
           : nowDate.getMonth() + 1;
       var day =
         nowDate.getDate() < 10 ? "0" + nowDate.getDate() : nowDate.getDate();
-      // var dateStr = year + "-" + month + "-" + day;
-      // this.dateStart = dateStr;
-      // this.yearTime = year;
-      // this.thisYear = year + "-" + "12-31";
-
-      // this.dateStart = year + "-" + "01-01";
-      // this.dateEnd = year + "-" + "12-31";
       this.getNewsNum(this.goodsId, this.dateStart, this.dateEnd);
     },
     getDetails() {
@@ -268,7 +261,6 @@ export default {
       }).then(res => {
         if (res.code == 200) {
           this.goodsData.present = res.data;
-          // console.log(this.goodsData.present);
         }
       });
     },
@@ -295,16 +287,9 @@ export default {
         var dateStr = year + "-" + month + "-" + day;
         this.dateStart = dateStr;
       }
-      // if(c<d){
-      //    this.getNewsNum(this.goodsId, value, this.dateEnd);
-      // }else{
-
-      // }
     },
     // 改变订阅结束日期
     changeEnd(value) {
-      // console.log(value);
-      // console.log(this.thisYear);
       let a = Date.parse(value);
       let b = Date.parse(this.thisYear);
       if (a < b) {
@@ -326,9 +311,6 @@ export default {
         periodNum: this.goodsData.present,
         price: this.countPrice
       };
-      console.log(data);
-      // debugger;
-      // return;
       if (data.periodNum == 0) {
         this.$refs.tips.toast("订阅期数不能小于1");
       } else {
@@ -342,8 +324,6 @@ export default {
           }
         });
       }
-      // debugger;
-      // return;
     },
     // 立即购买
     buyFirst() {

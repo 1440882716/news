@@ -204,11 +204,11 @@
         </div>
       </el-dialog>
       <div class="invoice-tips-box text-left">
-        <p>提示</p>
+        <p>提示：</p>
         <p>
-          1. 每张发票上限金额为1万元，若开票总金额超过1万元，将开具多张发票。
+          每张发票上限金额为1万元，若开票总金额超过1万元，将开具多张发票。
         </p>
-        <p>2. 两种报刊类型将分开开具发票。</p>
+        <!-- <p>2. 两种报刊类型将分开开具发票。</p> -->
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="invoiceDialog = false">取 消</el-button>
@@ -681,8 +681,6 @@ export default {
     chooseInvoiceFun() {
       let goodsCount = 0;
       this.idArr = [];
-      console.log(this.invoiceOrder.taxNo);
-      console.log(this.invoiceOrder);
       for (let i = 0; i < this.invoiceOrder.length; i++) {
         goodsCount += this.invoiceOrder[i].totalPrice;
         this.idArr.push(this.invoiceOrder[i].id);
@@ -755,7 +753,6 @@ export default {
       });
     },
     changeRadio(e) {
-      console.log(e);
       this.invoiceForm.name = "";
       if (e === 1) {
         this.restaurants = this.personalInvoice;
@@ -777,7 +774,6 @@ export default {
     },
     // 提交发票信息
     getInvoice() {
-      console.log(this.invoiceForm);
       // return;
       if (this.invoiceForm.status == 2) {
         this.$refs.invoiceForm.validate(valid => {
@@ -845,7 +841,6 @@ export default {
       orderList(data).then(res => {
         if (res.code == 200) {
           this.orderData = res.data.records;
-          // console.log(this.orderData);
           // debugger;
           this.orderCount = res.data.total;
           if (this.statusNum == "0" || this.statusNum == "1") {
@@ -943,14 +938,11 @@ export default {
       // ];
     },
     querySearch(queryString, cb) {
-      console.log(queryString);
-      console.log(this.restaurants);
       var restaurants = this.restaurants;
       var results = queryString
         ? restaurants.filter(this.createFilter(queryString))
         : restaurants;
       // 调用 callback 返回建议列表的数据
-      console.log("返回的数据===", results);
       // debugger;
       cb(results);
     },
@@ -963,7 +955,6 @@ export default {
       };
     },
     handleSelect(item) {
-      console.log(item);
       if (this.invoiceForm.status === 1) {
         this.invoiceForm.email = item.email;
       }
@@ -1004,9 +995,6 @@ export default {
     },
     // 立即支付
     payAgain() {
-      console.log(this.payId);
-      console.log(this.payWay);
-      // debugger;
       // return;
       this.$router.push({
         path: "/pay",
@@ -1129,10 +1117,7 @@ export default {
         this.$refs.tips.toast(res.msg);
       }
     },
-    upError(err) {
-      console.log(err);
-      debugger;
-    },
+    upError(err) {},
     // 上传、更改 转账凭证和投递地址
     uploadBtn() {
       if (this.uploadNum == 1 || this.uploadNum == 3) {

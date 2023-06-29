@@ -146,15 +146,6 @@ export default {
   },
   created() {
     this.setFormData();
-    // if (this.upData.hasOwnProperty("id")) {
-    //   this.addressForm.name = this.upData.name;
-    //   this.addressForm.mobile = this.upData.mobile;
-    //   this.addressForm.region[0] = this.upData.province;
-    //   this.addressForm.region[1] = this.upData.city;
-    //   this.addressForm.region[2] = this.upData.county;
-    // }
-    // console.log(this.upData);
-    // debugger;
   },
   methods: {
     setFormData() {

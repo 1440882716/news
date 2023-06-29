@@ -199,7 +199,7 @@
               style="color:#F56C6C;cursor: pointer;"
               @click="billReason(item)"
             >
-              {{ item.statusName }}查看拒绝原因
+              发票{{ item.statusName }},查看拒绝原因
             </div>
             <div v-else>{{ item.statusName }}</div>
           </div>
@@ -358,15 +358,6 @@ export default {
       this.invoiceDialog = true;
       this.invoiceForm.money = info.totalPrices;
       this.invoiceForm.id = info.id;
-      // debugger;
-      // return;
-
-      // reopen({ id: id }).then(res => {
-      //   if (res.code == 200) {
-      //   } else {
-      //     this.$refs.tips.toast(res.msg);
-      //   }
-      // });
     },
     // 查看开发票被拒的原因
     billReason(reason) {
@@ -375,11 +366,9 @@ export default {
     },
     // 重新选择发票信息
     chooseInvoiceItem(info) {
-      // this.invoiceForm.id = info.id;
       this.invoiceForm.status = info.type;
       this.invoiceForm.name = info.name;
       this.invoiceForm.taxNo = info.taxNo;
-      // this.invoiceForm.money = goodsCount.toFixed(2);
       this.invoiceForm.companyAddress = info.companyAddress;
       this.invoiceForm.companyMobile = info.companyMobile;
       this.invoiceForm.bankName = info.bankName;
@@ -400,9 +389,6 @@ export default {
     },
     // 提交发票信息
     getInvoice() {
-      console.log(this.invoiceForm);
-      debugger;
-      // return;
       reopen(this.invoiceForm).then(res => {
         if (res.code == 200) {
           this.$refs.tips.toast(res.msg);
@@ -430,8 +416,8 @@ export default {
       });
     },
     // 下载发票
-    downPDF(pfdLink) {
-      this.pdfUrl = pfdLink;
+    downPDF(pdfLink) {
+      this.pdfUrl = pdfLink;
       window.open(this.pdfUrl, "_blank");
       this.dialogVisible = false;
     },
@@ -445,6 +431,9 @@ export default {
         if (valid) {
           toEmail({ id: this.getPage, email: this.form.email }).then(res => {
             if (res.code == 200) {
+              if (res.code == 200) {
+              }
+              console.log(res);
               this.$refs.tips.toast(res.msg);
               this.dialogVisible = false;
             } else {
